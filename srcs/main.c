@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/09 19:35:13 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:55:42 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,15 @@ int     command_cd(char **cursor)
     return (0);
 }
 
+int     command_echo(char **cursor)
+{
+    int     separator;
+    separator = get_arg(cursor);
+    if (**cursor == '\"' || **cursor == '\'')
+    ft_putstr_fd(*cursor, 1);
+    return (0);
+}
+
 int     main()
 {
     int stop;
@@ -104,7 +113,7 @@ int     main()
     stop = 1;
     while (stop)
     {
-        ft_putstr_fd("minishell$ ", 1);
+        ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
         if(get_next_line(0, &line) < 0)
             exit (0); //ERROR
         cursor = line;

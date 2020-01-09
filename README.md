@@ -4,7 +4,8 @@ Cas chelous :
 > echo loulou \
 > echo loulou" \
 > echo loulou \; pwd
-
+> cd "lib
+> cd /tmp
 
 Erreurs a pas oublier de gerer :
 
