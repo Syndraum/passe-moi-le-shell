@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <errno.h>
 
 typedef enum    e_command
 {
@@ -15,5 +16,16 @@ typedef enum    e_command
     EXIT
 }               t_command;
 
+typedef enum    e_argument
+{
+    TO_FILE = 1, //>
+    TO_END, //>>
+    FROM_FILE, //<
+    SEMICOLON,
+    PIPE,
+    DOLLAR,
+    ECHO_N,
+    ARG
+}               t_argument;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/09 18:01:38 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:35:13 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,29 @@ int     cmp_skip(char **cursor, char *str)
         return (0);
     *(cursor) += ft_strlen(str);
     return (1);
+}
+
+int     get_arg(char **cursor)
+{
+    skip_char(cursor, ' ');
+    if (cmp_skip(cursor, ">"))
+        return(TO_FILE);
+    else if (cmp_skip(cursor, ">>"))
+        return(TO_END);
+    else if (cmp_skip(cursor, "<"))
+        return(FROM_FILE);
+    else if (cmp_skip(cursor, ";"))
+        return(SEMICOLON);
+    else if (cmp_skip(cursor, "|"))
+        return(PIPE);
+    else if (cmp_skip(cursor, "$"))
+        return(DOLLAR);
+    else if (cmp_skip(cursor, "-n"))
+        return(ECHO_N);
+    else if (ft_isprint(**cursor))
+        return (ARG);
+    else
+        return (0);
 }
 
 int     get_command(char **cursor)
@@ -51,11 +74,23 @@ int     get_command(char **cursor)
 
 int     command_pwd(char **cursor)
 {
-    char *buf;
-    
+    char    *buf;
+    int     separator;
+    separator = get_arg(cursor);
     buf = 0;
     ft_putendl_fd(getcwd(buf, 0), 1);
     free(buf);
+    return (0);
+}
+
+int     command_cd(char **cursor)
+{
+    int     separator;
+    separator = get_arg(cursor);
+    if (chdir(*cursor) < 0)
+    {
+        ft_dprintf(2, "%s\n", strerror(errno));
+    }
     return (0);
 }
 
@@ -80,7 +115,7 @@ int     main()
         else if (command == ECHO)
             stop = 0;
         else if (command == CD)
-            stop = 0;
+            command_cd(&cursor);
         else if (command == PWD)
             // stop = 0;
             command_pwd(&cursor);
