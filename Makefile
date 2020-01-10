@@ -1,6 +1,6 @@
 PREFIX = srcs/
 
-SRCS = $(addprefix $(PREFIX), main.c)
+SRCS = $(addprefix $(PREFIX), main.c ft_arg.c ft_echo.c)
 
 OBJS = ${SRCS:.c=.o}
 

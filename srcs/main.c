@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/09 19:55:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/10 16:51:16 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,6 @@ int     get_arg(char **cursor)
         return(SEMICOLON);
     else if (cmp_skip(cursor, "|"))
         return(PIPE);
-    else if (cmp_skip(cursor, "$"))
-        return(DOLLAR);
-    else if (cmp_skip(cursor, "-n"))
-        return(ECHO_N);
     else if (ft_isprint(**cursor))
         return (ARG);
     else
@@ -94,15 +90,6 @@ int     command_cd(char **cursor)
     return (0);
 }
 
-int     command_echo(char **cursor)
-{
-    int     separator;
-    separator = get_arg(cursor);
-    if (**cursor == '\"' || **cursor == '\'')
-    ft_putstr_fd(*cursor, 1);
-    return (0);
-}
-
 int     main()
 {
     int stop;
@@ -120,20 +107,19 @@ int     main()
         if (!(command = get_command(&cursor)))
             ft_putstr_fd("minishell : command not found\n", 2);
         else if (command == EXEC)
-            stop = 0;
+            stop = 1;
         else if (command == ECHO)
-            stop = 0;
+            ft_printf("%s", command_echo(&cursor));
         else if (command == CD)
             command_cd(&cursor);
         else if (command == PWD)
-            // stop = 0;
             command_pwd(&cursor);
         else if (command == EXPORT)
-            stop = 0;
+            stop = 1;
         else if (command == UNSET)
-            stop = 0;
+            stop = 1;
         else if (command == ENV)
-            stop = 0;
+            stop = 1;
         else if (command == EXIT)
             stop = 0;
     }
