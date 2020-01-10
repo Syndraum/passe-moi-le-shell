@@ -41,6 +41,7 @@ typedef	struct	s_shell
 	char		**output;
 	char		**cursor;
 	int			fd;
+    t_command   command;
 	t_arg		arg;
 }				t_shell;
 
