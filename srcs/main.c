@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/10 16:51:16 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/10 21:01:27 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int     cmp_skip(char **cursor, char *str)
 
 int     get_arg(char **cursor)
 {
-    skip_char(cursor, ' ');
+    // skip_char(cursor, ' ');
     if (cmp_skip(cursor, ">"))
         return(TO_FILE);
     else if (cmp_skip(cursor, ">>"))
@@ -94,8 +94,7 @@ int     main()
 {
     int stop;
     char *line;
-    char *cursor;
-    t_command command;
+	t_shell shell;
 
     stop = 1;
     while (stop)
@@ -103,24 +102,24 @@ int     main()
         ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
         if(get_next_line(0, &line) < 0)
             exit (0); //ERROR
-        cursor = line;
-        if (!(command = get_command(&cursor)))
+        shell.cursor = &line;
+        if (!(shell.command = get_command(shell.cursor)))
             ft_putstr_fd("minishell : command not found\n", 2);
-        else if (command == EXEC)
+        else if (shell.command == EXEC)
             stop = 1;
-        else if (command == ECHO)
-            ft_printf("%s", command_echo(&cursor));
-        else if (command == CD)
-            command_cd(&cursor);
-        else if (command == PWD)
-            command_pwd(&cursor);
-        else if (command == EXPORT)
+        else if (shell.command == ECHO)
+            ft_printf("%s",command_echo(&shell));
+        else if (shell.command == CD)
+            command_cd(shell.cursor);
+        else if (shell.command == PWD)
+            command_pwd(shell.cursor);
+        else if (shell.command == EXPORT)
             stop = 1;
-        else if (command == UNSET)
+        else if (shell.command == UNSET)
             stop = 1;
-        else if (command == ENV)
+        else if (shell.command == ENV)
             stop = 1;
-        else if (command == EXIT)
+        else if (shell.command == EXIT)
             stop = 0;
     }
     exit (EXIT_SUCCESS);

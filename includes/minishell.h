@@ -46,11 +46,12 @@ typedef	struct	s_shell
 }				t_shell;
 
 int     cmp_skip(char **cursor, char *str);
+int     get_arg(char **cursor);
 
 char	*skip_if(char *str, int (*f)(char));
-char	*command_echo(char **cursor);
+char	*command_echo(t_shell *shell);
 
 int		is_whitespace(char c);
-char	*get_argument(char **str);
+void	*set_arg(t_shell *shell);
 
 #endif
