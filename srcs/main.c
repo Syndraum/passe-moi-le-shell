@@ -6,40 +6,26 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 20:03:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/11 22:15:37 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    skip_char(char **cursor, char c)
+void   		 skip_char(char **cursor, char c)
 {
     while(**cursor == c)
         (*cursor)++;
 }    
 
-int		ft_is_var_def(char *var)
-{
-	int i;
-	
-	i = 0;
-	if(!(ft_isalpha(var[i])))
-		return (0);
-	while(ft_isalpha(var[i]))
-		i++;
-		if (var[i] != '=')
-			return(0);
-	return (1);
-}
-
-int	ft_cmp(char *str, char *cursor)
+int			ft_cmp(char *str, char *cursor)
 {
 	if (ft_strncmp(str, cursor, ft_strlen(cursor)))
         return (0);
 	return (1);
 }
 
-int     cmp_skip(char **cursor, char *str)
+int    		 cmp_skip(char **cursor, char *str)
 {
     if (ft_strncmp(str, *cursor, ft_strlen(str)))
         return (0);
@@ -47,7 +33,7 @@ int     cmp_skip(char **cursor, char *str)
     return (1);
 }
 
-int     get_arg(char **cursor)
+int    		 get_arg(char **cursor)
 {
     *cursor = skip_if(*cursor, is_whitespace);
     if (cmp_skip(cursor, ">>"))
@@ -66,7 +52,7 @@ int     get_arg(char **cursor)
         return (0);
 }
 
-int     get_command(char *command)
+int  		   get_command(char *command)
 {
     if (ft_cmp(command, "./"))
         return (EXEC);
@@ -88,67 +74,7 @@ int     get_command(char *command)
         return (0);
 }
 
-int     command_pwd(char **cursor)
-{
-    char    *buf;
-    int     separator;
-
-    separator = get_arg(cursor);
-    buf = 0;
-    ft_putendl_fd(getcwd(buf, 0), 1);
-    free(buf);
-    return (0);
-}
-
-int     command_cd(char **cursor)
-{
-    int     separator;
-    separator = get_arg(cursor);
-    if (chdir(*cursor) < 0)
-    {
-        ft_dprintf(2, "%s\n", strerror(errno));
-		return (0);
-    }
-    return (1);
-}
-
-int64_t	command_export(t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	while(shell->tab[i])
-	{
-		if(!(ft_is_var_def(shell->tab[i])))
-			return (0);
-		i++;
-	}
-	i = 0;
-	while(shell->tab[i])
-	{
-		if(!(shell->environ = ft_strs_plus_one(shell->environ, shell->tab[i])))
-		{
-			ft_dprintf(2, "%s\n", strerror(errno));
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-void	command_env(t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	while (shell->environ[i])
-	{
-		ft_putendl_fd(shell->environ[i], shell->fd);
-		i++;
-	}
-}
-
-int		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
+int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 {
 	(void)argc;
 	(void)argv;
@@ -160,7 +86,7 @@ int		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 	return (1);
 }
 
-int     main(int argc, char **argv, char **envp)
+int   		  main(int argc, char **argv, char **envp)
 {
     int stop;
     char *line;
@@ -189,7 +115,7 @@ int     main(int argc, char **argv, char **envp)
         else if (shell.command == EXPORT)
             command_export(&shell);
         else if (shell.command == UNSET)
-            stop = 1;
+            command_unset(&shell);
         else if (shell.command == ENV)
             command_env(&shell);
         else if (shell.command == EXIT)

@@ -47,16 +47,26 @@ typedef	struct	s_shell
 	char		**environ;
 }				t_shell;
 
-int     cmp_skip(char **cursor, char *str);
-int     get_arg(char **cursor);
+int			command_pwd(char **cursor);
+int			command_cd(char **cursor);
+int			command_export(t_shell *shell);
+int			command_unset(t_shell *shell);
+void		command_env(t_shell *shell);
 
-char	*skip_if(char *str, int (*f)(char));
-char	*command_echo(t_shell *shell);
+int			is_same_var(char *var, char *vardef);
+int			is_var_to_unset(char *var, char *vardef);
+int			is_var_def(char *var);
 
-int		is_whitespace(char c);
-void	*set_arg(t_shell *shell);
+int			cmp_skip(char **cursor, char *str);
+int			get_arg(char **cursor);
 
-int		init_struct(t_shell *shell);
-int		analyse_args(t_shell *shell);
+char		*skip_if(char *str, int (*f)(char));
+char		*command_echo(t_shell *shell);
+
+int			is_whitespace(char c);
+void		*set_arg(t_shell *shell);
+
+int			init_struct(t_shell *shell);
+int			analyse_args(t_shell *shell);
 
 #endif
