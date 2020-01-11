@@ -39,7 +39,7 @@ typedef struct s_arg
 typedef	struct	s_shell
 {
 	char		**tab;
-	char		**output;
+	char		*output;
 	char		**cursor;
 	int			fd;
     t_command   command;

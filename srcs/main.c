@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 14:05:54 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:20:50 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int     cmp_skip(char **cursor, char *str)
 int     get_arg(char **cursor)
 {
     *cursor = skip_if(*cursor, is_whitespace);
-    if (cmp_skip(cursor, ">"))
-        return(TO_FILE);
-    else if (cmp_skip(cursor, ">>"))
+    if (cmp_skip(cursor, ">>"))
         return(TO_END);
+    else if (cmp_skip(cursor, ">"))
+        return(TO_FILE);
     else if (cmp_skip(cursor, "<"))
         return(FROM_FILE);
     else if (cmp_skip(cursor, ";"))
@@ -78,6 +78,7 @@ int     command_pwd(char **cursor)
 {
     char    *buf;
     int     separator;
+	
     separator = get_arg(cursor);
     buf = 0;
     ft_putendl_fd(getcwd(buf, 0), 1);
@@ -115,7 +116,7 @@ int     main()
         else if (shell.command == EXEC)
             stop = 1;
         else if (shell.command == ECHO)
-            ft_printf("%s",command_echo(&shell));
+            shell.output = command_echo(&shell);
         else if (shell.command == CD)
             command_cd(shell.cursor);
         else if (shell.command == PWD)
@@ -128,6 +129,8 @@ int     main()
             stop = 1;
         else if (shell.command == EXIT)
             stop = 0;
+		if (shell.arg.sep != PIPE)
+			ft_putstr_fd(shell.output, shell.fd);
     }
     exit (EXIT_SUCCESS);
 }

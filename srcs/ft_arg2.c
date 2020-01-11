@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 13:38:38 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:21:47 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int		is_end_of_command(t_separator sep)
 	return (0);
 }
 
-// int is_redirection(t_separator sep)
-// {
-//     if (sep == TO_END || sep == TO_FILE || sep == FROM_FILE)
-//         return (1);
-//     return (0);
-// }
+int is_redirection(t_separator sep)
+{
+    if (sep == TO_END || sep == TO_FILE || sep == FROM_FILE)
+        return (1);
+    return (0);
+}
 
 int		init_struct(t_shell *shell)
 {
@@ -46,14 +46,21 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		return (1);
 	if (shell->fd != 1)
 		close(shell->fd);
+	ft_printf("prev = %d\n", prev);
+	ft_printf("arg = |%s|\n", shell->arg.str);
 	if (prev == TO_FILE &&
-		(shell->fd = open(shell->arg.str, O_WRONLY, O_CREAT)) < 0)
+		(shell->fd = open(shell->arg.str, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) < 0)
 	{
-		// PRINTF ERROR
+		ft_printf("Error : %s\n", strerror(errno));
 		return (0);
 	}
-	else if ((shell->fd = open(shell->arg.str, O_WRONLY, O_CREAT)) < 0)
-		free(shell->arg.str);
+	else if (prev == TO_END && (shell->fd = open(shell->arg.str, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) < 0)
+	{
+		ft_printf("Error : %s\n", strerror(errno));
+		return (0);
+	}
+	free(shell->arg.str);
+	ft_printf("fd = %d\n", shell->fd);
 	return (1);
 }
 
@@ -71,10 +78,10 @@ int		analyse_args(t_shell *shell)
 			ft_free_strs(shell->tab);
 			return (0);
 		}
-		if (!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
+		if (prev == ARG && !(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
 			return (0);
-		// else if (!(ft_redirection(shell, prev)))
-		// 	return (0);
+		else if (is_redirection(prev) && !(ft_redirection(shell, prev)))
+			return (0);
 	}
 	return (1);
 }
