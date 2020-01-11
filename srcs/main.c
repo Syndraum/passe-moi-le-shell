@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/10 21:01:27 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 12:06:55 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ void    skip_char(char **cursor, char c)
         (*cursor)++;
 }    
 
+int	ft_cmp(char *str, char *cursor)
+{
+	if (ft_strncmp(str, cursor, ft_strlen(str)))
+        return (0);
+	return (1);
+}
+
 int     cmp_skip(char **cursor, char *str)
 {
     if (ft_strncmp(str, *cursor, ft_strlen(str)))
@@ -28,7 +35,7 @@ int     cmp_skip(char **cursor, char *str)
 
 int     get_arg(char **cursor)
 {
-    // skip_char(cursor, ' ');
+    *cursor = skip_if(*cursor, is_whitespace);
     if (cmp_skip(cursor, ">"))
         return(TO_FILE);
     else if (cmp_skip(cursor, ">>"))
@@ -45,24 +52,23 @@ int     get_arg(char **cursor)
         return (0);
 }
 
-int     get_command(char **cursor)
+int     get_command(char *command)
 {
-    skip_char(cursor, ' ');
-    if (cmp_skip(cursor, "./"))
+    if (ft_cmp(command, "./"))
         return (EXEC);
-    else if (cmp_skip(cursor, "echo"))
+    else if (ft_cmp(command, "echo"))
         return (ECHO);
-    else if (cmp_skip(cursor, "cd"))
+    else if (ft_cmp(command, "cd"))
         return (CD);
-    else if (cmp_skip(cursor, "pwd"))
+    else if (ft_cmp(command, "pwd"))
         return (PWD);
-    else if (cmp_skip(cursor, "export"))
+    else if (ft_cmp(command, "export"))
         return (EXPORT);
-    else if (cmp_skip(cursor, "unset"))
+    else if (ft_cmp(command, "unset"))
         return (UNSET);
-    else if (cmp_skip(cursor, "env"))
+    else if (ft_cmp(command, "env"))
         return (ENV);
-    else if (cmp_skip(cursor, "exit"))
+    else if (ft_cmp(command, "exit"))
         return (EXIT);
     else
         return (0);
@@ -103,7 +109,8 @@ int     main()
         if(get_next_line(0, &line) < 0)
             exit (0); //ERROR
         shell.cursor = &line;
-        if (!(shell.command = get_command(shell.cursor)))
+		analyse_args(&shell);
+        if (!(shell.command = get_command(shell.tab[0])))
             ft_putstr_fd("minishell : command not found\n", 2);
         else if (shell.command == EXEC)
             stop = 1;

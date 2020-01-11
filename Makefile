@@ -33,7 +33,9 @@ makelib:
 
 clean:
 	${RM} ${OBJS}
+	make -C ${DIR_LIBFT} clean
 
 fclean:	clean
+	make -C ${DIR_LIBFT} fclean
 
 re:	fclean all

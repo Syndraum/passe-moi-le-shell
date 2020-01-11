@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/10 21:13:03 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/11 13:38:38 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		init_struct(t_shell *shell)
 	if (!(set_arg(shell)))
 		return (0);
 	shell->tab[0] = shell->arg.str;
-	shell->tab[1] = 0;
+	shell->tab[1] = NULL;
 	shell->output = 0;
 	shell->fd = 1;
 	return (1);
@@ -53,7 +53,8 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		return (0);
 	}
 	else if ((shell->fd = open(shell->arg.str, O_WRONLY, O_CREAT)) < 0)
-	free(shell->arg.str);
+		free(shell->arg.str);
+	return (1);
 }
 
 int		analyse_args(t_shell *shell)
@@ -70,10 +71,10 @@ int		analyse_args(t_shell *shell)
 			ft_free_strs(shell->tab);
 			return (0);
 		}
-		if (prev == ARG &&
-			!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
+		if (!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
 			return (0);
-		else if (!(ft_redirection(shell, prev)))
-			return (0);
+		// else if (!(ft_redirection(shell, prev)))
+		// 	return (0);
 	}
+	return (1);
 }

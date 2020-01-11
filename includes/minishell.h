@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include <errno.h>
+# include <fcntl.h>
 
 typedef enum    e_command
 {
@@ -53,5 +54,8 @@ char	*command_echo(t_shell *shell);
 
 int		is_whitespace(char c);
 void	*set_arg(t_shell *shell);
+
+int		init_struct(t_shell *shell);
+int		analyse_args(t_shell *shell);
 
 #endif

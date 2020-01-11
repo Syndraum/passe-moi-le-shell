@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 12:44:54 by roalvare          #+#    #+#             */
-/*   Updated: 2020/01/10 21:02:50 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 13:54:16 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,36 @@ char	*skip_if(char *str, int (*f)(char))
 
 char	*command_echo(t_shell *shell)
 {
-	// char	*tmp;
+	char	*ret;
 	int		carriage;
+	int		len;
+	char	**cursor;
+	char	**begin;
 
 	carriage = 1;
-	// *cursor = skip_if(*cursor, is_whitespace);
-	// if (cmp_skip(cursor, "-n"))
-	// {
-	// 	carriage = 0;
-	// 	*cursor = skip_if(*cursor, is_whitespace);
-	// }
-	if (!(set_arg(shell)))
+	cursor = &shell->tab[1];
+	while (cmp_skip(cursor, "-n"))
+	{
+		carriage = 0;
+		cursor++;
+	}
+	begin = cursor;
+	len = 0;
+	while (*cursor != 0)
+	{
+		len += ft_strlen(*cursor) + 1;
+		cursor++;
+	}
+	if (!(ret = ft_calloc(len + carriage, sizeof(char))))
 		return (NULL);
-	// if (carriage)
-	// {
-	// 	arg = ft_calloc(ft_strlen(tmp) + 1, sizeof(char));
-	// 	ft_strlcpy(arg, tmp, ft_strlen(tmp) + 1);
-	// 	arg[ft_strlen(tmp)] = '\n';
-	// 	free(tmp);
-	// }
-	// else
-	// 	arg = tmp;
-	return (shell->arg.str);
+	while (*begin != 0)
+	{
+		ft_strlcat(ret, (*begin), ft_strlen(ret) + ft_strlen(*begin) + 1);
+		begin++;
+		if (*begin != 0)
+			ft_strlcat(ret, " ", ft_strlen(ret) + 2);
+	}
+	if (carriage)
+		ft_strlcat(ret, "\n", ft_strlen(ret) + 2);
+	return (ret);
 }

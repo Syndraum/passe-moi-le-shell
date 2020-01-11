@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/01/10 20:56:43 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 11:18:23 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ void	*set_arg(t_shell *shell)
 		(*cursor)++;
 	shell->arg.str = arg;
 	shell->arg.sep = get_arg(cursor);
-	ft_printf("sep = %d\n", shell->arg.sep);
+	// ft_printf("sep = %d\n", shell->arg.sep);
 	return (arg);
 }
