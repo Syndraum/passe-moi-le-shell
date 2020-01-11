@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 17:38:08 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:41:03 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,16 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		close(shell->fd);
 	if (prev == TO_FILE && (shell->fd = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) < 0)
+	{
+		ft_printf("Error : %s\n", strerror(errno));
 		return (0);
+	}
 	else if (prev == TO_END && (shell->fd = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_APPEND, S_IRWXU)) < 0)
+		O_CREAT | O_WRONLY | O_APPEND)) < 0)
+	{
+		ft_printf("Error : %s\n", strerror(errno));
 		return (0);
+	}
 	free(shell->arg.str);
 	return (1);
 }
