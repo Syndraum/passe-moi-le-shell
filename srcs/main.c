@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 12:06:55 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 14:05:54 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    skip_char(char **cursor, char c)
 
 int	ft_cmp(char *str, char *cursor)
 {
-	if (ft_strncmp(str, cursor, ft_strlen(str)))
+	if (ft_strncmp(str, cursor, ft_strlen(cursor)))
         return (0);
 	return (1);
 }
