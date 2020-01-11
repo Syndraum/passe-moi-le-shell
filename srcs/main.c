@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 17:20:50 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/11 20:03:08 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@ void    skip_char(char **cursor, char c)
     while(**cursor == c)
         (*cursor)++;
 }    
+
+int		ft_is_var_def(char *var)
+{
+	int i;
+	
+	i = 0;
+	if(!(ft_isalpha(var[i])))
+		return (0);
+	while(ft_isalpha(var[i]))
+		i++;
+		if (var[i] != '=')
+			return(0);
+	return (1);
+}
 
 int	ft_cmp(char *str, char *cursor)
 {
@@ -78,7 +92,7 @@ int     command_pwd(char **cursor)
 {
     char    *buf;
     int     separator;
-	
+
     separator = get_arg(cursor);
     buf = 0;
     ft_putendl_fd(getcwd(buf, 0), 1);
@@ -93,17 +107,68 @@ int     command_cd(char **cursor)
     if (chdir(*cursor) < 0)
     {
         ft_dprintf(2, "%s\n", strerror(errno));
+		return (0);
     }
-    return (0);
+    return (1);
 }
 
-int     main()
+int64_t	command_export(t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	while(shell->tab[i])
+	{
+		if(!(ft_is_var_def(shell->tab[i])))
+			return (0);
+		i++;
+	}
+	i = 0;
+	while(shell->tab[i])
+	{
+		if(!(shell->environ = ft_strs_plus_one(shell->environ, shell->tab[i])))
+		{
+			ft_dprintf(2, "%s\n", strerror(errno));
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	command_env(t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	while (shell->environ[i])
+	{
+		ft_putendl_fd(shell->environ[i], shell->fd);
+		i++;
+	}
+}
+
+int		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
+{
+	(void)argc;
+	(void)argv;
+	if(!(shell->environ = ft_strs_cpy(envp)))
+	{
+		ft_dprintf(2, "%s\n", strerror(errno));
+		return (0);
+	}
+	return (1);
+}
+
+int     main(int argc, char **argv, char **envp)
 {
     int stop;
     char *line;
 	t_shell shell;
 
     stop = 1;
+	if(!(ft_mainargs(argc, argv, envp, &shell)))
+		return (0);
     while (stop)
     {
         ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
@@ -122,11 +187,11 @@ int     main()
         else if (shell.command == PWD)
             command_pwd(shell.cursor);
         else if (shell.command == EXPORT)
-            stop = 1;
+            command_export(&shell);
         else if (shell.command == UNSET)
             stop = 1;
         else if (shell.command == ENV)
-            stop = 1;
+            command_env(&shell);
         else if (shell.command == EXIT)
             stop = 0;
 		if (shell.arg.sep != PIPE)

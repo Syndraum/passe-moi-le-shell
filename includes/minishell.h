@@ -44,6 +44,7 @@ typedef	struct	s_shell
 	int			fd;
     t_command   command;
 	t_arg		arg;
+	char		**environ;
 }				t_shell;
 
 int     cmp_skip(char **cursor, char *str);
