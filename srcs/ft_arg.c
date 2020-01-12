@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/01/11 11:18:23 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:13:15 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,99 @@ int		strlen_if(char *str, int (*f)(char))
 	return (i);
 }
 
-void	*set_arg(t_shell *shell)
+char	*get_quote(char **cursor)
+{
+	char	*quote;
+	int		len;
+
+	(*cursor)++;
+	len = strlen_to(*cursor, '\'');
+	if (!(quote = ft_calloc(len + 1, sizeof(char))))
+		return (NULL);
+	ft_strlcpy(quote, *cursor, len + 1);
+	(*cursor) += len + 1;
+	return (quote);
+}
+
+char	*get_dquote(char **cursor)
+{
+	char	*bquote;
+	int		len;
+
+	(*cursor)++;
+	len = strlen_to(*cursor, '"');
+	if (!(bquote = ft_calloc(len + 1, sizeof(char))))
+		return (NULL);
+	ft_strlcpy(bquote, *cursor, len + 1);
+	(*cursor) += len + 1;
+	return (bquote);
+}
+
+char	*get_noquote(char **cursor)
 {
 	char	*arg;
 	int		len;
+
+	len = 0;
+	while ((*cursor)[len] != '\'' && (*cursor)[len] != '"' && !is_stoparg((*cursor)[len]))
+		len++;
+	if (!(arg = ft_calloc(len + 1, sizeof(char))))
+		return (NULL);
+	ft_strlcpy(arg, *cursor, len + 1);
+	(*cursor) += len;
+	return (arg);
+}
+
+void	*get_argument(char	**cursor)
+{
+	char *arg;
+	char *tmp;
+	char *ret;
+
+	arg = NULL;
+	tmp = NULL;
+	ret = NULL;
+	while (!is_stoparg(**cursor))
+	{
+		if (**cursor == '\'')
+		{
+			if (!(ret = get_quote(cursor)))
+				return (NULL);
+		}
+		else if (**cursor == '"')
+		{
+			if (!(ret = get_dquote(cursor)))
+				return (NULL);
+		}
+		else
+		{
+			if (!(ret = get_noquote(cursor)))
+				return (NULL);
+		}
+		if (arg != NULL)
+			tmp = ft_strdup(arg);
+		if (arg != NULL)
+			free(arg);
+		arg = NULL;
+		if (!(arg = ft_strjoin(tmp, ret)))
+			return (NULL);
+		free(tmp);
+		tmp = NULL;
+		free(ret);
+		ret = NULL;
+	}
+	return (arg);
+}
+
+void	*set_arg(t_shell *shell)
+{
+	char	*arg;
 	char	**cursor;
 
 	cursor = shell->cursor;
 	*cursor = skip_if(*cursor, is_whitespace);
-	if (**cursor == '\'')
-	{
-		(*cursor)++;
-		len = strlen_to(*cursor, '\'');
-	}
-	else if (**cursor == '"')
-	{
-		(*cursor)++;
-		len = strlen_to(*cursor, '"');
-	}
-	else
-		len = strlen_if(*cursor, is_stoparg);
-	arg = ft_calloc(len + 1, sizeof(char));
-	ft_strlcpy(arg, *cursor, len + 1);
-	*cursor += len;
-	if (**cursor == '\'' || **cursor == '"')
-		(*cursor)++;
+	arg = get_argument(cursor);
 	shell->arg.str = arg;
 	shell->arg.sep = get_arg(cursor);
-	// ft_printf("sep = %d\n", shell->arg.sep);
 	return (arg);
 }
