@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/12 12:46:32 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:04:20 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,35 @@ int			command_export(t_shell *shell)
 	return (1);
 }
 
+void			unset_var(char **environ, char *var)
+{
+	int		i;
+	int		last;
+
+	last = ft_strslen(environ) - 1;
+	i = 0;
+	while (environ[i])
+	{
+		if (is_var_to_unset(var, environ[i]))
+		{
+			free(environ[i]);
+			environ[i] = environ[last];
+			environ[last] = 0;
+			return ;
+		}
+		i++;
+	}
+	ft_dprintf(2, "minishell: unset: `%s': not a valid identifier\n", var);
+}
+
 int			command_unset(t_shell *shell)
 {
 	int		i;
-	int		j;
-	int		last;
 
 	i = 1;
-	last = ft_strslen(shell->environ) - 1;
 	while (shell->tab[i])
 	{
-		j = 0;
-		while (shell->environ[j])
-		{
-			if (is_var_to_unset(shell->tab[i], shell->environ[j]))
-			{
-				free(shell->environ[j]);
-				shell->environ[j] = shell->environ[last];
-				shell->environ[last] = 0;
-			}
-			j++;
-		}
+		unset_var(shell->environ, shell->tab[i]);
 		i++;
 	}
 	return (1);
