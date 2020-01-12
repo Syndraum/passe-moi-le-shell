@@ -47,8 +47,8 @@ typedef	struct	s_shell
 	char		**environ;
 }				t_shell;
 
-int			command_pwd(char **cursor);
-int			command_cd(char **cursor);
+void		command_pwd(t_shell *shell);
+int			command_cd(t_shell *shell);
 int			command_export(t_shell *shell);
 int			command_unset(t_shell *shell);
 void		command_env(t_shell *shell);

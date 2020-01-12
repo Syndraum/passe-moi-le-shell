@@ -6,30 +6,25 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 22:22:49 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/12 12:46:32 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			command_pwd(char **cursor)
+void		command_pwd(t_shell *shell)
 {
 	char	*buf;
-	int		separator;
 
-	separator = get_arg(cursor);
 	buf = 0;
-	ft_putendl_fd(getcwd(buf, 0), 1);
+	buf = getcwd(buf, 0);
+	shell->output = ft_strjoin(buf, "\n");
 	free(buf);
-	return (0);
 }
 
-int			command_cd(char **cursor)
+int			command_cd(t_shell *shell)
 {
-	int		separator;
-
-	separator = get_arg(cursor);
-	if (chdir(*cursor) < 0)
+	if (chdir(shell->tab[1]) < 0)
 	{
 		ft_dprintf(2, "%s\n", strerror(errno));
 		return (0);
@@ -37,10 +32,27 @@ int			command_cd(char **cursor)
 	return (1);
 }
 
+int			replace_var(char **environ, char *var)
+{
+	int		i;
+
+	i = 0;
+	while (environ[i])
+	{
+		if (is_same_var(var, environ[i]))
+		{
+			free(environ[i]);
+			environ[i] = var;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int			command_export(t_shell *shell)
 {
 	int		i;
-	int		j;
 
 	i = 1;
 	while (shell->tab[i])
@@ -52,17 +64,7 @@ int			command_export(t_shell *shell)
 	i = 1;
 	while (shell->tab[i])
 	{
-		j = 0;
-		while (shell->environ[j])
-		{
-			if (is_same_var(shell->tab[i], shell->environ[j]))
-			{
-				free(shell->environ[j]);
-				shell->environ[j] = shell->tab[i];
-			}
-			j++;
-		}
-		if (shell->environ[j] == 0 &&
+		if (!replace_var(shell->environ, shell->tab[i]) &&
 			!(shell->environ = ft_strs_plus_one(shell->environ, shell->tab[i])))
 		{
 			ft_dprintf(2, "%s\n", strerror(errno));

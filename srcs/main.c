@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 22:15:37 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/12 12:40:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ int   		  main(int argc, char **argv, char **envp)
         else if (shell.command == ECHO)
             shell.output = command_echo(&shell);
         else if (shell.command == CD)
-            command_cd(shell.cursor);
+            command_cd(&shell);
         else if (shell.command == PWD)
-            command_pwd(shell.cursor);
+            command_pwd(&shell);
         else if (shell.command == EXPORT)
             command_export(&shell);
         else if (shell.command == UNSET)
