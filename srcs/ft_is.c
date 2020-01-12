@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:13:27 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/12 13:44:41 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/01/12 13:52:35 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,16 @@ int			is_var_def(char *var)
 
 	i = 0;
 	if (!(ft_isalpha(var[i]) || var[i] == '_'))
+	{
+		ft_dprintf("minishell: export: `%s': not a valid identifier\n", var);
 		return (0);
+	}
 	while (ft_isalnum(var[i]) || var[i] == '_')
 		i++;
 	if (var[i] != '=')
+	{
+		ft_dprintf("minishell: export: `%s': not a valid identifier\n", var);
 		return (0);
+	}
 	return (1);
 }
