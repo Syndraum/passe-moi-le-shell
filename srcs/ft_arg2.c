@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/01/11 17:41:03 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/01/19 21:30:11 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_end_of_command(t_separator sep)
+int		is_end_of_command(t_separator sep)
 {
 	if (sep == END_LINE || sep == SEMICOLON || sep == PIPE)
 		return (1);
 	return (0);
 }
 
-int	is_redirection(t_separator sep)
+int		is_redirection(t_separator sep)
 {
 	if (sep == TO_END || sep == TO_FILE || sep == FROM_FILE)
 		return (1);

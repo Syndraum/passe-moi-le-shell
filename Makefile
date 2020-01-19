@@ -1,6 +1,6 @@
 PREFIX = srcs/
 
-SRCS = $(addprefix $(PREFIX), main.c ft_is.c ft_command.c ft_arg.c ft_arg2.c ft_echo.c)
+SRCS = $(addprefix $(PREFIX), main.c ft_is_var.c ft_command_utils.c ft_command.c ft_arg.c ft_arg2.c ft_echo.c)
 
 OBJS = ${SRCS:.c=.o}
 
@@ -37,5 +37,6 @@ clean:
 
 fclean:	clean
 	make -C ${DIR_LIBFT} fclean
+	${RM} ${NAME}
 
 re:	fclean all

@@ -53,9 +53,13 @@ int			command_export(t_shell *shell);
 int			command_unset(t_shell *shell);
 void		command_env(t_shell *shell);
 
+int			is_var_ret_idx(char *var);
 int			is_same_var(char *var, char *vardef);
 int			is_var_to_unset(char *var, char *vardef);
 int			is_var_def(char *var);
+
+int			replace_var(char **environ, char *var);
+void		unset_var(char **environ, char *var);
 
 int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
