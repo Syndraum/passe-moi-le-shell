@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/01 17:34:08 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/01 19:02:32 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		is_stop_noquote(char c)
 
 int		is_stop_dquote(char c)
 {
-	if ((c == '"' || c == '$'))
+	if ((c == '"' || c == '$' || is_stoparg(c)))
 		return (1);
 	return (0);
 }
@@ -87,7 +87,7 @@ char	*get_tabvalue(char *key, char **tab)
 	return (ft_strchr(tab[index], '=') + 1);
 }
 
-char	*get_dollar(char **cursor, t_shell *shell, int (*is_stop_func)(char))
+char	*get_dollar(char **cursor, t_shell *shell)
 {
 	char	*arg;
 	char	*var;
@@ -97,9 +97,8 @@ char	*get_dollar(char **cursor, t_shell *shell, int (*is_stop_func)(char))
 	arg = NULL;
 	len = 0;
 	(*cursor)++;
-	while (!is_stop_func((*cursor)[len]))
-		len++;
-	if (len == 0)
+	len = is_var_ret_idx(*cursor);
+	if (is_stoparg(**cursor))
 		return (ft_strdup("$"));
 	if (!(arg = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
@@ -126,17 +125,38 @@ char	*get_quote(char **cursor)
 	return (quote);
 }
 
-char	*get_dquote(char **cursor)
+char	*get_dquote(char **cursor, t_shell *shell)
 {
 	char	*bquote;
-	int		len;
+	char	*tmp;
+	int		i;
 
+	bquote = NULL;
+	tmp = NULL;
+	i = 0;
 	(*cursor)++;
-	len = strlen_to(*cursor, '"');
-	if (!(bquote = ft_calloc(len + 1, sizeof(char))))
+	while ((*cursor)[i] != '"')
+	{
+		if ((*cursor)[i] == '$')
+		{
+			if (!(tmp = ft_calloc(i + 1, sizeof(char))))
+				return (NULL);
+			ft_strlcpy(tmp, *cursor, i + 1);
+			(*cursor) += i;
+			bquote = ft_strjoin_gnl(bquote, tmp);
+			bquote = ft_strjoin_gnl(bquote, get_dollar(cursor, shell));
+			free(tmp);
+			i = 0;
+		}
+		else
+			i++;
+	}
+	if (!(tmp = ft_calloc(i + 1, sizeof(char))))
 		return (NULL);
-	ft_strlcpy(bquote, *cursor, len + 1);
-	(*cursor) += len + 1;
+	ft_strlcpy(tmp, *cursor, i + 1);
+	bquote = ft_strjoin_gnl(bquote, tmp);
+	free(tmp);
+	(*cursor) += i + 1;
 	return (bquote);
 }
 
@@ -156,7 +176,7 @@ char	*get_noquote(char **cursor, t_shell *shell)
 	(*cursor) += len;
 	if (**cursor == '$')
 	{
-		tmp = ft_strjoin(arg, get_dollar(cursor, shell, is_stop_noquote));
+		tmp = ft_strjoin(arg, get_dollar(cursor, shell));
 		free(arg);
 		arg = tmp;
 	}
@@ -181,7 +201,7 @@ void	*get_argument(char	**cursor, t_shell *shell)
 		}
 		else if (**cursor == '"')
 		{
-			if (!(ret = get_dquote(cursor)))
+			if (!(ret = get_dquote(cursor, shell)))
 				return (NULL);
 		}
 		else
