@@ -9,8 +9,10 @@ Cas chelous :
 > pour export si la variable existe deja faut la remplacer donc faut pas juste rajouter a la fin. // OK
 > cd ../MINISHELL a bugué une fois (No such file or directory)
 > minishell$ cd ../test >> minishell: cd: ../tst : No such file or directory (il a enlevé le e, pourquoi??)
-> si on supprime le pwd et qu'on refait pwd, faut afficher comme si il existait toujours. 
-> si on supprine le pwd et qu'on fait cd ../dir_name faut aller dans .Trash
+> si on supprime le pwd et qu'on refait pwd, faut afficher comme si il existait toujours. // OK
+> si on supprine le pwd et qu'on fait cd ../dir_name faut aller dans .Trash // OK
+> echo pwd | bash
+> unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
 
 Erreurs a pas oublier de gerer :
 
