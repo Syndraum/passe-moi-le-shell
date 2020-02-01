@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/01/12 14:13:15 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/01 17:34:08 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,26 @@ int		is_stoparg(char c)
 	return (0);
 }
 
-int		strlen_to(char *str, char c)
+int		is_stop_noquote(char c)
+{
+	if ((c == '$' || c == '\'' || c == '"' || is_stoparg(c)))
+		return (1);
+	return (0);
+}
+
+int		is_stop_dquote(char c)
+{
+	if ((c == '"' || c == '$'))
+		return (1);
+	return (0);
+}
+
+int		strlen_to(char *str, char stop)
 {
 	int i;
 
 	i = 0;
-	while (str[i] && str[i] != c)
+	while (str[i] && str[i] != stop)
 		i++;
 	return (i);
 }
@@ -45,6 +59,57 @@ int		strlen_if(char *str, int (*f)(char))
 	while (str[i] && !f(str[i]))
 		i++;
 	return (i);
+}
+
+int		get_tabidx(char *key, char **tab)
+{
+	int i;
+	int len;
+
+	i = -1;
+	len = ft_strlen(key);
+	while (tab[++i] != 0)
+	{
+		if (is_var_to_unset(key, tab[i]))
+			return (i);
+	}
+	return (-1);
+}
+
+char	*get_tabvalue(char *key, char **tab)
+{
+	char	*value;
+	int		index;
+
+	value = NULL;
+	if ((index = get_tabidx(key, tab)) == -1)
+		return (value);
+	return (ft_strchr(tab[index], '=') + 1);
+}
+
+char	*get_dollar(char **cursor, t_shell *shell, int (*is_stop_func)(char))
+{
+	char	*arg;
+	char	*var;
+	int		len;
+
+	var = NULL;
+	arg = NULL;
+	len = 0;
+	(*cursor)++;
+	while (!is_stop_func((*cursor)[len]))
+		len++;
+	if (len == 0)
+		return (ft_strdup("$"));
+	if (!(arg = ft_calloc(len + 1, sizeof(char))))
+		return (NULL);
+	ft_strlcpy(arg, *cursor, len + 1);
+	(*cursor) += len;
+	var = get_tabvalue(arg, shell->environ);
+	if (var)
+		var = ft_strdup(var);
+	free(arg);
+	return (var);
 }
 
 char	*get_quote(char **cursor)
@@ -75,29 +140,37 @@ char	*get_dquote(char **cursor)
 	return (bquote);
 }
 
-char	*get_noquote(char **cursor)
+char	*get_noquote(char **cursor, t_shell *shell)
 {
 	char	*arg;
+	char	*tmp;
 	int		len;
 
 	len = 0;
-	while ((*cursor)[len] != '\'' && (*cursor)[len] != '"' && !is_stoparg((*cursor)[len]))
+	arg = NULL;
+	while (!is_stop_noquote((*cursor)[len]))
 		len++;
 	if (!(arg = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
 	ft_strlcpy(arg, *cursor, len + 1);
 	(*cursor) += len;
+	if (**cursor == '$')
+	{
+		tmp = ft_strjoin(arg, get_dollar(cursor, shell, is_stop_noquote));
+		free(arg);
+		arg = tmp;
+	}
 	return (arg);
 }
 
-void	*get_argument(char	**cursor)
+void	*get_argument(char	**cursor, t_shell *shell)
 {
 	char *arg;
-	char *tmp;
+	char *cpy;
 	char *ret;
 
 	arg = NULL;
-	tmp = NULL;
+	cpy = NULL;
 	ret = NULL;
 	while (!is_stoparg(**cursor))
 	{
@@ -113,18 +186,18 @@ void	*get_argument(char	**cursor)
 		}
 		else
 		{
-			if (!(ret = get_noquote(cursor)))
+			if (!(ret = get_noquote(cursor, shell)))
 				return (NULL);
 		}
 		if (arg != NULL)
-			tmp = ft_strdup(arg);
+			cpy = ft_strdup(arg);
 		if (arg != NULL)
 			free(arg);
 		arg = NULL;
-		if (!(arg = ft_strjoin(tmp, ret)))
+		if (!(arg = ft_strjoin(cpy, ret)))
 			return (NULL);
-		free(tmp);
-		tmp = NULL;
+		free(cpy);
+		cpy = NULL;
 		free(ret);
 		ret = NULL;
 	}
@@ -138,7 +211,7 @@ void	*set_arg(t_shell *shell)
 
 	cursor = shell->cursor;
 	*cursor = skip_if(*cursor, is_whitespace);
-	arg = get_argument(cursor);
+	arg = get_argument(cursor, shell);
 	shell->arg.str = arg;
 	shell->arg.sep = get_arg(cursor);
 	return (arg);
