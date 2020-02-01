@@ -45,6 +45,7 @@ typedef	struct	s_shell
     t_command   command;
 	t_arg		arg;
 	char		**environ;
+	char		*pwd;
 }				t_shell;
 
 void		command_pwd(t_shell *shell);
@@ -60,6 +61,8 @@ int			is_var_def(char *var);
 
 int			replace_var(char **environ, char *var);
 void		unset_var(char **environ, char *var);
+int			replace_or_add(char **environ, char *new);
+int			pwd_env(t_shell *shell);
 
 int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
