@@ -18,7 +18,7 @@ SRCS_CONV	= $(addprefix ${PREF_CONV}, ft_atoi.c ft_tolower.c ft_toupper.c ft_ito
 
 SRCS_GNL	= $(addprefix ${PREF_GNL}, get_next_line.c get_next_line_utils.c)
 
-SRCS_IS		= $(addprefix ${PREF_IS}, ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isprint.c ft_isdigit.c)
+SRCS_IS		= $(addprefix ${PREF_IS}, ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isprint.c ft_isdigit.c ft_iswhitespace.c)
 
 SRCS_LST	= $(addprefix ${PREF_LST}, ft_lstadd_back.c ft_lstnew.c ft_lstsize.c ft_lstdelone.c ft_lstlast.c ft_lstmap.c ft_lstiter.c ft_lstclear.c ft_lstadd_front.c)
 

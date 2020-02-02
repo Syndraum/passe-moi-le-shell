@@ -1,6 +1,14 @@
 PREFIX = srcs/
 
-SRCS = $(addprefix $(PREFIX), main.c ft_is_var.c ft_command_utils.c ft_command.c ft_arg.c ft_arg2.c ft_echo.c)
+SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
+								ft_is_var.c \
+								ft_builtins_utils.c \
+								ft_builtins.c \
+								ft_arg_interpretation.c \
+								ft_arg_translation.c \
+								ft_arg_translation_utils.c \
+								ft_cursor_utils.c \
+								ft_echo.c)
 
 OBJS = ${SRCS:.c=.o}
 

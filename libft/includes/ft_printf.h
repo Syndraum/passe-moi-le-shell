@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 09:53:01 by mchardin          #+#    #+#             */
-/*   Updated: 2019/12/07 15:55:09 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/01 18:20:16 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 int				ft_printf(const char *str, ...);
 int				ft_dprintf(int fd, const char *str, ...);
 char			*ft_sprintf(const char *str, ...);
-char			*ft_strjoin_f(char *s1, char *s2);
 char			*ft_char_to_str(char c, char *cz);
 int				ft_len_c(const char *s, int c);
 void			ft_delcontent(void *str);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_command_utils.c                                 :+:      :+:    :+:   */
+/*   ft_builtins_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/01 17:29:43 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 11:12:16 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			unset_var(char **environ, char *var)
 	int		i;
 	int		last;
 
-	if (!is_var_ret_idx(var))
+	if (is_var_ret_idx(var))
 	{
 		ft_dprintf(2, "minishell: unset: '%s': not a valid identifier\n", var);
 		return ;
@@ -81,4 +81,17 @@ int			pwd_env(t_shell *shell)
 		shell->environ[i] = ft_strjoin("PWD=", shell->pwd);
 	}
 	return (0);
+}
+
+int			last_arg_env(char **environ, char **tab)
+{
+	int		i;
+	char	*buf;
+
+	i = ft_strslen(tab);
+	buf = 0;
+	if (!(buf = ft_strjoin("_=", tab[i - 1])) ||
+		!replace_or_add(environ, buf))
+		return (0);
+	return (1);
 }

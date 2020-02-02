@@ -13,6 +13,8 @@ Cas chelous :
 > si on supprine le pwd et qu'on fait cd ../dir_name faut aller dans .Trash // OK
 > echo pwd | bash
 > unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
+> minishell$ echo 
+[1]    37831 segmentation fault  ./minishell
 
 Erreurs a pas oublier de gerer :
 

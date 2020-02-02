@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_lib.h                                          :+:      :+:    :+:   */
+/*   ft_iswhitespace.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 12:01:41 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 11:16:26 by mchardin         ###   ########.fr       */
+/*   Created: 2020/02/02 11:15:46 by mchardin          #+#    #+#             */
+/*   Updated: 2020/02/02 11:16:06 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NEW_LIB_H
-# define NEW_LIB_H
-
-# include <string.h>
-
-char			*ft_strdup_no_sp(char *src);
-char			**ft_strs_plus_one(char **strs, char *add);
-void			ft_free_strs(char **grid);
-size_t			ft_strslen(char **s);
-char			**ft_strs_cpy(char **strs);
-int				ft_iswhitespace(char c);
-
-#endif
+int		ft_iswhitespace(char c)
+{
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
+}
