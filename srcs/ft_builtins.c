@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 13:13:21 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/02 15:40:51 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			command_export(t_shell *shell)
 	while (shell->tab[i])
 	{
 		if (is_var_def(shell->tab[i]) &&
-		!replace_or_add(shell->environ, shell->tab[i]))
+		!replace_or_add(&shell->environ, shell->tab[i]))
 			return (1);
 		i++;
 	}

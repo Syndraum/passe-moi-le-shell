@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 13:26:18 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/02 15:40:49 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 		return (0); //ERROR MESSAGE ??
 	shell->pwd = buf;
 	if (!(buf = ft_strjoin("PWD=", shell->pwd)) ||
-		!replace_or_add(shell->environ, buf)
+		!replace_or_add(&shell->environ, buf)
 		|| !(buf = ft_strjoin("_=", argv[0])) ||
-		!replace_or_add(shell->environ, buf)
+		!replace_or_add(&shell->environ, buf)
 		|| !(buf = ft_strjoin("SHLVL=", ft_shlvl(shell->environ)))
-		|| !replace_or_add(shell->environ, buf))
+		|| !replace_or_add(&shell->environ, buf))
 		return (0);
 	return (1);
 }
@@ -134,7 +134,7 @@ int			main(int argc, char **argv, char **envp)
 			exit (0); //ERROR
 		shell.cursor = &line;
 		analyse_args(&shell);
-		if (!(last_arg_env(shell.environ, shell.tab)))
+		if (!(last_arg_env(&shell.environ, shell.tab)))
 			return (0); // ERROR MALLOC
 		shell.stop = run_command(&shell);
 		if (!shell.stop && shell.arg.sep != PIPE)

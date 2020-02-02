@@ -57,9 +57,9 @@ int			command_env(t_shell *shell);
 // FT_BUILTINS_UTILS
 int			replace_var(char **environ, char *var);
 void		unset_var(char **environ, char *var);
-int			replace_or_add(char **environ, char *var);
+int			replace_or_add(char ***environ, char *var);
 int			pwd_env(t_shell *shell);
-int			last_arg_env(char **environ, char **tab);
+int			last_arg_env(char ***environ, char **tab);
 // FT_ECHO
 char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);

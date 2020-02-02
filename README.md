@@ -15,7 +15,8 @@ Cas chelous :
 > unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
 > minishell$ echo 
 [1]    37831 segmentation fault  ./minishell
-
+> export sans arg (liste avec declare -x et les def entre guillements, sauf _=...)
+> cd sans argument >> $HOME
 Erreurs a pas oublier de gerer :
 
 > redirections vers un directory au lieu d'un file
