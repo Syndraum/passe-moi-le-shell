@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 15:40:49 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 15:53:03 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,14 @@ int			main(int argc, char **argv, char **envp)
 		if (get_next_line(0, &line) < 0)
 			exit (0); //ERROR
 		shell.cursor = &line;
-		analyse_args(&shell);
-		if (!(last_arg_env(&shell.environ, shell.tab)))
-			return (0); // ERROR MALLOC
-		shell.stop = run_command(&shell);
-		if (!shell.stop && shell.arg.sep != PIPE)
-			ft_putstr_fd(shell.output, shell.fd);
+		if (analyse_args(&shell))
+		{
+			if (!(last_arg_env(&shell.environ, shell.tab)))
+				return (0); // ERROR MALLOC
+			shell.stop = run_command(&shell);
+			if (!shell.stop && shell.arg.sep != PIPE)
+				ft_putstr_fd(shell.output, shell.fd);
+		}
 	}
 	exit(EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/02 11:20:53 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 16:08:24 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	len = is_var_ret_idx(*cursor);
 	if (is_stoparg(**cursor))
 		return (ft_strdup("$"));
+	if (**cursor == '?')
+	{
+		(*cursor)++;
+		return (ft_itoa(shell->stop));
+	}
 	if (!(arg = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
 	ft_strlcpy(arg, *cursor, len + 1);
@@ -134,7 +139,7 @@ char	*get_noquote(char **cursor, t_shell *shell)
 	return (arg);
 }
 
-void	*get_argument(char	**cursor, t_shell *shell)
+void	*get_argument(char **cursor, t_shell *shell)
 {
 	char *arg;
 	char *cpy;

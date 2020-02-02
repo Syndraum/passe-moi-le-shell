@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 12:44:54 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/02 14:45:16 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/02 15:20:14 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*skip_if(char *str, int (*f)(char))
 {
-	while (f(*str))
+	while (*str != 0 && f(*str))
 		str++;
 	return (str);
 }
