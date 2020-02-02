@@ -6,6 +6,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <sys/stat.h>
 
 typedef enum    e_command
 {
@@ -63,6 +64,8 @@ int			last_arg_env(char ***environ, char **tab);
 // FT_ECHO
 char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);
+// FT_EXECUTABLE
+int			executable(t_shell *shell);
 // FT_IS_VAR
 int			is_var_ret_idx(char *var);
 int			is_same_var(char *var, char *vardef);
@@ -75,6 +78,8 @@ int			init_struct(t_shell *shell);
 int			ft_redirection(t_shell *shell, t_separator prev);
 int			analyse_args(t_shell *shell);
 // FT_ARG_TRANSLATION
+int			get_tabidx(char *key, char **tab);
+char		*get_tabvalue(char *key, char **tab);
 void		*set_arg(t_shell *shell);
 // FT_ARG_TRANSLATION_UTILS
 int			is_stoparg(char c);

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 15:53:03 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/02 19:57:28 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void		ft_exit(t_shell *shell)
 
 int			get_command(char *command)
 {
-	if (ft_cmp(command, "./")) // MORE GENERAL
-		return (EXEC);
-	else if (ft_cmp(command, "echo"))
+	if (ft_cmp(command, "echo"))
 		return (ECHO);
 	else if (ft_cmp(command, "cd"))
 		return (CD);
@@ -39,7 +37,7 @@ int			get_command(char *command)
 	else if (ft_cmp(command, "exit"))
 		return (EXIT);
 	else
-		return (0);
+		return (EXEC);
 }
 
 char		*ft_shlvl(char **environ)
@@ -96,13 +94,16 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 
 int			run_command(t_shell *shell)
 {
-	if (!(shell->command = get_command(shell->tab[0])))
+	int ret;
+
+	shell->command = get_command(shell->tab[0]);
+	if (shell->command == EXEC)
 	{
-		ft_putstr_fd("minishell : command not found\n", 2);
-		return (127);
+		ret = executable(shell);
+		if (ret == 127)
+			ft_putstr_fd("minishell : command not found\n", 2);
+		return (ret);
 	}
-	else if (shell->command == EXEC)
-		return (1);
 	else if (shell->command == ECHO)
 		return (command_echo(shell));
 	else if (shell->command == CD)

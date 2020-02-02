@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cursor_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 10:28:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 11:17:52 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 17:31:25 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ int			cmp_skip(char **cursor, char *str)
 	return (1);
 }
 
-int    		 get_arg(char **cursor)
+int			get_arg(char **cursor)
 {
-    *cursor = skip_if(*cursor, ft_iswhitespace);
-    if (cmp_skip(cursor, ">>"))
-        return(TO_END);
-    else if (cmp_skip(cursor, ">"))
-        return(TO_FILE);
-    else if (cmp_skip(cursor, "<"))
-        return(FROM_FILE);
-    else if (cmp_skip(cursor, ";"))
-        return(SEMICOLON);
-    else if (cmp_skip(cursor, "|"))
-        return(PIPE);
-    else if (ft_isprint(**cursor))
-        return (ARG);
-    else
-        return (0);
+	*cursor = skip_if(*cursor, ft_iswhitespace);
+	if (cmp_skip(cursor, ">>"))
+		return (TO_END);
+	else if (cmp_skip(cursor, ">"))
+		return (TO_FILE);
+	else if (cmp_skip(cursor, "<"))
+		return (FROM_FILE);
+	else if (cmp_skip(cursor, ";"))
+		return (SEMICOLON);
+	else if (cmp_skip(cursor, "|"))
+		return (PIPE);
+	else if (ft_isprint(**cursor))
+		return (ARG);
+	else
+		return (0);
 }
