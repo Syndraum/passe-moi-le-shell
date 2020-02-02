@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 15:41:41 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 16:30:34 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			unset_var(char **environ, char *var)
 	int		i;
 	int		last;
 
-	if (is_var_ret_idx(var))
+	if (!is_var_ret_idx(var))
 	{
 		ft_dprintf(2, "minishell: unset: '%s': not a valid identifier\n", var);
 		return ;

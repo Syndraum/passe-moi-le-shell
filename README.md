@@ -16,7 +16,8 @@ Cas chelous :
 > minishell$ echo 
 [1]    37831 segmentation fault  ./minishell
 > export sans arg (liste avec declare -x et les def entre guillements, sauf _=...)
-> cd sans argument >> $HOME
+> cd sans argument >> $HOME // OK
+> executables : la casse doit etre ignoree
 Erreurs a pas oublier de gerer :
 
 > redirections vers un directory au lieu d'un file

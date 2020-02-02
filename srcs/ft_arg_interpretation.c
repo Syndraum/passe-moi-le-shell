@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arg2.c                                          :+:      :+:    :+:   */
+/*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 10:37:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 17:36:26 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,20 @@ int		is_redirection(t_separator sep)
 
 int		init_struct(t_shell *shell)
 {
-	if (!(shell->tab = malloc(sizeof(char*) * 2)))
-		return (0);
-	if (!(set_arg(shell)))
-		return (0);
-	shell->tab[0] = shell->arg.str;
-	shell->tab[1] = NULL;
 	shell->output = 0;
 	shell->fd = 1;
+	if (!(set_arg(shell)))
+	{
+		shell->tab = 0;
+		return (0); // EXIT ? RETURN ? 
+	}
+	if (!(shell->tab = malloc(sizeof(char*) * 2)))
+	{
+		free(shell->arg.str);
+		exit(1);
+	}
+	shell->tab[0] = shell->arg.str;
+	shell->tab[1] = NULL;
 	return (1);
 }
 
@@ -48,14 +54,14 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 	if (prev == TO_FILE && (shell->fd = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) < 0)
 	{
-		ft_printf("Error : %s\n", strerror(errno));
-		return (0);
+		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		return (0); //NOT EXIT
 	}
 	else if (prev == TO_END && (shell->fd = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_APPEND)) < 0)
 	{
-		ft_printf("Error : %s\n", strerror(errno));
-		return (0);
+		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		return (0); //NOT EXIT
 	}
 	free(shell->arg.str);
 	return (1);
