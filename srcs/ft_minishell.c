@@ -6,11 +6,19 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 11:26:20 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 11:58:47 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		ft_exit(t_shell *shell)
+{
+	ft_free_strs(shell->tab);
+	free(shell->output);
+	ft_free_strs(shell->environ);
+	free(shell->pwd);
+}
 
 int			get_command(char *command)
 {
@@ -131,7 +139,7 @@ int			main(int argc, char **argv, char **envp)
 		if (!(last_arg_env(shell.environ, shell.tab)))
 			return (0); // ERROR MALLOC
 		stop = run_command(&shell);
-		if (shell.arg.sep != PIPE)
+		if (stop && shell.arg.sep != PIPE)
 			ft_putstr_fd(shell.output, shell.fd);
 	}
 	exit(EXIT_SUCCESS);
