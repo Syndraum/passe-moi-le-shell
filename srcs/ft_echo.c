@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 12:44:54 by roalvare          #+#    #+#             */
-/*   Updated: 2020/01/11 13:54:16 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/02 14:45:16 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,38 +19,29 @@ char	*skip_if(char *str, int (*f)(char))
 	return (str);
 }
 
-char	*command_echo(t_shell *shell)
+int		command_echo(t_shell *shell)
 {
 	char	*ret;
 	int		carriage;
-	int		len;
 	char	**cursor;
-	char	**begin;
 
 	carriage = 1;
 	cursor = &shell->tab[1];
-	while (cmp_skip(cursor, "-n"))
+	ret = NULL;
+	while (*cursor != 0 && cmp_skip(cursor, "-n"))
 	{
 		carriage = 0;
 		cursor++;
 	}
-	begin = cursor;
-	len = 0;
 	while (*cursor != 0)
 	{
-		len += ft_strlen(*cursor) + 1;
+		ret = ft_strjoin_gnl(ret, *cursor);
 		cursor++;
-	}
-	if (!(ret = ft_calloc(len + carriage, sizeof(char))))
-		return (NULL);
-	while (*begin != 0)
-	{
-		ft_strlcat(ret, (*begin), ft_strlen(ret) + ft_strlen(*begin) + 1);
-		begin++;
-		if (*begin != 0)
-			ft_strlcat(ret, " ", ft_strlen(ret) + 2);
+		if (*cursor != 0)
+			ret = ft_strjoin_gnl(ret, " ");
 	}
 	if (carriage)
-		ft_strlcat(ret, "\n", ft_strlen(ret) + 2);
-	return (ret);
+		ret = ft_strjoin_gnl(ret, "\n");
+	shell->output = ret;
+	return (0);
 }

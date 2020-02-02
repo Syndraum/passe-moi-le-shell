@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 11:58:47 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/02 13:26:18 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,40 +96,38 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 
 int			run_command(t_shell *shell)
 {
-	int		ret;
-
-	ret = 1;
 	if (!(shell->command = get_command(shell->tab[0])))
+	{
 		ft_putstr_fd("minishell : command not found\n", 2);
+		return (127);
+	}
 	else if (shell->command == EXEC)
 		return (1);
 	else if (shell->command == ECHO)
-		shell->output = command_echo(shell);
+		return (command_echo(shell));
 	else if (shell->command == CD)
-		ret = command_cd(shell);
+		return (command_cd(shell));
 	else if (shell->command == PWD)
-		command_pwd(shell);
+		return (command_pwd(shell));
 	else if (shell->command == EXPORT)
-		ret = command_export(shell);
+		return (command_export(shell));
 	else if (shell->command == UNSET)
-		ret = command_unset(shell);
+		return (command_unset(shell));
 	else if (shell->command == ENV)
-		command_env(shell);
+		return (command_env(shell));
 	else if (shell->command == EXIT)
-		return (0);
-	return (ret);
+		exit(0);
+	return (1);
 }
 
 int			main(int argc, char **argv, char **envp)
 {
-	int			stop;
 	char		*line;
 	t_shell		shell;
 
-	stop = 1;
 	if (!(ft_mainargs(argc, argv, envp, &shell)))
 		return (0);
-	while (stop)
+	while (1)
 	{
 		ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
 		if (get_next_line(0, &line) < 0)
@@ -138,8 +136,8 @@ int			main(int argc, char **argv, char **envp)
 		analyse_args(&shell);
 		if (!(last_arg_env(shell.environ, shell.tab)))
 			return (0); // ERROR MALLOC
-		stop = run_command(&shell);
-		if (stop && shell.arg.sep != PIPE)
+		shell.stop = run_command(&shell);
+		if (!shell.stop && shell.arg.sep != PIPE)
 			ft_putstr_fd(shell.output, shell.fd);
 	}
 	exit(EXIT_SUCCESS);

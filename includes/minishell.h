@@ -46,13 +46,14 @@ typedef	struct	s_shell
 	t_arg		arg;
 	char		**environ;
 	char		*pwd;
+	int			stop;
 }				t_shell;
 // FT_BUILTINS
-void		command_pwd(t_shell *shell);
+int			command_pwd(t_shell *shell);
 int			command_cd(t_shell *shell);
 int			command_export(t_shell *shell);
 int			command_unset(t_shell *shell);
-void		command_env(t_shell *shell);
+int			command_env(t_shell *shell);
 // FT_BUILTINS_UTILS
 int			replace_var(char **environ, char *var);
 void		unset_var(char **environ, char *var);
@@ -61,7 +62,7 @@ int			pwd_env(t_shell *shell);
 int			last_arg_env(char **environ, char **tab);
 // FT_ECHO
 char		*skip_if(char *str, int (*f)(char));
-char		*command_echo(t_shell *shell);
+int			command_echo(t_shell *shell);
 // FT_IS_VAR
 int			is_var_ret_idx(char *var);
 int			is_same_var(char *var, char *vardef);
