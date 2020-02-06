@@ -37,6 +37,9 @@ all:	${NAME}
 ${NAME}:	makelib ${OBJS}
 	${CC} ${CFLAGS} ${LIBFT_FLAGS} ${OBJS} -o ${NAME}
 
+run:	all
+	./$(NAME)
+
 makelib:
 	make -C ${DIR_LIBFT}
 

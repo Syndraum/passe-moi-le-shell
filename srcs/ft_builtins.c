@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 19:35:12 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/06 09:42:33 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int			command_cd(t_shell *shell)
 	char	*buf;
 
 	buf = shell->tab[1];
-	if (buf == 0 && !(buf = home_path(shell->environ)))
+	if ((buf == 0 || (ft_strlen(buf) == 1 && ft_strncmp(buf, "~", 1) == 0))
+		&& !(buf = home_path(shell->environ)))
 		return (1);
 	if (chdir(buf) < 0 && (buf[0] == '/' || !cd_path(shell, buf)))
 	{

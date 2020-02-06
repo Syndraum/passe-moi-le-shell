@@ -15,9 +15,21 @@ Cas chelous :
 > unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
 > minishell$ echo 
 [1]    37831 segmentation fault  ./minishell
-> export sans arg (liste avec declare -x et les def entre guillements, sauf _=...)
+> export sans arg (liste avec declare -x et les def entre guillements, sauf _=...) // OK (sauf keys alone)
 > cd sans argument >> $HOME // OK
 > executables : la casse doit etre ignoree
+> ecrire le pwd si on passe par CDPATH
+> minishell$ echo "a
+[1]    18675 segmentation fault  ./minishell
+> minishell$ cd ~
+[1]    18804 segmentation fault  ./minishell //OK
+> minishell$ cd ""
+[1]    27948 segmentation fault  ./minishell
+> peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
+> bash: gkrdgjfd: command not found // minishell : command not found >> rajouter le nom de l'argument
+
+
+
 Erreurs a pas oublier de gerer :
 
 > redirections vers un directory au lieu d'un file

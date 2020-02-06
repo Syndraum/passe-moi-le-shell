@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 17:36:26 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/05 20:38:42 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 	if (shell->fd != 1)
 		close(shell->fd);
 	if (prev == TO_FILE && (shell->fd = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) < 0)
+		O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0)
 	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
 	else if (prev == TO_END && (shell->fd = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_APPEND)) < 0)
+		O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0)
 	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 19:57:28 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/06 09:26:40 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,14 @@ int			main(int argc, char **argv, char **envp)
 {
 	char		*line;
 	t_shell		shell;
+	int			keepreading;
 
 	if (!(ft_mainargs(argc, argv, envp, &shell)))
 		return (0);
 	while (1)
 	{
 		ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
-		if (get_next_line(0, &line) < 0)
+		if ((keepreading = get_next_line(0, &line)) < 0)
 			exit (0); //ERROR
 		shell.cursor = &line;
 		if (analyse_args(&shell))
@@ -142,6 +143,8 @@ int			main(int argc, char **argv, char **envp)
 			if (!shell.stop && shell.arg.sep != PIPE)
 				ft_putstr_fd(shell.output, shell.fd);
 		}
+		if (keepreading == 0)
+		exit (0); // FREE
 	}
 	exit(EXIT_SUCCESS);
 }
