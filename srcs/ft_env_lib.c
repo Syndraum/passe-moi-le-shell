@@ -6,13 +6,13 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 17:49:59 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:20:35 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_env_lib(t_shell *shell, char **env)
+int			ft_env_lib(t_shell *shell, char **env)
 {
 	int		i;
 	int		sep;
@@ -31,5 +31,32 @@ int		ft_env_lib(t_shell *shell, char **env)
 	}
 	shell->env_keys[i] = 0;
 	shell->env_items[i] = 0;
+	return (1);
+}
+
+int			del_oldpwd(char **keys, char **items)
+{
+	int		i;
+
+	i = 0;
+	while (keys[i])
+	{
+		if (!ft_strncmp(keys[i], "OLDPWD", 6) && !keys[i][6])
+		{
+			free(items[i]);
+			items[i] = 0;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int			init_oldpwd(char ***keys, char ***items)
+{
+	if (!del_oldpwd(*keys, *items) &&
+	(!(*items = ft_strs_plus_one(*items, 0))
+	|| !(*keys = ft_strs_plus_one(*keys, ft_strdup("OLDPWD")))))
+		return (0);
 	return (1);
 }

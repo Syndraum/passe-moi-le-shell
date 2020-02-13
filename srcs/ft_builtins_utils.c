@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 18:50:16 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 21:21:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int				replace_var(char **keys, char **items, char *var)
 		if (is_key_var(keys[i], var))
 		{
 			free(items[i]);
-			ft_printf("\nTEST var: %s\n\n", var);
 			items[i] = ft_strdup(ft_strchr(var, '=') + 1);
 			return (1);
 		}
@@ -76,19 +75,22 @@ int			replace_or_add(char ***keys, char ***items, char *var)
 int			pwd_env(t_shell *shell)
 {
 	int		i;
-	char	*oldpwd;
 
 	i = 0;
-	while (shell->environ[i] && !is_var_to_unset("PWD", shell->environ[i]))
+	while (shell->env_keys[i] && ft_strncmp("PWD", shell->env_keys[i], 4))
 		i++;
-	if (shell->environ[i])
+	if (shell->env_keys[i])
 	{
-		if (!(oldpwd = ft_strjoin("OLD", shell->environ[i])))
-			return (0);
-		// if (!replace_or_add(&shell->environ, oldpwd))
-		// 	return (0);
-		free(shell->environ[i]);
-		shell->environ[i] = ft_strjoin("PWD=", shell->pwd);
+		shell->oldpwd = shell->env_items[i];
+		shell->env_items[i] = ft_strdup(shell->pwd);
+	}
+	i = 0;
+	while (shell->env_keys[i] && ft_strncmp("OLDPWD", shell->env_keys[i], 7))
+		i++;
+	if (shell->env_keys[i])
+	{
+		free(shell->env_items[i]);
+		shell->env_items[i] = ft_strdup(shell->oldpwd); // free old
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 18:47:36 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:03:14 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 		|| !(buf = ft_strjoin("_=", argv[0])) ||
 		!replace_or_add(&shell->env_keys, &shell->env_items, buf)
 		|| !(buf = ft_strjoin("SHLVL=", ft_shlvl(shell->environ)))
-		|| !replace_or_add(&shell->env_keys, &shell->env_items, buf))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items, buf)
+		|| !init_oldpwd(&shell->env_keys, &shell->env_items))
 		return (0);
 	return (1);
 }

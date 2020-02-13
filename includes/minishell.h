@@ -97,5 +97,7 @@ int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
 
 int			ft_env_lib(t_shell *shell, char **env);
+int			del_oldpwd(char **keys, char **items);
+int			init_oldpwd(char ***keys, char ***items);
 
 #endif
