@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 16:16:44 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 17:49:59 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,12 @@ int		ft_env_lib(t_shell *shell, char **env)
 	while (env[i])
 	{
 		sep = strlen_to(env[i], '=');
-		if (!(shell->env_keys[i] = malloc(sizeof(char) * sep + 1))
+		if (!(shell->env_keys[i] = ft_strndup(env[i], sep))
 		|| !(shell->env_items[i] = ft_strdup(ft_strchr(env[i], '=') + 1)))
 			return (0); // error
-		ft_strlcpy(shell->env_keys[i], env[i], sep + 1);
 		i++;
 	}
 	shell->env_keys[i] = 0;
 	shell->env_items[i] = 0;
-	i = 0;
-	while (shell->env_keys[i])
-	{
-		ft_printf("%s=%s\n", shell->env_keys[i], shell->env_items[i]);
-		i++;
-	}
 	return (1);
 }

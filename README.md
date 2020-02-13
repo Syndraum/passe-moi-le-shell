@@ -28,8 +28,6 @@ Cas chelous :
 > peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
 > bash: gkrdgjfd: command not found // minishell : command not found >> rajouter le nom de l'argument
 
-
-
 Erreurs a pas oublier de gerer :
 
 > redirections vers un directory au lieu d'un file

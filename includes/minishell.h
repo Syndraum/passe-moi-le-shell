@@ -46,7 +46,10 @@ typedef	struct	s_shell
     t_command   command;
 	t_arg		arg;
 	char		**environ;
+	char		**env_keys;
+	char		**env_items;
 	char		*pwd;
+	char		*oldpwd;
 	int			stop;
 }				t_shell;
 // FT_BUILTINS
@@ -56,9 +59,9 @@ int			command_export(t_shell *shell);
 int			command_unset(t_shell *shell);
 int			command_env(t_shell *shell);
 // FT_BUILTINS_UTILS
-int			replace_var(char **environ, char *var);
-void		unset_var(char **environ, char *var);
-int			replace_or_add(char ***environ, char *var);
+int			replace_var(char **keys, char **items, char *var);
+void		unset_var(char **keys, char **items, char *var);
+int			replace_or_add(char ***keys, char ***items, char *var);
 int			pwd_env(t_shell *shell);
 int			last_arg_env(char ***environ, char **tab);
 // FT_ECHO
@@ -68,7 +71,7 @@ int			command_echo(t_shell *shell);
 int			executable(t_shell *shell);
 // FT_IS_VAR
 int			is_var_ret_idx(char *var);
-int			is_same_var(char *var, char *vardef);
+int			is_key_var(char *key, char *var);
 int			is_var_to_unset(char *var, char *vardef);
 int			is_var_def(char *var);
 // FT_ARG_INTERPRETATION
@@ -92,5 +95,7 @@ void   		skip_char(char **cursor, char c);
 int			ft_cmp(char *str, char *cursor);
 int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
+
+int			ft_env_lib(t_shell *shell, char **env);
 
 #endif

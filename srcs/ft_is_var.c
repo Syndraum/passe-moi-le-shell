@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:13:27 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/01 18:58:19 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 17:26:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int			is_var_ret_idx(char *var)
 	return (i);
 }
 
-int			is_same_var(char *var, char *vardef)
+int			is_key_var(char *key, char *var)
 {
 	int		i;
 
 	i = 0;
-	while (var[i] && var[i] == vardef[i] && var[i] != '=')
+	while (key[i] && var[i] && key[i] == var[i])
 		i++;
-	if (var[i] != vardef[i] || var[i] != '=')
+	if (var[i] != '=' || key[i] != 0)
 		return (0);
 	return (1);
 }

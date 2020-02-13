@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/06 09:26:40 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:47:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 	char	*buf;
 
 	(void)argc;
-	(void)argv;
+	// (void)argv;
+	ft_env_lib(shell, envp);
 	if (!(shell->environ = ft_strs_cpy(envp)))
 	{
 		ft_dprintf(2, "%s\n", strerror(errno));
@@ -83,11 +84,11 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 		return (0); //ERROR MESSAGE ??
 	shell->pwd = buf;
 	if (!(buf = ft_strjoin("PWD=", shell->pwd)) ||
-		!replace_or_add(&shell->environ, buf)
+		!replace_or_add(&shell->env_keys, &shell->env_items, buf)
 		|| !(buf = ft_strjoin("_=", argv[0])) ||
-		!replace_or_add(&shell->environ, buf)
+		!replace_or_add(&shell->env_keys, &shell->env_items, buf)
 		|| !(buf = ft_strjoin("SHLVL=", ft_shlvl(shell->environ)))
-		|| !replace_or_add(&shell->environ, buf))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items, buf))
 		return (0);
 	return (1);
 }

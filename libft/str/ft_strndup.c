@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_lib.h                                          :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 12:01:41 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 17:40:19 by mchardin         ###   ########.fr       */
+/*   Created: 2019/10/07 15:31:28 by mchardin          #+#    #+#             */
+/*   Updated: 2020/02/13 17:43:01 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NEW_LIB_H
-# define NEW_LIB_H
+#include <stdlib.h>
 
-# include <string.h>
+char	*ft_strndup(const char *src, int len)
+{
+	char	*str;
+	int		lg_src;
+	int		i;
 
-char			*ft_strdup_no_sp(char *src);
-char			**ft_strs_plus_one(char **strs, char *add);
-void			ft_free_strs(char **grid);
-size_t			ft_strslen(char **s);
-char			**ft_strs_cpy(char **strs);
-int				ft_iswhitespace(char c);
-char			*ft_strndup(char *src, int len);
-#endif
+	lg_src = 0;
+	i = 0;
+	while (src[lg_src])
+		lg_src++;
+	if (len > lg_src)
+		len = lg_src;
+	if (!(str = malloc(sizeof(char) * (len + 1))))
+		return (0);
+	while (i < len)
+	{
+		str[i] = src[i];
+		i++;
+	}
+	str[i] = 0;
+	return (str);
+}

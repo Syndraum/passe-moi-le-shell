@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/06 09:42:33 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/13 17:45:42 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,9 @@ int			command_export(t_shell *shell)
 	i = 1;
 	while (shell->tab[i])
 	{
-		if (is_var_def(shell->tab[i]) &&
-		!replace_or_add(&shell->environ, shell->tab[i]))
-			return (1);
+		// if (is_var_def(shell->tab[i]) &&
+		// !replace_or_add(&shell->environ, shell->tab[i]))
+		// 	return (1);
 		i++;
 	}
 	return (0);
@@ -169,7 +169,7 @@ int			command_unset(t_shell *shell)
 	i = 1;
 	while (shell->tab[i])
 	{
-		unset_var(shell->environ, shell->tab[i]);
+		unset_var(shell->env_keys, shell->env_items, shell->tab[i]);
 		i++;
 	}
 	return (0);
@@ -180,11 +180,12 @@ int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE G
 	int		i;
 
 	i = 0;
-	while (shell->environ[i])
+	while (shell->env_keys[i])
 	{
-		if (!(shell->output = ft_strjoin_gnl(shell->output, shell->environ[i]))
-			|| !(shell->output = ft_strjoin_gnl(shell->output, "\n")))
-			exit (1); //FREE
+		if (shell->env_items[i] &&
+			!(shell->output = ft_strjoin_gnl(shell->output,
+			ft_sprintf("%s=%s\n", shell->env_keys[i], shell->env_items[i]))))
+			return (1); //error
 		i++;
 	}
 	return (0);

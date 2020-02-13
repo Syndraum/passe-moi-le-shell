@@ -4,6 +4,7 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_is_var.c \
 								ft_builtins_utils.c \
 								ft_builtins.c \
+								ft_env_lib.c \
 								ft_arg_interpretation.c \
 								ft_arg_translation.c \
 								ft_arg_translation_utils.c \
