@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 10:36:45 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 18:49:45 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int			main(int argc, char **argv, char **envp)
 	char		*line;
 	t_shell		shell;
 	int			keepreading;
+	int			keepcommand;
 
 	if (!(ft_mainargs(argc, argv, envp, &shell)))
 		return (0);
@@ -137,16 +138,23 @@ int			main(int argc, char **argv, char **envp)
 		if ((keepreading = get_next_line(0, &line)) < 0)
 			exit (0); //ERROR
 		shell.cursor = &line;
-		if (analyse_args(&shell))
+		keepcommand = 1;
+		while (keepcommand)
 		{
-			if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
-				return (0); // ERROR MALLOC
-			shell.stop = run_command(&shell);
-			if (!shell.stop && shell.arg.sep != PIPE)
-				ft_putstr_fd(shell.output, shell.fd);
+			// ft_printf("line  %s\n", *(shell.cursor));
+			if (analyse_args(&shell))
+			{
+				if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
+					return (0); // ERROR MALLOC
+				shell.stop = run_command(&shell);
+				if (!shell.stop && shell.arg.sep != PIPE)
+					ft_putstr_fd(shell.output, shell.fd);
+			}
+			if (keepreading == 0)
+				exit (0); // FREE
+			if (shell.arg.sep == END_LINE)
+				keepcommand = 0;
 		}
-		if (keepreading == 0)
-		exit (0); // FREE
 	}
 	exit(EXIT_SUCCESS);
 }
