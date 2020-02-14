@@ -63,7 +63,7 @@ int			replace_var(char **keys, char **items, char *var);
 void		unset_var(char **keys, char **items, char *var);
 int			replace_or_add(char ***keys, char ***items, char *var);
 int			pwd_env(t_shell *shell);
-int			last_arg_env(char ***environ, char **tab);
+int			last_arg_env(char ***keys, char ***items, char **tab);
 // FT_ECHO
 char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);
@@ -82,7 +82,7 @@ int			ft_redirection(t_shell *shell, t_separator prev);
 int			analyse_args(t_shell *shell);
 // FT_ARG_TRANSLATION
 int			get_tabidx(char *key, char **tab);
-char		*get_tabvalue(char *key, char **tab);
+char		*get_item(char *key, char **keys, char **items);
 void		*set_arg(t_shell *shell);
 // FT_ARG_TRANSLATION_UTILS
 int			is_stoparg(char c);

@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/02 16:08:24 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/14 10:58:15 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		get_tabidx(char *key, char **tab)
+int		get_tabidx(char *key, char **keys)
 {
 	int i;
 	int len;
 
 	i = -1;
 	len = ft_strlen(key);
-	while (tab[++i] != 0)
+	while (keys[++i] != 0)
 	{
-		if (is_var_to_unset(key, tab[i]))
+		if (!ft_strncmp(key, keys[i], len + 1))
 			return (i);
 	}
 	return (-1);
 }
 
-char	*get_tabvalue(char *key, char **tab)
+char	*get_item(char *key, char **keys, char **items)
 {
 	char	*value;
 	int		index;
 
 	value = NULL;
-	if ((index = get_tabidx(key, tab)) == -1)
+	if ((index = get_tabidx(key, keys)) == -1)
 		return (value);
-	return (ft_strchr(tab[index], '=') + 1);
+	return (items[index]);
 }
 
 char	*get_dollar(char **cursor, t_shell *shell)
@@ -60,7 +60,7 @@ char	*get_dollar(char **cursor, t_shell *shell)
 		return (NULL);
 	ft_strlcpy(arg, *cursor, len + 1);
 	(*cursor) += len;
-	var = get_tabvalue(arg, shell->environ);
+	var = get_item(arg, shell->env_keys, shell->env_items);
 	if (var)
 		var = ft_strdup(var);
 	free(arg);

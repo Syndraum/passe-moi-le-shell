@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 19:03:14 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 10:36:45 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int			main(int argc, char **argv, char **envp)
 		shell.cursor = &line;
 		if (analyse_args(&shell))
 		{
-			if (!(last_arg_env(&shell.environ, shell.tab)))
+			if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
 				return (0); // ERROR MALLOC
 			shell.stop = run_command(&shell);
 			if (!shell.stop && shell.arg.sep != PIPE)
