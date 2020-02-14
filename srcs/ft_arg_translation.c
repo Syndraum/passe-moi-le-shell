@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/14 13:51:07 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/14 16:57:29 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,65 +81,109 @@ char	*get_quote(char **cursor)
 	return (quote);
 }
 
+char	*get_tmp_quote(char **cursor, char *bquote, int i)
+{
+	char	*tmp;
+	char	*quote;
+
+	tmp = NULL;
+	quote = NULL;
+	if (!(tmp = ft_calloc(i + 1, sizeof(char))))
+		return (NULL);
+	ft_strlcpy(tmp, *cursor, i + 1);
+	(*cursor) += i;
+	quote = ft_strjoin_gnl(bquote, tmp);
+	free(tmp);
+	return (quote);
+}
+
 char	*get_dquote(char **cursor, t_shell *shell)
 {
 	char	*bquote;
-	char	*tmp;
 	int		i;
 
 	bquote = NULL;
-	tmp = NULL;
 	i = 0;
 	(*cursor)++;
 	while ((*cursor)[i] != '"')
 	{
 		if ((*cursor)[i] == '$')
 		{
-			if (!(tmp = ft_calloc(i + 1, sizeof(char))))
-				return (NULL);
-			ft_strlcpy(tmp, *cursor, i + 1);
-			(*cursor) += i;
-			bquote = ft_strjoin_gnl(bquote, tmp);
+			bquote = get_tmp_quote(cursor, bquote, i);
 			bquote = ft_strjoin_gnl(bquote, get_dollar(cursor, shell));
-			free(tmp);
 			i = 0;
 		}
 		else
 			i++;
 	}
-	if (!(tmp = ft_calloc(i + 1, sizeof(char))))
-		return (NULL);
-	ft_strlcpy(tmp, *cursor, i + 1);
-	bquote = ft_strjoin_gnl(bquote, tmp);
-	free(tmp);
-	(*cursor) += i + 1;
+	bquote = get_tmp_quote(cursor, bquote, i);
+	(*cursor)++;
 	return (bquote);
 }
 
-char	*get_noquote(char **cursor, t_shell *shell)
+char	*strncmp_esc(char *dest, char *src, int len)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (src[i] && i < len)
+	{
+		if (src[i] == '\\')
+			i++;
+		if (src[i])
+		{
+			dest[j] = src[i];
+			i++;
+			j++;
+		}
+	}
+	dest[j] = 0;
+	return (dest);
+}
+
+char	*get_unquote(char **cursor, t_shell *shell)
 {
 	char	*arg;
-	char	*tmp;
 	int		len;
+	int		i;
 
 	len = 0;
+	i = 0;
 	arg = NULL;
-	while (!is_stop_noquote((*cursor)[len]))
+	while (!is_stop_unquote((*cursor)[i]))
 	{
-		// if ((*cursor)[len] == '\\')
-
+		if (**cursor == '\\')
+			i++;
 		len++;
+		i++;
 	}
 	if (!(arg = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
-	ft_strlcpy(arg, *cursor, len + 1);
-	(*cursor) += len;
+	strncmp_esc(arg, *cursor, i);
+	(*cursor) += i;
 	if (**cursor == '$')
+		arg = ft_strjoin_gnl(arg, get_dollar(cursor, shell));
+	return (arg);
+}
+
+void	*get_tilde(char **cursor, t_shell *shell)
+{
+	char	*arg;
+	char	*home;
+
+	if (*((*cursor) + 1) == '/' || is_stoparg(*((*cursor) + 1)))
 	{
-		tmp = ft_strjoin(arg, get_dollar(cursor, shell));
-		free(arg);
-		arg = tmp;
+		home = get_item("HOME", shell->env_keys, shell->env_items);
+		if (home == NULL)
+			arg = (strdup(""));
+		else
+			arg = strdup(home);
 	}
+	else
+		arg = strdup("~");
+	(*cursor)++;
 	return (arg);
 }
 
@@ -148,29 +192,27 @@ void	*get_argument(char **cursor, t_shell *shell)
 	char *arg;
 	char *cpy;
 	char *ret;
-	char only_noq;
 
 	arg = NULL;
 	cpy = NULL;
 	ret = NULL;
-	only_noq = 1;
 	while (!is_stoparg(**cursor))
 	{
 		if (**cursor == '\'')
 		{
 			if (!(ret = get_quote(cursor)))
 				return (NULL);
-			only_noq = 0;
 		}
 		else if (**cursor == '"')
 		{
 			if (!(ret = get_dquote(cursor, shell)))
 				return (NULL);
-			only_noq = 0;
 		}
+		else if (**cursor == '~' && arg == NULL)
+			ret = get_tilde(cursor, shell);
 		else
 		{
-			if (!(ret = get_noquote(cursor, shell)))
+			if (!(ret = get_unquote(cursor, shell)))
 				return (NULL);
 		}
 		if (arg != NULL)
@@ -184,11 +226,6 @@ void	*get_argument(char **cursor, t_shell *shell)
 		cpy = NULL;
 		free(ret);
 		ret = NULL;
-	}
-	if (ft_strncmp("~", arg, 2) == 0 && only_noq)
-	{
-		free(arg);
-		arg = strdup(get_item("HOME", shell->env_keys, shell->env_items));
 	}
 	return (arg);
 }

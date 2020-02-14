@@ -86,7 +86,7 @@ char		*get_item(char *key, char **keys, char **items);
 void		*set_arg(t_shell *shell);
 // FT_ARG_TRANSLATION_UTILS
 int			is_stoparg(char c);
-int			is_stop_noquote(char c);
+int			is_stop_unquote(char c);
 int			is_stop_dquote(char c);
 int			strlen_to(char *str, char stop);
 int			strlen_if(char *str, int (*f)(char));

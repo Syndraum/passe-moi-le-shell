@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/02 11:18:31 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 14:45:34 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		is_stoparg(char c)
 	return (0);
 }
 
-int		is_stop_noquote(char c)
+int		is_stop_unquote(char c)
 {
 	if ((c == '$' || c == '\'' || c == '"' || is_stoparg(c)))
 		return (1);
