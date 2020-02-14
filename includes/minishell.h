@@ -7,6 +7,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <sys/stat.h>
+# include <dirent.h>
 
 typedef enum    e_command
 {

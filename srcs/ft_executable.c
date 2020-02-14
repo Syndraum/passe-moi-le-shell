@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 11:43:40 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/14 18:27:30 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,48 @@ char	**convert_env(t_shell *shell)
 	return (env);
 }
 
+char	*getpath(t_shell *shell)
+{
+	char			**tab;
+	DIR				*dir;
+	struct dirent	*entry;
+	int				i;
+	int				len;
+
+	i = -1;
+	len = ft_strlen(shell->tab[0]) + 1;
+	tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':');
+	while (tab[++i])
+	{
+		if ((dir = opendir(tab[i])) != NULL)
+		{
+			while ((entry = readdir(dir)) != NULL)
+				if (ft_strncmp(entry->d_name, shell->tab[0], len) == 0)
+					return (ft_strjoin_gnl(ft_strjoin(tab[i], "/"), shell->tab[0]));
+			closedir(dir);
+		}
+	}
+	return (NULL);
+}
+
 int		executable(t_shell *shell)
 {
-	char		**tab;
 	pid_t		child;
 	char		**env;
+	char		*path;
 	struct stat	sb;
 
 	env = convert_env(shell);
-	tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':');
-	ft_free_strs(tab);
-	if (-1 == stat(shell->tab[0], &sb))
-		return (127);
+	if ((path = getpath(shell)) == NULL)
+	{
+		path = shell->tab[0];
+		if (-1 == stat(path, &sb))
+			return (127);
+	}
 	child = fork();
 	if (child == 0)
 	{
-		if (0 > execve(shell->tab[0], shell->tab, env))
+		if (0 > execve(path, shell->tab, env))
 		{
 			shell->output = strerror(errno);
 			ft_free_strs(env);
