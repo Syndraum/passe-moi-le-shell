@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 21:21:35 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 18:09:23 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,31 @@ int			cd_path(t_shell *shell, char *dir)
 	char		*new;
 
 	i = -1;
+	cd_paths = 0;
 	while (shell->env_keys[++i])
-		if (!ft_strncmp("CDPATH", shell->env_keys[i], 7) && shell->env_items[i]
-			&& !(cd_paths = ft_split(shell->env_items[i], ':')))
-			exit (1); //FREE A FAIRE
-	i = -1;
-	while (cd_paths[++i])
 	{
-		new = cd_paths[i][ft_strlen(cd_paths[i])] == '/' ?
-		ft_sprintf("%s%s", cd_paths[i], dir)
-		: ft_sprintf("%s/%s", cd_paths[i], dir);
-		if (chdir(new) >= 0)
-		{
-			ft_free_strs(cd_paths);
-			free(new);
-			return (1);
+		if (!ft_strncmp("CDPATH", shell->env_keys[i], 7) && shell->env_items[i]
+		&& !(cd_paths = ft_split(shell->env_items[i], ':')))
+					exit (1); //FREE A FAIRE
 		}
-		free(new);
-	}
+	i = -1;
+	if (cd_paths)
+	{
+		while (cd_paths[++i])
+		{
+			new = cd_paths[i][ft_strlen(cd_paths[i])] == '/' ?
+			ft_sprintf("%s%s", cd_paths[i], dir)
+			: ft_sprintf("%s/%s", cd_paths[i], dir);
+			if (chdir(new) >= 0)
+			{
+				ft_free_strs(cd_paths);
+				free(new);
+				return (1);
+			}
+			free(new);
+		}
 	ft_free_strs(cd_paths);
+	}
 	return (0);
 }
 
@@ -68,7 +74,7 @@ int			command_cd(t_shell *shell)
 
 	buf = shell->tab[1];
 	if ((buf == 0 || (ft_strlen(buf) == 1 && ft_strncmp(buf, "~", 1) == 0))
-		&& !(buf = home_path(shell->env_keys, shell->env_items)))
+	&& !(buf = home_path(shell->env_keys, shell->env_items)))
 		return (1);
 	if (chdir(buf) < 0 && (buf[0] == '/' || !cd_path(shell, buf)))
 	{

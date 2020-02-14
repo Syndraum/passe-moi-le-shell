@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 10:35:41 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:37:53 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			replace_or_add(char ***keys, char ***items, char *var)
 	return (1);
 }
 
-int			pwd_env(t_shell *shell)
+int				pwd_env(t_shell *shell)
 {
 	int		i;
 
@@ -95,7 +95,7 @@ int			pwd_env(t_shell *shell)
 	return (0);
 }
 
-int			last_arg_env(char ***keys, char ***items, char **tab)
+int				last_arg_env(char ***keys, char ***items, char **tab)
 {
 	int		i;
 	char	*buf;
