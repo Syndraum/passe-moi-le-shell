@@ -30,7 +30,7 @@ Cas chelous :
 > checker tous les return
 > faire la fn de exit error (free)
 > fn free hors erreur
-> POUR ROMAIN <3 : faut que t'implementes ~ au lieu de $HOME dans les args
+> POUR ROMAIN <3 | MERCI BEAUCOUP <3 (non.): faut que t'implementes ~ au lieu de $HOME dans les args
 Erreurs a pas oublier de gerer :
 
 > redirections vers un directory au lieu d'un file

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 18:49:45 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/14 19:01:58 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int			main(int argc, char **argv, char **envp)
 	char		*line;
 	t_shell		shell;
 	int			keepreading;
-	int			keepcommand;
+	int			stillcommand;
 
 	if (!(ft_mainargs(argc, argv, envp, &shell)))
 		return (0);
@@ -138,8 +138,8 @@ int			main(int argc, char **argv, char **envp)
 		if ((keepreading = get_next_line(0, &line)) < 0)
 			exit (0); //ERROR
 		shell.cursor = &line;
-		keepcommand = 1;
-		while (keepcommand)
+		stillcommand = 1;
+		while (stillcommand)
 		{
 			// ft_printf("line  %s\n", *(shell.cursor));
 			if (analyse_args(&shell))
@@ -153,7 +153,7 @@ int			main(int argc, char **argv, char **envp)
 			if (keepreading == 0)
 				exit (0); // FREE
 			if (shell.arg.sep == END_LINE)
-				keepcommand = 0;
+				stillcommand = 0;
 		}
 	}
 	exit(EXIT_SUCCESS);
