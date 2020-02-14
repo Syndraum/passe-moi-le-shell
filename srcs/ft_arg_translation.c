@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/14 10:58:15 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/14 13:51:07 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,11 @@ char	*get_noquote(char **cursor, t_shell *shell)
 	len = 0;
 	arg = NULL;
 	while (!is_stop_noquote((*cursor)[len]))
+	{
+		// if ((*cursor)[len] == '\\')
+
 		len++;
+	}
 	if (!(arg = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
 	ft_strlcpy(arg, *cursor, len + 1);
@@ -144,21 +148,25 @@ void	*get_argument(char **cursor, t_shell *shell)
 	char *arg;
 	char *cpy;
 	char *ret;
+	char only_noq;
 
 	arg = NULL;
 	cpy = NULL;
 	ret = NULL;
+	only_noq = 1;
 	while (!is_stoparg(**cursor))
 	{
 		if (**cursor == '\'')
 		{
 			if (!(ret = get_quote(cursor)))
 				return (NULL);
+			only_noq = 0;
 		}
 		else if (**cursor == '"')
 		{
 			if (!(ret = get_dquote(cursor, shell)))
 				return (NULL);
+			only_noq = 0;
 		}
 		else
 		{
@@ -176,6 +184,11 @@ void	*get_argument(char **cursor, t_shell *shell)
 		cpy = NULL;
 		free(ret);
 		ret = NULL;
+	}
+	if (ft_strncmp("~", arg, 2) == 0 && only_noq)
+	{
+		free(arg);
+		arg = strdup(get_item("HOME", shell->env_keys, shell->env_items));
 	}
 	return (arg);
 }
