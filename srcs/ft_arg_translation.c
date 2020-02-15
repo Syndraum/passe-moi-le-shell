@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/14 16:57:29 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:30:19 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ int		get_tabidx(char *key, char **keys)
 
 char	*get_item(char *key, char **keys, char **items)
 {
-	char	*value;
 	int		index;
 
-	value = NULL;
 	if ((index = get_tabidx(key, keys)) == -1)
-		return (value);
+		return (0);
 	return (items[index]);
 }
 

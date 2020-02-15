@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/13 19:20:35 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:36:26 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int			ft_env_lib(t_shell *shell, char **env)
 {
 	int		i;
-	int		sep;
+	char	*key;
+	char	*item;
 
 	i = 0;
 	if (!(shell->env_keys = malloc(sizeof(char*) * (ft_strslen(env) + 1)))
@@ -23,10 +24,9 @@ int			ft_env_lib(t_shell *shell, char **env)
 		return (0); // error
 	while (env[i])
 	{
-		sep = strlen_to(env[i], '=');
-		if (!(shell->env_keys[i] = ft_strndup(env[i], sep))
-		|| !(shell->env_items[i] = ft_strdup(ft_strchr(env[i], '=') + 1)))
-			return (0); // error
+		check_split_var(env[i], &key, &item);
+		shell->env_keys[i] = key;
+		shell->env_items[i] = item;
 		i++;
 	}
 	shell->env_keys[i] = 0;
@@ -34,29 +34,28 @@ int			ft_env_lib(t_shell *shell, char **env)
 	return (1);
 }
 
-int			del_oldpwd(char **keys, char **items)
+int			change_item(char **keys, char **items, char *key, char *item)
 {
-	int		i;
+	int		idx;
 
-	i = 0;
-	while (keys[i])
+	idx = get_tabidx(key, keys);
+	if (idx >= 0)
 	{
-		if (!ft_strncmp(keys[i], "OLDPWD", 6) && !keys[i][6])
-		{
-			free(items[i]);
-			items[i] = 0;
-			return (1);
-		}
-		i++;
+		free(items[idx]);
+		items[idx] = item;
+		return (1);
 	}
 	return (0);
 }
 
 int			init_oldpwd(char ***keys, char ***items)
 {
-	if (!del_oldpwd(*keys, *items) &&
-	(!(*items = ft_strs_plus_one(*items, 0))
+	int		end;
+
+	end = ft_strslen(*keys);
+	if (!change_item(*keys, *items, "OLDPWD", 0) &&
+	(!(*items = ft_strs_add_end(*items, 0, end))
 	|| !(*keys = ft_strs_plus_one(*keys, ft_strdup("OLDPWD")))))
-		return (0);
+		return (0); // malooc error
 	return (1);
 }

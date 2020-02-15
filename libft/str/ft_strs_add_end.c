@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_lib.h                                          :+:      :+:    :+:   */
+/*   ft_strs_add_end.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 12:01:41 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/15 13:53:00 by mchardin         ###   ########.fr       */
+/*   Created: 2019/11/18 12:46:41 by mchardin          #+#    #+#             */
+/*   Updated: 2020/02/15 13:52:04 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NEW_LIB_H
-# define NEW_LIB_H
+#include <stdlib.h>
+#include "libft.h"
 
-# include <string.h>
+char		**ft_strs_add_end(char **strs, char *add, int end)
+{
+	char		**new;
 
-char			*ft_strdup_no_sp(char *src);
-char			**ft_strs_plus_one(char **strs, char *add);
-void			ft_free_strs(char **grid);
-size_t			ft_strslen(char **s);
-char			**ft_strs_cpy(char **strs);
-int				ft_iswhitespace(char c);
-char			*ft_strndup(char *src, int len);
-char			**ft_strs_add_end(char **strs, char *add, int end);
-
-#endif
+	if (!(new = malloc(sizeof(char*) * (end + 2))))
+	{
+		ft_free_strs(strs);
+		return (0);
+	}
+	new[end + 1] = 0;
+	new[end] = add;
+	end--;
+	while (end >= 0)
+	{
+		new[end] = strs[end];
+		end--;
+	}
+	free(strs);
+	return (new);
+}

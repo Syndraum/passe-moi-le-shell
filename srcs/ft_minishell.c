@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 19:01:58 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/15 16:05:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void		ft_exit(t_shell *shell)
 {
 	ft_free_strs(shell->tab);
 	free(shell->output);
-	ft_free_strs(shell->environ);
+	ft_free_strs(shell->env_keys);
 	free(shell->pwd);
 }
 
@@ -40,29 +40,28 @@ int			get_command(char *command)
 		return (EXEC);
 }
 
-char		*ft_shlvl(char **environ)
+char		*ft_shlvl(t_shell *shell)
 {
-	int		i;
-	int		j;
+	int		idx;
 	int		ret;
+	int		j;
 
-	i = 0;
-	while (environ[i])
+	j = 1;
+	idx = get_tabidx("SHLVL", shell->env_keys);
+	if (idx >= 0)
 	{
-		j = 6;
-		if (is_var_to_unset("SHLVL", environ[i]))
+		if (!(ft_isdigit(shell->env_items[idx][0])
+			|| shell->env_items[idx][0] == '+'
+			|| shell->env_items[idx][0] == '-'))
+			return (ft_strdup("1"));
+		while (shell->env_items[idx][j])
 		{
-			while (environ[i][j])
-			{
-				if (!(ft_isdigit(environ[i][j]) || environ[i][j] == '+'
-					|| environ[i][j] == '-'))
-					return (ft_strdup("1"));
-				j++;
-			}
-			ret = ft_atoi(&environ[i][6]);
-			return (ret < 0 ? ft_strdup("0") : ft_itoa(ret + 1));
+			if (!(ft_isdigit(shell->env_items[idx][j])))
+				return (ft_strdup("1"));
+			j++;
 		}
-		i++;
+		ret = ft_atoi(shell->env_items[idx]);
+		return (ret < 0 ? ft_strdup("0") : ft_itoa(ret + 1));
 	}
 	return (ft_strdup("1"));
 }
@@ -72,23 +71,14 @@ int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 	char	*buf;
 
 	(void)argc;
-	// (void)argv;
 	ft_env_lib(shell, envp);
-	if (!(shell->environ = ft_strs_cpy(envp)))
-	{
-		ft_dprintf(2, "%s\n", strerror(errno));
-		return (0);
-	}
 	buf = 0;
 	if (!(buf = getcwd(buf, 0)))
 		return (0); //ERROR MESSAGE ??
 	shell->pwd = buf;
-	if (!(buf = ft_strjoin("PWD=", shell->pwd)) ||
-		!replace_or_add(&shell->env_keys, &shell->env_items, buf)
-		|| !(buf = ft_strjoin("_=", argv[0])) ||
-		!replace_or_add(&shell->env_keys, &shell->env_items, buf)
-		|| !(buf = ft_strjoin("SHLVL=", ft_shlvl(shell->environ)))
-		|| !replace_or_add(&shell->env_keys, &shell->env_items, buf)
+	if (!replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("PWD"), ft_strdup(buf))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("_"), ft_strdup(argv[0]))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("SHLVL"), ft_shlvl(shell))
 		|| !init_oldpwd(&shell->env_keys, &shell->env_items))
 		return (0);
 	return (1);

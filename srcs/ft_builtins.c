@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 18:09:23 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:54:19 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ char		*print_export(char **keys, char **items)
 int			command_export(t_shell *shell)
 {
 	int		i;
+	char	*key;
+	char	*item;
 
 	if (shell->tab[1] == 0)
 	{
@@ -172,9 +174,10 @@ int			command_export(t_shell *shell)
 	i = 1;
 	while (shell->tab[i])
 	{
-		if (is_var_def(shell->tab[i]) &&
-		!replace_or_add(&shell->env_keys, &shell->env_items, shell->tab[i]))
-			return (1);
+		if (!check_split_var(shell->tab[i], &key, &item))
+			replace_or_add(&shell->env_keys, &shell->env_items, key, item);
+		else
+			return (1); // wrong identifier?
 		i++;
 	}
 	return (0);
@@ -183,13 +186,20 @@ int			command_export(t_shell *shell)
 int			command_unset(t_shell *shell)
 {
 	int		i;
+	char	*key;
+	char	*item;
 
 	i = 1;
 	while (shell->tab[i])
 	{
-		unset_var(shell->env_keys, shell->env_items, shell->tab[i]);
+		if (!check_split_var(shell->tab[i], &key, &item) && !item)
+			unset_var(shell->env_keys, shell->env_items, key);
+		else
+			free(item);
+		free(key);
 		i++;
 	}
+	// if ret checksplitvar >> error message
 	return (0);
 }
 
