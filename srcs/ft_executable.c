@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/14 18:27:30 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/18 11:40:41 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,55 @@ char	**convert_env(t_shell *shell)
 	return (env);
 }
 
+char	*try_path(char *filename, char *path_dir)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	char			*find;
+	int				len;
+
+	len = ft_strlen(filename) + 1;
+	if ((dir = opendir(path_dir)) != NULL)
+	{
+		while ((entry = readdir(dir)) != NULL)
+		{
+			if (ft_strncmp(entry->d_name, filename, len) == 0)
+			{
+				closedir(dir);
+				if (!(find = ft_sprintf("%s%c%s", path_dir, '/', filename)))
+					return (NULL);
+				return (find);
+			}
+		}
+		closedir(dir);
+	}
+	return (NULL);
+}
+
 char	*getpath(t_shell *shell)
 {
 	char			**tab;
-	DIR				*dir;
-	struct dirent	*entry;
 	int				i;
-	int				len;
+	char			*path;
+	struct stat		sb;
 
 	i = -1;
-	len = ft_strlen(shell->tab[0]) + 1;
-	tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':');
+	if (!(tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':')))
+		return (NULL);
 	while (tab[++i])
 	{
-		if ((dir = opendir(tab[i])) != NULL)
+		if ((path = try_path(shell->tab[0], tab[i])))
 		{
-			while ((entry = readdir(dir)) != NULL)
-				if (ft_strncmp(entry->d_name, shell->tab[0], len) == 0)
-					return (ft_strjoin_gnl(ft_strjoin(tab[i], "/"), shell->tab[0]));
-			closedir(dir);
+			ft_free_strs(tab);
+			return (path);
 		}
 	}
-	return (NULL);
+	ft_free_strs(tab);
+	if (!(path = ft_strdup(shell->tab[0])))
+		return (NULL);
+	if (-1 == stat(path, &sb))
+		return (NULL);
+	return (path);
 }
 
 int		executable(t_shell *shell)
@@ -78,21 +105,19 @@ int		executable(t_shell *shell)
 	pid_t		child;
 	char		**env;
 	char		*path;
-	struct stat	sb;
 
 	env = convert_env(shell);
 	if ((path = getpath(shell)) == NULL)
 	{
-		path = shell->tab[0];
-		if (-1 == stat(path, &sb))
-			return (127);
+		ft_free_strs(env);
+		return (127);
 	}
 	child = fork();
 	if (child == 0)
 	{
 		if (0 > execve(path, shell->tab, env))
 		{
-			shell->output = strerror(errno);
+			// shell->output = strerror(errno);
 			ft_free_strs(env);
 			return (127);
 		}
