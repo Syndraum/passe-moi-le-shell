@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/18 11:42:46 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/18 18:56:42 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int			main(int argc, char **argv, char **envp)
 		stillcommand = 1;
 		while (stillcommand)
 		{
+			shell.pipeline = NULL;
 			if (analyse_args(&shell))
 			{
 				if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))

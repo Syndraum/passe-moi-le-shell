@@ -51,6 +51,7 @@ typedef	struct	s_shell
 	char		*pwd;
 	char		*oldpwd;
 	int			stop;
+	t_list		*pipeline;
 }				t_shell;
 // FT_BUILTINS
 int			command_pwd(t_shell *shell);
@@ -77,7 +78,7 @@ int			is_var_def(char *var);
 // FT_ARG_INTERPRETATION
 int			is_end_of_command(t_separator sep);
 int			is_redirection(t_separator sep);
-int			init_struct(t_shell *shell);
+void		init_struct(t_shell *shell);
 int			ft_redirection(t_shell *shell, t_separator prev);
 int			analyse_args(t_shell *shell);
 // FT_ARG_TRANSLATION

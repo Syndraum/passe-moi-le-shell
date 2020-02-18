@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/05 20:38:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/18 20:01:02 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,14 @@ int		is_redirection(t_separator sep)
 	return (0);
 }
 
-int		init_struct(t_shell *shell)
+void	init_struct(t_shell *shell)
 {
 	shell->output = 0;
 	shell->fd = 1;
+}
+
+int		init_tab(t_shell *shell)
+{
 	if (!(set_arg(shell)))
 	{
 		shell->tab = 0;
@@ -70,22 +74,33 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 int		analyse_args(t_shell *shell)
 {
 	t_separator prev;
+	t_list		*elmt;
+	int			pipeline;
 
-	if (!(init_struct(shell)))
-		return (0);
-	while (!is_end_of_command(shell->arg.sep))
+	pipeline = 1;
+	init_struct(shell);
+	while (pipeline)
 	{
-		prev = shell->arg.sep;
-		if (!(set_arg(shell)))
+		if (!(init_tab(shell)))
+			return (0);
+		while (!is_end_of_command(shell->arg.sep))
 		{
-			ft_free_strs(shell->tab);
-			return (0);
+			prev = shell->arg.sep;
+			if (!(set_arg(shell)))
+			{
+				ft_free_strs(shell->tab);
+				return (0);
+			}
+			if (prev == ARG &&
+			!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
+				return (0);
+			else if (is_redirection(prev) && !(ft_redirection(shell, prev)))
+				return (0);
 		}
-		if (prev == ARG &&
-		!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
-			return (0);
-		else if (is_redirection(prev) && !(ft_redirection(shell, prev)))
-			return (0);
+		elmt = ft_lstnew(shell->tab);
+		ft_lstadd_back(&shell->pipeline, elmt);
+		if (shell->arg.sep != PIPE)
+			pipeline = 0;
 	}
 	return (1);
 }
