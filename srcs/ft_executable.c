@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/18 11:40:41 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/18 12:00:32 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,30 +100,33 @@ char	*getpath(t_shell *shell)
 	return (path);
 }
 
-int		executable(t_shell *shell)
+int	launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
 	char		**env;
-	char		*path;
 
-	env = convert_env(shell);
-	if ((path = getpath(shell)) == NULL)
-	{
-		ft_free_strs(env);
+	if ((child = fork()) < 0)
 		return (127);
-	}
-	child = fork();
 	if (child == 0)
 	{
+		if (!(env = convert_env(shell)))
+			return (127);
 		if (0 > execve(path, shell->tab, env))
 		{
-			// shell->output = strerror(errno);
 			ft_free_strs(env);
 			return (127);
 		}
 	}
 	else
 		wait(&child);
-	ft_free_strs(env);
 	return (0);
+}
+
+int		executable(t_shell *shell)
+{
+	char		*path;
+
+	if ((path = getpath(shell)) == NULL)
+		return (127);
+	return (launch_exec(shell, path));
 }
