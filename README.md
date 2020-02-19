@@ -1,28 +1,28 @@
 # Cas chelous
 
-- [x] ./a.out | echo "loulou"
-- [x] echo loulou \ //OSEF
-- [x] echo loulou" \ //OSEF
-- [x] echo loulou \; pwd
-- [x] cd "lib //OSEF
+- [x] ~~./a.out | echo "loulou"~~
+- [x] ~~echo loulou \ //OSEF~~
+- [x] ~~echo loulou" \ //OSEF~~
+- [x] ~~echo loulou \; pwd~~
+- [x] ~~cd "lib //OSEF~~
 - [ ] cd /tmp
-- [x] pour export si la variable existe deja faut la remplacer donc faut pas juste rajouter a la fin. // OK
+- [x] ~~pour export si la variable existe deja faut la remplacer donc faut pas juste rajouter a la fin. // OK~~
 - [ ] cd ../MINISHELL a bugué une fois (No such file or directory)
 - [ ] minishell$ cd ../test >> minishell: cd: ../tst : No such file or directory (il a enlevé le e, pourquoi??)
 - [ ] si on supprime le pwd et qu'on refait pwd, faut afficher comme si il existait toujours. // OK
-- [x] si on supprine le pwd et qu'on fait cd ../dir_name faut aller dans .Trash // OK
-- [x] echo pwd | bash
+- [x] ~~si on supprine le pwd et qu'on fait cd ../dir_name faut aller dans .Trash // OK~~
+- [x] ~~echo pwd | bash~~
 - [ ] unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
 - [ ] minishell$ echo 
 [1]    37831 segmentation fault  ./minishell
-- [x] export sans arg (liste avec declare -x et les def entre guillements, sauf _=...) // OK (sauf keys alone)
-- [x] cd sans argument >> $HOME // OK
+- [x] ~~export sans arg (liste avec declare -x et les def entre guillements, sauf _=...) // OK (sauf keys alone)~~
+- [x] ~~cd sans argument >> $HOME // OK~~
 - [ ] executables : la casse doit etre ignoree
 - [ ] ecrire le pwd si on passe par CDPATH
 - [ ] minishell$ echo "a
 [1]    18675 segmentation fault  ./minishell
-- [x] minishell$ cd ~
-[1]    18804 segmentation fault  ./minishell //OK
+- [x] ~~minishell$ cd ~
+[1]    18804 segmentation fault  ./minishell //OK~~
 - [ ] minishell$ cd ""
 [1]    27948 segmentation fault  ./minishell
 - [ ] peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
@@ -34,7 +34,7 @@
 Erreurs a pas oublier de gerer :
 
 - [ ] redirections vers un directory au lieu d'un file
-- [x] cd .. lala : string not in pwd : .. //OSEF
+- [x] ~~cd .. lala : string not in pwd : .. //OSEF~~
 
 # Cher journal
 
@@ -55,7 +55,8 @@ Il c'est passé beaucoup de chose !
 Déjà... Les pipes fonctionnent !
 J'utilise la longueur de la liste chainé pour savoir si j'exécute le pipe ou non !
 Puis je lance ma boucle de pipe ! un pipe entre chaque processus
-Avant d'executer une commande, je change le tableau d'arg ! c'est moche mais sinon j'aurais du changer chaque build-in ><'
+Avant d'executer une commande, je change le tableau d'arg !
+C'est moche mais sinon j'aurais du changer chaque build-in ><'
 Autre truc que j'ai géré, le retour des processus !
 Le numéro retourné lors de l'exécution d'un pipe et d'un exécutable est bon
 Et dernier truc la redirection sortante lors d'un pipe !
