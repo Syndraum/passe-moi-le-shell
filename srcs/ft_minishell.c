@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/19 16:20:53 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:48:01 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void		loop_pipe(t_shell *shell)
 			dup2(save_fd, 0);
 			if (cmd->next != NULL)
 				dup2(fd[1], 1);
+			else if (shell->fd != 1)
+				dup2(shell->fd, 1);
 			close(fd[0]);
 			shell->tab = cmd->content;
 			shell->stop = run_command(shell);
