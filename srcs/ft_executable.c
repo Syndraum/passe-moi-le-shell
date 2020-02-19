@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/18 12:00:32 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/19 16:24:38 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,25 +100,33 @@ char	*getpath(t_shell *shell)
 	return (path);
 }
 
+int	change_exec(t_shell *shell, char *path)
+{
+	char		**env;
+
+	if (!(env = convert_env(shell)))
+		return (127);
+	if (0 > execve(path, shell->tab, env))
+		return (127);
+	return (0);
+}
+
 int	launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
-	char		**env;
 
 	if ((child = fork()) < 0)
 		return (127);
 	if (child == 0)
 	{
-		if (!(env = convert_env(shell)))
+		if ((change_exec(shell, path)))
 			return (127);
-		if (0 > execve(path, shell->tab, env))
-		{
-			ft_free_strs(env);
-			return (127);
-		}
 	}
 	else
-		wait(&child);
+	{
+		waitpid(child, &shell->stop, 0);
+		return (WEXITSTATUS(shell->stop));
+	}
 	return (0);
 }
 
@@ -128,5 +136,8 @@ int		executable(t_shell *shell)
 
 	if ((path = getpath(shell)) == NULL)
 		return (127);
-	return (launch_exec(shell, path));
+	if (ft_lstsize(shell->pipeline) == 1)
+		return (launch_exec(shell, path));
+	else
+		return (change_exec(shell, path));
 }

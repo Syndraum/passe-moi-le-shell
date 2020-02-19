@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/19 14:29:49 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/19 16:20:53 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,6 @@ void		loop_pipe(t_shell *shell)
 	int		save_fd;
 	t_list	*cmd;
 	char	**tab;
-	char	*path;
-	char	**env;
 
 	save_fd = 0;
 	cmd = shell->pipeline;
@@ -138,27 +136,14 @@ void		loop_pipe(t_shell *shell)
 				dup2(fd[1], 1);
 			close(fd[0]);
 			shell->tab = cmd->content;
-			if (get_command(tab[0]) == EXEC)
-			{
-				run_command(shell);
-				exit(1);
-			}
-			else
-			{
-				if ((path = getpath(shell)) == NULL)
-					exit(1);
-				if (!(env = convert_env(shell)))
-					exit(1);
-				if (0 > execve(path, shell->tab, env))
-				{
-					ft_free_strs(env);
-					exit(1);
-				}
-			}
+			shell->stop = run_command(shell);
+			ft_putstr_fd(shell->output, 1);
+			exit(shell->stop);
 		}
 		else
 		{
-			wait(NULL);
+			waitpid(child, &shell->stop, 0);
+			shell->stop = WEXITSTATUS(shell->stop);
 			close(fd[1]);
 			save_fd = fd[0];
 			cmd = cmd->next;
@@ -191,7 +176,7 @@ int			main(int argc, char **argv, char **envp)
 					return (0); // ERROR MALLOC
 				if (ft_lstsize(shell.pipeline) == 1)
 					shell.stop = run_command(&shell);
-				else
+				else if (ft_lstsize(shell.pipeline) > 1)
 					loop_pipe(&shell);
 				if (!shell.stop && shell.arg.sep != PIPE)
 					ft_putstr_fd(shell.output, shell.fd);
