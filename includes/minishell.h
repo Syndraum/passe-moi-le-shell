@@ -69,6 +69,8 @@ int			last_arg_env(char ***keys, char ***items, char **tab);
 char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);
 // FT_EXECUTABLE
+char		**convert_env(t_shell *shell);
+char		*getpath(t_shell *shell);
 int			executable(t_shell *shell);
 // FT_IS_VAR
 int			is_var_ret_idx(char *var);
@@ -79,6 +81,7 @@ int			is_var_def(char *var);
 int			is_end_of_command(t_separator sep);
 int			is_redirection(t_separator sep);
 void		init_struct(t_shell *shell);
+void		free_tab_str(void *tab);
 int			ft_redirection(t_shell *shell, t_separator prev);
 int			analyse_args(t_shell *shell);
 // FT_ARG_TRANSLATION

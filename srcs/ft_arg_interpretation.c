@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/18 20:01:02 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/19 12:31:26 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ int		init_tab(t_shell *shell)
 	shell->tab[0] = shell->arg.str;
 	shell->tab[1] = NULL;
 	return (1);
+}
+
+void	free_tab_str(void *tab)
+{
+	ft_free_strs(tab);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/18 18:56:42 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:29:49 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,59 @@ int			run_command(t_shell *shell)
 	return (1);
 }
 
+void		loop_pipe(t_shell *shell)
+{
+	int		fd[2];
+	pid_t	child;
+	int		save_fd;
+	t_list	*cmd;
+	char	**tab;
+	char	*path;
+	char	**env;
+
+	save_fd = 0;
+	cmd = shell->pipeline;
+	while (cmd != NULL)
+	{
+		tab = (char**)cmd->content;
+		pipe(fd);
+		if ((child = fork()) < 0)
+			exit(1);
+		if (child == 0)
+		{
+			dup2(save_fd, 0);
+			if (cmd->next != NULL)
+				dup2(fd[1], 1);
+			close(fd[0]);
+			shell->tab = cmd->content;
+			if (get_command(tab[0]) == EXEC)
+			{
+				run_command(shell);
+				exit(1);
+			}
+			else
+			{
+				if ((path = getpath(shell)) == NULL)
+					exit(1);
+				if (!(env = convert_env(shell)))
+					exit(1);
+				if (0 > execve(path, shell->tab, env))
+				{
+					ft_free_strs(env);
+					exit(1);
+				}
+			}
+		}
+		else
+		{
+			wait(NULL);
+			close(fd[1]);
+			save_fd = fd[0];
+			cmd = cmd->next;
+		}
+	}
+}
+
 int			main(int argc, char **argv, char **envp)
 {
 	char		*line;
@@ -136,7 +189,10 @@ int			main(int argc, char **argv, char **envp)
 			{
 				if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
 					return (0); // ERROR MALLOC
-				shell.stop = run_command(&shell);
+				if (ft_lstsize(shell.pipeline) == 1)
+					shell.stop = run_command(&shell);
+				else
+					loop_pipe(&shell);
 				if (!shell.stop && shell.arg.sep != PIPE)
 					ft_putstr_fd(shell.output, shell.fd);
 			}
@@ -144,6 +200,7 @@ int			main(int argc, char **argv, char **envp)
 				exit (0); // FREE
 			if (shell.arg.sep == END_LINE)
 				stillcommand = 0;
+			ft_lstclear(&shell.pipeline, free_tab_str);
 		}
 	}
 	exit(EXIT_SUCCESS);
