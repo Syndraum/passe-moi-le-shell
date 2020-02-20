@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/19 17:48:01 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/20 12:27:05 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,32 @@ void		loop_pipe(t_shell *shell)
 			save_fd = fd[0];
 			cmd = cmd->next;
 		}
+	}
+}
+
+void	print_tab_str(char **tab)
+{
+	int i;
+
+	if (tab == NULL)
+		ft_printf("NULL\n");
+	else
+	{
+		i = -1;
+		while (tab[++i])
+			ft_printf("[%d]:%s\n", i, tab[i]);
+	}
+}
+
+void	print_list_tab(t_list *list)
+{
+	t_list	*cursor;
+
+	cursor = list;
+	while (cursor != NULL)
+	{
+		print_tab_str((char**)cursor->content);
+		cursor = cursor->next;
 	}
 }
 

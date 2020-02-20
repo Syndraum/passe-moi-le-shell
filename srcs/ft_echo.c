@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 12:44:54 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/02 15:20:14 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/20 12:26:07 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		command_echo(t_shell *shell)
 	carriage = 1;
 	cursor = &shell->tab[1];
 	ret = NULL;
-	while (*cursor != 0 && cmp_skip(cursor, "-n"))
+	while (*cursor != 0 && ft_cmp(*cursor, "-n"))
 	{
 		carriage = 0;
 		cursor++;
