@@ -17,14 +17,14 @@
 [1]    37831 segmentation fault  ./minishell~~
 - [x] ~~export sans arg (liste avec declare -x et les def entre guillements, sauf _=...) // OK (sauf keys alone)~~
 - [x] ~~cd sans argument >> $HOME // OK~~
-- [ ] executables : la casse doit etre ignoree
+- [x] ~~executables : la casse doit etre ignoree~~
 - [ ] ecrire le pwd si on passe par CDPATH
 - [x] ~~minishell$ echo "a
 [1]    18675 segmentation fault  ./minishell~~
 - [x] ~~minishell$ cd ~
 [1]    18804 segmentation fault  ./minishell //OK~~
-- [ ] minishell$ cd ""
-[1]    27948 segmentation fault  ./minishell
+- [x] ~~minishell$ cd ""
+[1]    27948 segmentation fault  ./minishell~~
 - [ ] peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
 - [ ] bash: gkrdgjfd: command not found // minishell : command not found >> rajouter le nom de l'argument
 - [ ] checker tous les return
@@ -46,10 +46,11 @@ Du coup tab dans la structure shell correspond au dernier tableau d'argument ren
 Ex: echo test;
 Le pipeline ne contient qu'une commande, tab contient la dernière et seule commande
 Ex: echo test | echo lol;
-seul echo lol sera exécuté pour l'instant :'(
+seul echo lol sera exécuté pour l'instant
+(๑•﹏•)
 ```
 
-**JOUR 2**
+**JOUR 3**
 ```
 Il c'est passé beaucoup de chose !
 Déjà... Les pipes fonctionnent !
@@ -60,5 +61,19 @@ C'est moche mais sinon j'aurais du changer chaque build-in ><'
 Autre truc que j'ai géré, le retour des processus !
 Le numéro retourné lors de l'exécution d'un pipe et d'un exécutable est bon
 Et dernier truc la redirection sortante lors d'un pipe !
-Bon c'est pas ouf ouf comment on fait mais on verra ça après :)
+Bon c'est pas ouf ouf comment on fait mais on verra ça après
+ლ(・∀・ )ლ
 ```
+
+**JOUR 4**
+'''
+Aujourd'hui je suis partie à la recherche de bug !
+Deja j'ai corrigé le bug de double quote non terminé (facile)
+J'ai decouvert qu'avec echo -n il y avait un problement de free
+Une sonbre histoire de skip d'argument, c'est réglé
+Plus dur, un argument commençant par un caractère
+de l'ascii extended (< 127) stop les commandes
+C'est ressolue par une condition en plus dans get_arg (à changer peu être)
+Pour finir, je gére la recherche de programme sans prendre en compte la case
+( ˘▽˘)っ♨
+'''

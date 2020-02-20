@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/19 16:24:38 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/20 16:51:38 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,40 @@ char	**convert_env(t_shell *shell)
 	return (env);
 }
 
+char	*ft_lowercase(char *str)
+{
+	int		i;
+	int		len;
+	char	*lower;
+
+	i = -1;
+	len = strlen(str);
+	if (!(lower = ft_calloc(sizeof(char), len + 1)))
+		return (NULL);
+	while (++i < len)
+		lower[i] = ft_tolower(str[i]);
+	return (lower);
+}
+
+int		ft_strncmp_case(char *s1, char *s2, size_t n)
+{
+	char	*lower_s1;
+	char	*lower_s2;
+	int		cmp;
+
+	if (!(lower_s1 = ft_lowercase(s1)))
+		return (-1);
+	if (!(lower_s2 = ft_lowercase(s2)))
+	{
+		free(lower_s1);
+		return (-1);
+	}\
+	cmp = ft_strncmp(lower_s1, lower_s2, n);
+	free(lower_s1);
+	free(lower_s2);
+	return (cmp);
+}
+
 char	*try_path(char *filename, char *path_dir)
 {
 	DIR				*dir;
@@ -61,7 +95,7 @@ char	*try_path(char *filename, char *path_dir)
 	{
 		while ((entry = readdir(dir)) != NULL)
 		{
-			if (ft_strncmp(entry->d_name, filename, len) == 0)
+			if (ft_strncmp_case(entry->d_name, filename, len) == 0)
 			{
 				closedir(dir);
 				if (!(find = ft_sprintf("%s%c%s", path_dir, '/', filename)))
