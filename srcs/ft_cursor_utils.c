@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 10:28:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/02 17:31:25 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:47:25 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			get_arg(char **cursor)
 		return (SEMICOLON);
 	else if (cmp_skip(cursor, "|"))
 		return (PIPE);
-	else if (ft_isprint(**cursor))
+	else if (ft_isprint(**cursor) || **cursor < 0)
 		return (ARG);
 	else
 		return (0);
