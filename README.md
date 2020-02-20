@@ -1,7 +1,6 @@
 # Cas chelous
 
 ###### To-do
-
 - [ ] cd /tmp
 - [ ] cd ../MINISHELL a bugué une fois (No such file or directory)
 - [ ] minishell$ cd ../test >> minishell: cd: ../tst : No such file or directory (il a enlevé le e, pourquoi??)
@@ -16,7 +15,6 @@ Erreurs a pas oublier de gerer :
 - [ ] redirections vers un directory au lieu d'un file
 
 ###### Finish
-~~
 - [x] ./a.out | echo "loulou"
 - [x] echo loulou \ //OSEF
 - [x] echo loulou" \ //OSEF
@@ -39,7 +37,7 @@ Erreurs a pas oublier de gerer :
 [1]    27948 segmentation fault  ./minishell
 - [x] POUR ROMAIN <3 | MERCI BEAUCOUP <3 (non.): faut que t'implementes ~ au lieu de $HOME dans les args
 - [x] cd .. lala : string not in pwd : .. //OSEF
-~~
+
 # Cher journal
 
 **JOUR 1**
@@ -72,12 +70,12 @@ Bon c'est pas ouf ouf comment on fait mais on verra ça après
 **JOUR 4**
 ```
 Aujourd'hui je suis partie à la recherche de bug !
-Deja j'ai corrigé le bug de double quote non terminé (facile)
-J'ai decouvert qu'avec echo -n il y avait un problement de free
-Une sonbre histoire de skip d'argument, c'est réglé
+Déja j'ai corrigé le bug de double quote non terminé (facile)
+J'ai découvert qu'avec echo -n il y avait un problème de free
+Une sombre histoire de skip d'argument, c'est réglé
 Plus dur, un argument commençant par un caractère
 de l'ascii extended (< 127) stop les commandes
-C'est ressolue par une condition en plus dans get_arg (à changer peu être)
-Pour finir, je gére la recherche de programme sans prendre en compte la case
+C'est résolue par une condition en plus dans get_arg (à changer peut être)
+Pour finir, je gère la recherche de programme sans prendre en compte la case
 ( ˘▽˘)っ♨
 ```
