@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/15 17:30:19 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/20 11:44:44 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*get_dquote(char **cursor, t_shell *shell)
 	bquote = NULL;
 	i = 0;
 	(*cursor)++;
-	while ((*cursor)[i] != '"')
+	while ((*cursor)[i] != '"' && !is_stoparg((*cursor)[i]))
 	{
 		if ((*cursor)[i] == '$')
 		{
