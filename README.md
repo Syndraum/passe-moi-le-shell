@@ -66,7 +66,7 @@ Bon c'est pas ouf ouf comment on fait mais on verra ça après
 ```
 
 **JOUR 4**
-'''
+```
 Aujourd'hui je suis partie à la recherche de bug !
 Deja j'ai corrigé le bug de double quote non terminé (facile)
 J'ai decouvert qu'avec echo -n il y avait un problement de free
@@ -76,4 +76,4 @@ de l'ascii extended (< 127) stop les commandes
 C'est ressolue par une condition en plus dans get_arg (à changer peu être)
 Pour finir, je gére la recherche de programme sans prendre en compte la case
 ( ˘▽˘)っ♨
-'''
+```
