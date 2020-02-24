@@ -9,28 +9,35 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-typedef enum    e_command
+typedef enum	e_command
 {
-    EXEC = 1,
-    ECHO,
-    CD,
-    PWD,
-    EXPORT,
-    UNSET,
-    ENV,
-    EXIT
-}               t_command;
+	EXEC = 1,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}				t_command;
 
-typedef enum    e_separator
+typedef enum	e_separator
 {
 	END_LINE,
-    TO_FILE, //>
-    TO_END, //>>
-    FROM_FILE, //<
-    SEMICOLON,
-    PIPE,
-    ARG
-}               t_separator;
+	TO_FILE, //>
+	TO_END, //>>
+	FROM_FILE, //<
+	SEMICOLON,
+	PIPE,
+	ARG
+}				t_separator;
+
+typedef struct	s_cmd
+{
+	char		**arg;
+	int			fd;
+}				t_cmd;
+
 
 typedef struct s_arg
 {
@@ -44,7 +51,7 @@ typedef	struct	s_shell
 	char		*output;
 	char		**cursor;
 	int			fd;
-    t_command   command;
+	t_command	command;
 	t_arg		arg;
 	char		**env_keys;
 	char		**env_items;
@@ -81,7 +88,7 @@ int			is_var_def(char *var);
 int			is_end_of_command(t_separator sep);
 int			is_redirection(t_separator sep);
 void		init_struct(t_shell *shell);
-void		free_tab_str(void *tab);
+void		free_cmd(void *tab);
 int			ft_redirection(t_shell *shell, t_separator prev);
 int			analyse_args(t_shell *shell);
 // FT_ARG_TRANSLATION

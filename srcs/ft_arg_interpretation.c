@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/20 15:48:36 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:58:19 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_struct(t_shell *shell)
 
 int		init_tab(t_shell *shell)
 {
+	shell->fd = 1;
 	if (!(set_arg(shell)))
 	{
 		shell->tab = 0;
@@ -49,9 +50,14 @@ int		init_tab(t_shell *shell)
 	return (1);
 }
 
-void	free_tab_str(void *tab)
+void	free_cmd(void *content)
 {
-	ft_free_strs(tab);
+	t_cmd * cmd;
+
+	cmd = (t_cmd*)content;
+	if (cmd->fd != 1)
+		close(cmd->fd);
+	ft_free_strs(cmd->arg);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
@@ -80,6 +86,7 @@ int		analyse_args(t_shell *shell)
 {
 	t_separator prev;
 	t_list		*elmt;
+	t_cmd	*command;
 	int			pipeline;
 
 	pipeline = 1;
@@ -102,7 +109,12 @@ int		analyse_args(t_shell *shell)
 			else if (is_redirection(prev) && !(ft_redirection(shell, prev)))
 				return (0);
 		}
-		elmt = ft_lstnew(shell->tab);
+		if (!(command = malloc(sizeof(t_cmd))))
+			return (0);
+		command->arg = shell->tab;
+		command->fd = shell->fd;
+		if (!(elmt = ft_lstnew(command)))
+			return (0);
 		ft_lstadd_back(&shell->pipeline, elmt);
 		if (shell->arg.sep != PIPE)
 			pipeline = 0;

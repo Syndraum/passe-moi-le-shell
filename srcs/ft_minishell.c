@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/20 15:49:30 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:58:19 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,26 +118,31 @@ void		loop_pipe(t_shell *shell)
 	int		fd[2];
 	pid_t	child;
 	int		save_fd;
-	t_list	*cmd;
-	char	**tab;
+	t_list	*elmt;
+	t_cmd *cmd;
+	// char	**tab;
 
 	save_fd = 0;
-	cmd = shell->pipeline;
-	while (cmd != NULL)
+	elmt = shell->pipeline;
+	while (elmt != NULL)
 	{
-		tab = (char**)cmd->content;
+		cmd = (t_cmd*)elmt->content;
+		// tab = (char**)elmt->content;
 		pipe(fd);
 		if ((child = fork()) < 0)
 			exit(1);
 		if (child == 0)
 		{
+			shell->tab = cmd->arg;
+			shell->fd = cmd->fd;
 			dup2(save_fd, 0);
-			if (cmd->next != NULL)
-				dup2(fd[1], 1);
-			else if (shell->fd != 1)
+			if (shell->fd != 1)
 				dup2(shell->fd, 1);
+			else if (elmt->next != NULL)
+				dup2(fd[1], 1);
+			// else if (shell->fd != 1)
+			// 	dup2(shell->fd, 1);
 			close(fd[0]);
-			shell->tab = cmd->content;
 			shell->stop = run_command(shell);
 			ft_putstr_fd(shell->output, 1);
 			exit(shell->stop);
@@ -148,7 +153,7 @@ void		loop_pipe(t_shell *shell)
 			shell->stop = WEXITSTATUS(shell->stop);
 			close(fd[1]);
 			save_fd = fd[0];
-			cmd = cmd->next;
+			elmt = elmt->next;
 		}
 	}
 }
@@ -206,14 +211,14 @@ int			main(int argc, char **argv, char **envp)
 					shell.stop = run_command(&shell);
 				else if (ft_lstsize(shell.pipeline) > 1)
 					loop_pipe(&shell);
-				if (!shell.stop && shell.arg.sep != PIPE)
+				if (!shell.stop && ft_lstsize(shell.pipeline) == 1)
 					ft_putstr_fd(shell.output, shell.fd);
 			}
 			if (keepreading == 0)
 				exit (0); // FREE
 			if (shell.arg.sep == END_LINE)
 				stillcommand = 0;
-			ft_lstclear(&shell.pipeline, free_tab_str);
+			ft_lstclear(&shell.pipeline, free_cmd);
 		}
 	}
 	exit(EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/20 16:51:38 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/24 14:49:04 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		ft_strncmp_case(char *s1, char *s2, size_t n)
 	{
 		free(lower_s1);
 		return (-1);
-	}\
+	}
 	cmp = ft_strncmp(lower_s1, lower_s2, n);
 	free(lower_s1);
 	free(lower_s2);
