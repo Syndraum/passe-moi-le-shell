@@ -79,3 +79,18 @@ C'est résolue par une condition en plus dans get_arg (à changer peut être)
 Pour finir, je gère la recherche de programme sans prendre en compte la case
 ( ˘▽˘)っ♨
 ```
+
+**JOUR 8**
+```
+Malgré la maladie, je me décide à venir travailler aujourd'hui
+De toute façon j'avais oublié de push sur origin (・∀・)ゞ
+Fallait au moins que je vienne pour faire ça...
+Mais j'en ai profité pour changer un gros truc !
+La liste des commandes contient maintenant des structures !
+La structure se compose des arguments et du fd de sortie
+Comme ça, si 'ls > yo.txt | wc' est executé
+ls écrira dans yo.txt sans envoyer sa sortie à wc
+Faudrait d'ailleur penser à gérer les redirections entraintes
+On risque d'avoir des surprises
+( ⚆ _ ⚆ )
+```
