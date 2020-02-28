@@ -6,11 +6,12 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:28:24 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/16 12:39:43 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:43:05 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "libft.h"
 
 char	*ft_strjoin_gnl(char *s1, char *s2)
 {
@@ -28,7 +29,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 		j++;
 	if (!(str = malloc(sizeof(char*) * (i + j + 1))))
 	{
-		free(s1);
+		ft_freez(s1);
 		return (0);
 	}
 	while (s1 && *temp_s1)
@@ -36,6 +37,6 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	while (s2 && *s2)
 		*str++ = *s2++;
 	*str = 0;
-	free(s1);
+	ft_freez(s1);
 	return (str - i - j);
 }

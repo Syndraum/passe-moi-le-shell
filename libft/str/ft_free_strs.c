@@ -6,21 +6,24 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:39:44 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/27 20:34:27 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:35:55 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
 void	ft_free_strs(char **grid)
 {
 	int	i;
 
 	i = 0;
+	if (!grid)
+		return ;
 	while (grid[i])
 	{
-		free(grid[i]);
+		ft_freez(grid[i]);
 		i++;
 	}
-	free(grid);
+	ft_freez(grid);
 }

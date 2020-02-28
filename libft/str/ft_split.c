@@ -6,11 +6,12 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:22:45 by mchardin          #+#    #+#             */
-/*   Updated: 2019/10/21 19:39:37 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:41:28 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
 int		ft_count(char const *s, char c)
 {
@@ -40,10 +41,12 @@ void	ft_free(char **strs, int count)
 	i = 0;
 	while (i < count)
 	{
-		free(strs[i]);
+		ft_freez(strs[i]);
+		strs[i] = 0;
 		i++;
 	}
-	free(strs);
+	ft_freez(strs);
+	strs = 0;
 }
 
 int		ft_split_it(char const *s, char c, char **strs, int count)
