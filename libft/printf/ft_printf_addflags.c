@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 15:30:20 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/17 11:07:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:40:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		ft_flagsize(const char *str, int *i, va_list *ap, t_flags *conv)
 		}
 		str_nb = ft_substr(str, *i - len, len);
 		nb = ft_atoi(str_nb);
-		free(str_nb);
+		ft_freez(str_nb);
 	}
 	return (ft_analyse_nb(nb, str[*i - len - 1], conv));
 }

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 15:25:55 by mchardin          #+#    #+#             */
-/*   Updated: 2019/12/07 12:22:23 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:40:29 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	ft_delcontent(void *cont)
 	t_cont	*temp_cont;
 
 	temp_cont = cont;
-	free(temp_cont->str);
-	free(temp_cont);
+	ft_freez(temp_cont->str);
+	ft_freez(temp_cont);
 }
 
 int		ft_print_lst(int fd, t_list *lst)

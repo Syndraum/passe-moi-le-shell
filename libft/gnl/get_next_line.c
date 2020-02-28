@@ -6,11 +6,12 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:36:58 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/16 12:39:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:48:14 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "libft.h"
 
 static int		ft_first_read(t_buf *tab, int fd, int *i)
 {
@@ -62,13 +63,13 @@ static int		ft_copy(char **line, t_buf *tab, char **str)
 	return (1);
 }
 
-static int		ft_str(char **str, t_buf *tab, int fd, int *i)
+static int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i)
 {
 	if (!(*str = ft_strjoin_gnl(*str, tab->buf[0])))
 		return (0);
 	if ((*i = read(fd, tab->buf[0], B)) == -1)
 	{
-		free(*str);
+		ft_freez(*str);
 		return (0);
 	}
 	tab->buf[0][*i] = 0;
@@ -93,7 +94,7 @@ int				get_next_line(int fd, char **line)
 		i = B;
 	while (ft_check(tab.buf[0]) == -1 && i == B && !tab.r)
 	{
-		if (!(ft_str(&str, &tab, fd, &i)))
+		if (!(ft_str_gnl(&str, &tab, fd, &i)))
 			return (-1);
 	}
 	if (!(ft_copy(line, &tab, &str)))

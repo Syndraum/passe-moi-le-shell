@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 11:16:17 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/17 11:07:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:40:32 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ char			*ft_point(uintptr_t nb)
 	if (!str)
 		return (0);
 	new = ft_strjoin(pref, str);
-	free(str);
+	ft_freez(str);
 	return (new);
 }

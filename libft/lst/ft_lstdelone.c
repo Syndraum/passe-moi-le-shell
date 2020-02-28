@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 17:48:39 by mchardin          #+#    #+#             */
-/*   Updated: 2019/10/20 19:59:04 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:43:57 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 		return ;
 	if (del)
 		del(lst->content);
-	free(lst);
+	ft_freez(lst);
 }
