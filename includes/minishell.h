@@ -9,7 +9,7 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-# define FILE_RIGHTS (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+# define FILE_RIGHTS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 typedef enum	e_command
 {

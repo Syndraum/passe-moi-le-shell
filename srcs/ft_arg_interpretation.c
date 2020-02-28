@@ -6,7 +6,11 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2020/02/28 17:24:39 by mchardin         ###   ########.fr       */
+=======
+/*   Updated: 2020/02/28 19:42:15 by roalvare         ###   ########.fr       */
+>>>>>>> 1d1914a00438f322f36e2409d712971706bf8427
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +33,7 @@ int		is_redirection(t_separator sep)
 void	init_struct(t_shell *shell)
 {
 	shell->output = 0;
+	shell->fd_input = 0;
 	shell->fd_output = 1;
 }
 
@@ -84,7 +89,12 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
+<<<<<<< HEAD
 	ft_freez(shell->arg.str);
+=======
+	// ft_printf("output : %d\tinput : %d\n", shell->fd_output, shell->fd_input);
+	free(shell->arg.str);
+>>>>>>> 1d1914a00438f322f36e2409d712971706bf8427
 	return (1);
 }
 
@@ -118,7 +128,7 @@ int		analyse_args(t_shell *shell)
 		if (!(command = malloc(sizeof(t_cmd))))
 			return (0);
 		command->arg = shell->tab;
-		command->fd_output = shell->fd_input;
+		command->fd_input = shell->fd_input;
 		command->fd_output = shell->fd_output;
 		if (!(elmt = ft_lstnew(command)))
 			return (0);
