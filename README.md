@@ -4,15 +4,13 @@
 - [ ] cd /tmp
 - [ ] cd ../MINISHELL a bugué une fois (No such file or directory)
 - [ ] minishell$ cd ../test >> minishell: cd: ../tst : No such file or directory (il a enlevé le e, pourquoi??)
-- [ ] unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
-- [ ] ecrire le pwd si on passe par CDPATH
-- [ ] peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
 - [ ] bash: gkrdgjfd: command not found // minishell : command not found >> rajouter le nom de l'argument
 - [ ] checker tous les return
 - [ ] faire la fn de exit error (free)
 - [ ] fn free hors erreur
 Erreurs a pas oublier de gerer :
 - [ ] redirections vers un directory au lieu d'un file
+- [ ] ecrire exit dans entrée standard si exit
 
 ###### Finish
 - [x] ./a.out | echo "loulou"
@@ -37,6 +35,9 @@ Erreurs a pas oublier de gerer :
 [1]    27948 segmentation fault  ./minishell
 - [x] POUR ROMAIN <3 | MERCI BEAUCOUP <3 (non.): faut que t'implementes ~ au lieu de $HOME dans les args
 - [x] cd .. lala : string not in pwd : .. //OSEF
+- [x] unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
+- [x] ecrire le pwd si on passe par CDPATH
+- [x] peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
 
 # Cher journal
 

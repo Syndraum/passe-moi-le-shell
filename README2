@@ -19,3 +19,7 @@ _=/usr/bin/env
 bash-3.2$ echo $_
 env
 >>>>>>>>>>>>>>>>>>>> _ c'est pas une var d'environnement classique, faut ptetre la gerer a part... fuck my life
+
+
+
+ecrire exit dans entrée standard si exit

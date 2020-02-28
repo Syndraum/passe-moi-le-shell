@@ -58,7 +58,7 @@ int			cd_path(t_shell *shell, char *dir)
 			if (chdir(new) >= 0)
 			{
 				ft_free_strs(cd_paths);
-				ft_freez(new);
+				shell->output = ft_strjoin_gnl(new, "\n");
 				return (1);
 			}
 			ft_freez(new);
@@ -146,16 +146,13 @@ char		*print_export(char **keys, char **items)
 	output = 0;
 	while (keys[i])
 	{
-		if (ft_strncmp("_", keys[i], 2))
-		{
-			if (items[i])
-				tmp = ft_sprintf("declare -x %s=\"%s\"\n", keys[i], items[i]);
-			else
-				tmp = ft_sprintf("declare -x %s\n", keys[i]);
-			if (!(output = ft_strjoin_gnl(output, tmp)))
-				exit(1); //free tmp
-			ft_freez(tmp);
-		}
+		if (items[i])
+			tmp = ft_sprintf("declare -x %s=\"%s\"\n", keys[i], items[i]);
+		else
+			tmp = ft_sprintf("declare -x %s\n", keys[i]);
+		if (!(output = ft_strjoin_gnl(output, tmp)))
+			exit(1); //free tmp
+		ft_freez(tmp);
 		i++;
 	}
 	return (output);
