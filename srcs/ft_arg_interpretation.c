@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/24 15:58:19 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 16:27:46 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ int		is_redirection(t_separator sep)
 void	init_struct(t_shell *shell)
 {
 	shell->output = 0;
-	shell->fd = 1;
+	shell->fd_output = 1;
 }
 
 int		init_tab(t_shell *shell)
 {
-	shell->fd = 1;
+	shell->fd_input = 0;
+	shell->fd_output = 1;
 	if (!(set_arg(shell)))
 	{
 		shell->tab = 0;
@@ -55,25 +56,30 @@ void	free_cmd(void *content)
 	t_cmd * cmd;
 
 	cmd = (t_cmd*)content;
-	if (cmd->fd != 1)
-		close(cmd->fd);
+	if (cmd->fd_output != 1)
+		close(cmd->fd_output);
 	ft_free_strs(cmd->arg);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
 {
-	if (prev == FROM_FILE)
-		return (1);
-	if (shell->fd != 1)
-		close(shell->fd);
-	if (prev == TO_FILE && (shell->fd = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0)
+	if (shell->fd_input != 0 && prev == FROM_FILE)
+		close(shell->fd_input);
+	if (shell->fd_output != 1 && (prev == TO_FILE || prev == TO_END))
+		close(shell->fd_output);
+	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
+		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
 	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
-	else if (prev == TO_END && (shell->fd = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0)
+	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
+		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
+	{
+		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		return (0); //NOT EXIT
+	}
+	else if (prev == FROM_FILE && (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)
 	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
@@ -112,7 +118,8 @@ int		analyse_args(t_shell *shell)
 		if (!(command = malloc(sizeof(t_cmd))))
 			return (0);
 		command->arg = shell->tab;
-		command->fd = shell->fd;
+		command->fd_output = shell->fd_input;
+		command->fd_output = shell->fd_output;
 		if (!(elmt = ft_lstnew(command)))
 			return (0);
 		ft_lstadd_back(&shell->pipeline, elmt);

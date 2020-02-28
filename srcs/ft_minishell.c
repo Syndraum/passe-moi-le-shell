@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 14:25:12 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 16:29:06 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,29 +119,26 @@ void		loop_pipe(t_shell *shell)
 	pid_t	child;
 	int		save_fd;
 	t_list	*elmt;
-	t_cmd *cmd;
-	// char	**tab;
+	t_cmd 	*cmd;
 
 	save_fd = 0;
 	elmt = shell->pipeline;
 	while (elmt != NULL)
 	{
 		cmd = (t_cmd*)elmt->content;
-		// tab = (char**)elmt->content;
 		pipe(fd);
 		if ((child = fork()) < 0)
 			exit(1);
 		if (child == 0)
 		{
 			shell->tab = cmd->arg;
-			shell->fd = cmd->fd;
+			shell->fd_input = cmd->fd_input;
+			shell->fd_output = cmd->fd_output;
 			dup2(save_fd, 0);
-			if (shell->fd != 1)
-				dup2(shell->fd, 1);
+			if (shell->fd_output != 1)
+				dup2(shell->fd_output, 1);
 			else if (elmt->next != NULL)
 				dup2(fd[1], 1);
-			// else if (shell->fd != 1)
-			// 	dup2(shell->fd, 1);
 			close(fd[0]);
 			shell->stop = run_command(shell);
 			ft_putstr_fd(shell->output, 1);
@@ -212,7 +209,7 @@ int			main(int argc, char **argv, char **envp)
 				else if (ft_lstsize(shell.pipeline) > 1)
 					loop_pipe(&shell);
 				if (!shell.stop && ft_lstsize(shell.pipeline) == 1)
-					ft_putstr_fd(shell.output, shell.fd);
+					ft_putstr_fd(shell.output, shell.fd_output);
 			}
 			if (keepreading == 0)
 				exit (0); // FREE

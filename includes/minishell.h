@@ -9,6 +9,8 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
+# define FILE_RIGHTS (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+
 typedef enum	e_command
 {
 	EXEC = 1,
@@ -35,7 +37,8 @@ typedef enum	e_separator
 typedef struct	s_cmd
 {
 	char		**arg;
-	int			fd;
+	int			fd_input;
+	int			fd_output;
 }				t_cmd;
 
 
@@ -50,7 +53,8 @@ typedef	struct	s_shell
 	char		**tab;
 	char		*output;
 	char		**cursor;
-	int			fd;
+	int			fd_input;
+	int			fd_output;
 	t_command	command;
 	t_arg		arg;
 	char		**env_keys;
