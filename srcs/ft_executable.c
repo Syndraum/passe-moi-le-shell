@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 19:59:12 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 20:36:22 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,16 +134,58 @@ char	*getpath(t_shell *shell)
 	return (path);
 }
 
-int		executable(t_shell *shell)
+int	change_exec(t_shell *shell, char *path)
 {
-	char		*path;
 	char		**env;
 
-	if ((path = getpath(shell)) == NULL)
-		return (127);
 	if (!(env = convert_env(shell)))
 		return (127);
 	if (0 > execve(path, shell->tab, env))
 		return (127);
 	return (0);
+}
+
+int	launch_exec(t_shell *shell, char *path)
+{
+	pid_t		child;
+	int			fd[2];
+	int			fd_input[2];
+
+	if ((child = fork()) < 0)
+		return (127);
+	if (child == 0)
+	{
+		if (shell->fd_output!= 1)
+		{
+			pipe(fd);
+			dup2(shell->fd_output, 1);
+			close(fd[0]);
+		}
+		if (shell->fd_input != 0)
+		{
+			pipe(fd_input);
+			dup2(shell->fd_input, 0);
+			close(fd_input[0]);
+		}
+		if ((change_exec(shell, path)))
+			return (127);
+	}
+	else
+	{
+		waitpid(child, &shell->stop, 0);
+		return (WEXITSTATUS(shell->stop));
+	}
+	return (0);
+}
+
+int		executable(t_shell *shell)
+{
+	char		*path;
+
+	if ((path = getpath(shell)) == NULL)
+		return (127);
+	if (ft_lstsize(shell->pipeline) == 1)
+		return (launch_exec(shell, path));
+	else
+		return (change_exec(shell, path));
 }
