@@ -6,11 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/02/28 17:26:27 by mchardin         ###   ########.fr       */
-=======
-/*   Updated: 2020/02/28 19:55:13 by roalvare         ###   ########.fr       */
->>>>>>> 1d1914a00438f322f36e2409d712971706bf8427
+/*   Updated: 2020/02/28 21:43:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,9 +211,10 @@ int			main(int argc, char **argv, char **envp)
 			{
 				if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
 					return (0); // ERROR MALLOC
-				if (ft_lstsize(shell.pipeline) == 1 && ft_strncmp(shell.tab[0], "exit", 5) == 0)
-					exit(0);
-				loop_pipe(&shell);
+				if (ft_lstsize(shell.pipeline) == 1)
+					shell.stop = run_command(&shell);
+				else if (ft_lstsize(shell.pipeline) > 1)
+					loop_pipe(&shell);
 				if (!shell.stop && ft_lstsize(shell.pipeline) == 1)
 					ft_putstr_fd(shell.output, shell.fd_output);
 			}
