@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/24 15:58:19 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 14:25:12 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int			main(int argc, char **argv, char **envp)
 		return (0);
 	while (1)
 	{
-		ft_putstr_fd("\033[0;32mminishell$ \033[0m", 1);
+		ft_putstr_fd("\033[0;32mminishell$ \033[0m", 0);
 		if ((keepreading = get_next_line(0, &line)) < 0)
 			exit (0); //ERROR
 		shell.cursor = &line;
