@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 16:27:46 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 19:42:15 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		is_redirection(t_separator sep)
 void	init_struct(t_shell *shell)
 {
 	shell->output = 0;
+	shell->fd_input = 0;
 	shell->fd_output = 1;
 }
 
@@ -84,6 +85,7 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
+	// ft_printf("output : %d\tinput : %d\n", shell->fd_output, shell->fd_input);
 	free(shell->arg.str);
 	return (1);
 }
@@ -118,7 +120,7 @@ int		analyse_args(t_shell *shell)
 		if (!(command = malloc(sizeof(t_cmd))))
 			return (0);
 		command->arg = shell->tab;
-		command->fd_output = shell->fd_input;
+		command->fd_input = shell->fd_input;
 		command->fd_output = shell->fd_output;
 		if (!(elmt = ft_lstnew(command)))
 			return (0);
