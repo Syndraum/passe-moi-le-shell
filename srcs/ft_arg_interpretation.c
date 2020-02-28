@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 16:27:46 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:24:39 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		init_tab(t_shell *shell)
 	}
 	if (!(shell->tab = malloc(sizeof(char*) * 2)))
 	{
-		free(shell->arg.str);
+		ft_freez(shell->arg.str);
 		exit(1);
 	}
 	shell->tab[0] = shell->arg.str;
@@ -84,7 +84,7 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
-	free(shell->arg.str);
+	ft_freez(shell->arg.str);
 	return (1);
 }
 

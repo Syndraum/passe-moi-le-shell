@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/15 18:25:44 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:25:42 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void			unset_var(char **keys, char **items, char *key)
 	idx = get_tabidx(key, keys);
 	if (idx >= 0)
 	{
-		free(keys[idx]);
-		free(items[idx]);
+		ft_freez(keys[idx]);
+		ft_freez(items[idx]);
 		keys[idx] = keys[last];
 		items[idx] = items[last];
 		keys[last] = 0;
@@ -64,10 +64,10 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 		if (item)
 		{
 			// ft_printf("key =  %s\n", key);
-			free(items[0][idx]);
+			ft_freez(items[0][idx]);
 			items[0][idx] = item;
 		}
-		free(key);
+		ft_freez(key);
 		return (1);
 	}
 	else
@@ -94,7 +94,7 @@ int				pwd_env(t_shell *shell)
 	idx = get_tabidx("OLDPWD", shell->env_keys);
 	if (idx >= 0 && shell->oldpwd)
 	{
-		free(shell->env_items[idx]);
+		ft_freez(shell->env_items[idx]);
 		shell->env_items[idx] = ft_strdup(shell->oldpwd); // free old
 	}
 	return (0);
@@ -143,7 +143,7 @@ int				last_arg_env(char ***keys, char ***items, char **tab)
 // 	{
 // 		if (!ft_strncmp(keys[i], key, ft_strlen(key) + 1))
 // 		{
-// 			free(items[i]);
+// 			ft_freez(items[i]);
 // 			items[i] = item;
 // 			return (1);
 // 		}

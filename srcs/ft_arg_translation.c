@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/20 15:49:16 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:25:17 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	var = get_item(arg, shell->env_keys, shell->env_items);
 	if (var)
 		var = ft_strdup(var);
-	free(arg);
+	ft_freez(arg);
 	return (var);
 }
 
@@ -91,7 +91,7 @@ char	*get_tmp_quote(char **cursor, char *bquote, int i)
 	ft_strlcpy(tmp, *cursor, i + 1);
 	(*cursor) += i;
 	quote = ft_strjoin_gnl(bquote, tmp);
-	free(tmp);
+	ft_freez(tmp);
 	return (quote);
 }
 
@@ -216,13 +216,13 @@ void	*get_argument(char **cursor, t_shell *shell)
 		if (arg != NULL)
 			cpy = ft_strdup(arg);
 		if (arg != NULL)
-			free(arg);
+			ft_freez(arg);
 		arg = NULL;
 		if (!(arg = ft_strjoin(cpy, ret)))
 			return (NULL);
-		free(cpy);
+		ft_freez(cpy);
 		cpy = NULL;
-		free(ret);
+		ft_freez(ret);
 		ret = NULL;
 	}
 	return (arg);

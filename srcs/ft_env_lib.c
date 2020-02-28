@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/15 17:36:26 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:26:25 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			change_item(char **keys, char **items, char *key, char *item)
 	idx = get_tabidx(key, keys);
 	if (idx >= 0)
 	{
-		free(items[idx]);
+		ft_freez(items[idx]);
 		items[idx] = item;
 		return (1);
 	}

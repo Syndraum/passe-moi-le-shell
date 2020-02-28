@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/15 17:54:19 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:26:22 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ int			cd_path(t_shell *shell, char *dir)
 			if (chdir(new) >= 0)
 			{
 				ft_free_strs(cd_paths);
-				free(new);
+				ft_freez(new);
 				return (1);
 			}
-			free(new);
+			ft_freez(new);
 		}
 	ft_free_strs(cd_paths);
 	}
@@ -106,7 +106,7 @@ int			command_cd(t_shell *shell)
 // 	ret = ft_strjoin_gnl(ret, "declare -x ");
 // 	tmp = ft_substr(var, 0, equal + 1);
 // 	ret = ft_strjoin_gnl(ret, tmp);
-// 	free(tmp);
+// 	ft_freez(tmp);
 // 	ret = ft_strjoin_gnl(ret, "\"");
 // 	ret = ft_strjoin_gnl(ret, &var[equal + 1]);
 // 	ret = ft_strjoin_gnl(ret, "\"\n");
@@ -143,6 +143,7 @@ char		*print_export(char **keys, char **items)
 	char	*tmp;
 
 	i = 0;
+	output = 0;
 	while (keys[i])
 	{
 		if (ft_strncmp("_", keys[i], 2))
@@ -153,7 +154,7 @@ char		*print_export(char **keys, char **items)
 				tmp = ft_sprintf("declare -x %s\n", keys[i]);
 			if (!(output = ft_strjoin_gnl(output, tmp)))
 				exit(1); //free tmp
-			free(tmp);
+			ft_freez(tmp);
 		}
 		i++;
 	}
@@ -195,8 +196,8 @@ int			command_unset(t_shell *shell)
 		if (!check_split_var(shell->tab[i], &key, &item) && !item)
 			unset_var(shell->env_keys, shell->env_items, key);
 		else
-			free(item);
-		free(key);
+			ft_freez(item);
+		ft_freez(key);
 		i++;
 	}
 	// if ret checksplitvar >> error message

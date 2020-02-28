@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 16:29:06 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:26:27 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void		ft_exit(t_shell *shell)
 {
 	ft_free_strs(shell->tab);
-	free(shell->output);
+	ft_freez(shell->output);
 	ft_free_strs(shell->env_keys);
-	free(shell->pwd);
+	ft_freez(shell->pwd);
 }
 
 int			get_command(char *command)
