@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 20:01:19 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 14:53:48 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		free_all(t_shell *shell)
 		ft_freez(shell->env_items[i]);
 		i++;
 	}
+	ft_freez(shell->arg.str);
 	ft_freez(shell->env_keys);
 	ft_freez(shell->env_items);
 	ft_freez(shell->output);
@@ -37,20 +38,14 @@ void		close_all(t_shell *shell)
 		close(shell->fd_output);
 	if (shell->fd_input > 2)
 		close(shell->fd_input);
-
 }
 
-void        quit_error(t_shell *shell, int errnumb, char *fonction, char *arg)
+void		exit_error(t_shell *shell, char *fonction)
 {
-	if (errnumb > 0)
-	{
-		if (fonction)
-			ft_dprintf(2, "minishell: %s: ", fonction);
-		if (arg)
-			ft_dprintf(2, "%s: ", arg);
-		ft_dprintf(2, "", ft_strerror(errnumb));
-	}
-	// ft_free_strs(shell->tab);
+	ft_dprintf(2, "minishell: ");
+	if (fonction)
+		ft_dprintf(2, "%s: ", fonction);
+	ft_dprintf(2, "%s\n", ft_strerror(errno));
 	close_all(shell);
 	free_all(shell);
 	exit(1);

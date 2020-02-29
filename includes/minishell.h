@@ -74,7 +74,7 @@ int			command_env(t_shell *shell);
 int			replace_var(char **keys, char **items, char *var);
 void		unset_var(char **keys, char **items, char *key);
 int			replace_or_add(char ***keys, char ***items, char *key, char *item);
-int			pwd_env(t_shell *shell);
+void		pwd_env(t_shell *shell);
 int			last_arg_env(char ***keys, char ***items, char **tab);
 // FT_ECHO
 char		*skip_if(char *str, int (*f)(char));

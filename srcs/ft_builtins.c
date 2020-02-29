@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 17:26:22 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:37:40 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int			command_pwd(t_shell *shell)
 {
-	shell->output = ft_strjoin(shell->pwd, "\n");
+	if (!(shell->output = ft_strjoin(shell->pwd, "\n")))
+		exit_error(shell, "pwd");
 	return (0);
 }
 
@@ -45,8 +46,8 @@ int			cd_path(t_shell *shell, char *dir)
 	{
 		if (!ft_strncmp("CDPATH", shell->env_keys[i], 7) && shell->env_items[i]
 		&& !(cd_paths = ft_split(shell->env_items[i], ':')))
-					exit (1); //FREE A FAIRE
-		}
+			exit_error(shell, "cd"); //FREE A FAIRE
+	}
 	i = -1;
 	if (cd_paths)
 	{
@@ -55,6 +56,11 @@ int			cd_path(t_shell *shell, char *dir)
 			new = cd_paths[i][ft_strlen(cd_paths[i])] == '/' ?
 			ft_sprintf("%s%s", cd_paths[i], dir)
 			: ft_sprintf("%s/%s", cd_paths[i], dir);
+			if (!new)
+			{
+				ft_free_strs(cd_paths);
+				exit_error(shell, "cd");
+			}
 			if (chdir(new) >= 0)
 			{
 				ft_free_strs(cd_paths);
@@ -92,49 +98,8 @@ int			command_cd(t_shell *shell)
 	shell->oldpwd = shell->pwd;
 	shell->pwd = buf;
 	pwd_env(shell);
-	return (0);
+	return (0); //everything went well
 }
-
-// char		*print_export(char *var)
-// {
-// 	char	*ret;
-// 	int		equal;
-// 	char	*tmp;
-//
-// 	equal = ft_len_c(var, '=');
-// 	ret = 0;
-// 	ret = ft_strjoin_gnl(ret, "declare -x ");
-// 	tmp = ft_substr(var, 0, equal + 1);
-// 	ret = ft_strjoin_gnl(ret, tmp);
-// 	ft_freez(tmp);
-// 	ret = ft_strjoin_gnl(ret, "\"");
-// 	ret = ft_strjoin_gnl(ret, &var[equal + 1]);
-// 	ret = ft_strjoin_gnl(ret, "\"\n");
-// 	// exit if malloc fail
-// 	return (ret);
-// }
-
-// char		*print_export(char *var)
-// {
-// 	char	*ret;
-// 	char	*beg;
-
-// 	if (!(ret = malloc(sizeof(char) * (ft_strlen(var) + 15))))
-// 		exit (1); // FREE
-// 	beg = ret;
-// 	ft_strlcpy(ret, "declare -x ", 12);
-// 	ret = &ret[11];
-// 	while (*var && *(var - 1) != '=')
-// 		*ret++ = *var++;
-// 	// ft_printf("%s\n", beg);
-// 	*ret++ = '\"';
-// 	while (*var)
-// 		*ret++ = *var++;
-// 	*ret++ = '\"';
-// 	*ret++ = '\n';
-// 	*ret = 0;
-// 	return (beg);
-// }
 
 char		*print_export(char **keys, char **items)
 {
@@ -150,8 +115,9 @@ char		*print_export(char **keys, char **items)
 			tmp = ft_sprintf("declare -x %s=\"%s\"\n", keys[i], items[i]);
 		else
 			tmp = ft_sprintf("declare -x %s\n", keys[i]);
-		if (!(output = ft_strjoin_gnl(output, tmp)))
-			exit(1); //free tmp
+		if (!tmp)
+			return (0);
+		output = ft_strjoin_gnl(output, tmp);
 		ft_freez(tmp);
 		i++;
 	}
@@ -163,17 +129,21 @@ int			command_export(t_shell *shell)
 	int		i;
 	char	*key;
 	char	*item;
+	int		ret;
 
-	if (shell->tab[1] == 0)
+	if (!shell->tab[1])
 	{
-		shell->output = print_export(shell->env_keys, shell->env_items);
+		if (!(shell->output = print_export(shell->env_keys, shell->env_items)))
+			exit_error(shell, "export");
 		return (0);
 	}
 	i = 1;
 	while (shell->tab[i])
 	{
-		if (!check_split_var(shell->tab[i], &key, &item))
+		if (!(ret = check_split_var(shell->tab[i], &key, &item)))
 			replace_or_add(&shell->env_keys, &shell->env_items, key, item);
+		else if (ret < 0)
+			exit_error(shell, "export");
 		else
 			return (1); // wrong identifier?
 		i++;
@@ -186,32 +156,37 @@ int			command_unset(t_shell *shell)
 	int		i;
 	char	*key;
 	char	*item;
+	int		ret;
 
 	i = 1;
 	while (shell->tab[i])
 	{
-		if (!check_split_var(shell->tab[i], &key, &item) && !item)
+		if (!(ret = check_split_var(shell->tab[i], &key, &item) && !item))
 			unset_var(shell->env_keys, shell->env_items, key);
+		else if (ret < 0)
+			exit_error(shell, "unset");
 		else
 			ft_freez(item);
 		ft_freez(key);
 		i++;
 	}
-	// if ret checksplitvar >> error message
 	return (0);
 }
 
 int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE GERER LES ARGUMENTS
 {
 	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (shell->env_keys[i])
 	{
-		if (shell->env_items[i] &&
-			!(shell->output = ft_strjoin_gnl(shell->output,
-			ft_sprintf("%s=%s\n", shell->env_keys[i], shell->env_items[i]))))
-			return (1); //error
+		if (shell->env_items[i])
+		{
+			if (!(tmp = ft_sprintf("%s=%s\n", shell->env_keys[i], shell->env_items[i]))
+			|| !(shell->output = ft_strjoin_gnl(shell->output, tmp)))
+				exit_error(shell, "env");
+		}
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 21:49:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:03:21 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int		init_tab(t_shell *shell)
 	}
 	if (!(shell->tab = malloc(sizeof(char*) * 2)))
 	{
-		ft_freez(shell->arg.str);
-		exit(1);
+		exit_error(shell, shell->arg.str);
 	}
 	shell->tab[0] = shell->arg.str;
 	shell->tab[1] = NULL;
@@ -56,16 +55,16 @@ void	free_cmd(void *content)
 	t_cmd * cmd;
 
 	cmd = (t_cmd*)content;
-	if (cmd->fd_output != 1)
+	if (cmd->fd_output != 1) //Faudrait pas mettre >2 plutôt?
 		close(cmd->fd_output);
 	ft_free_strs(cmd->arg);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
 {
-	if (shell->fd_input != 0 && prev == FROM_FILE)
+	if (shell->fd_input != 0 && prev == FROM_FILE) // >2?
 		close(shell->fd_input);
-	if (shell->fd_output != 1 && (prev == TO_FILE || prev == TO_END))
+	if (shell->fd_output != 1 && (prev == TO_FILE || prev == TO_END)) // >2 ?
 		close(shell->fd_output);
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
@@ -111,17 +110,17 @@ int		analyse_args(t_shell *shell)
 			}
 			if (prev == ARG &&
 			!(shell->tab = ft_strs_plus_one(shell->tab, shell->arg.str)))
-				return (0);
+				exit_error(shell, 0);
 			else if (is_redirection(prev) && !(ft_redirection(shell, prev)))
 				return (0);
 		}
 		if (!(command = malloc(sizeof(t_cmd))))
-			return (0);
+			exit_error(shell, 0);
 		command->arg = shell->tab;
 		command->fd_output = shell->fd_input;
 		command->fd_output = shell->fd_output;
 		if (!(elmt = ft_lstnew(command)))
-			return (0);
+			exit_error(shell, 0);
 		ft_lstadd_back(&shell->pipeline, elmt);
 		if (shell->arg.sep != PIPE)
 			pipeline = 0;

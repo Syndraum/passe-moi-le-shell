@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 17:25:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:21:25 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 	return (1);
 }
 
-int				pwd_env(t_shell *shell)
+void			pwd_env(t_shell *shell)
 {
 	int		idx;
 
@@ -89,15 +89,16 @@ int				pwd_env(t_shell *shell)
 	{
 		if (shell->env_items[idx])
 			shell->oldpwd = shell->env_items[idx];
-		shell->env_items[idx] = ft_strdup(shell->pwd);
+		if (!(shell->env_items[idx] = ft_strdup(shell->pwd)))
+			exit_error(shell, "cd");
 	}
 	idx = get_tabidx("OLDPWD", shell->env_keys);
 	if (idx >= 0 && shell->oldpwd)
 	{
 		ft_freez(shell->env_items[idx]);
-		shell->env_items[idx] = ft_strdup(shell->oldpwd); // free old
+		if (!(shell->env_items[idx] = ft_strdup(shell->oldpwd)))
+			exit_error(shell, "cd"); // free old
 	}
-	return (0);
 }
 
 int				last_arg_env(char ***keys, char ***items, char **tab)
