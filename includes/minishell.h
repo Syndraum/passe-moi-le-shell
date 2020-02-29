@@ -53,6 +53,7 @@ typedef	struct	s_shell
 	char		**tab;
 	char		*output;
 	char		**cursor;
+	int			fd_line; // fd de lecture des commandes
 	int			fd_input;
 	int			fd_output;
 	t_command	command;
@@ -114,6 +115,7 @@ int			get_arg(char **cursor);
 int			ft_env_lib(t_shell *shell, char **env);
 int			del_oldpwd(char **keys, char **items);
 int			init_oldpwd(char ***keys, char ***items);
-int				check_split_var(char *var, char **key, char **item);
+int			check_split_var(char *var, char **key, char **item);
+void		exit_error(t_shell *shell, char *fonction);
 
 #endif

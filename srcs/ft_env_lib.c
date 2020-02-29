@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 17:26:25 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 17:16:50 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@ int			ft_env_lib(t_shell *shell, char **env)
 	int		i;
 	char	*key;
 	char	*item;
+	int		ret;
 
 	i = 0;
 	if (!(shell->env_keys = malloc(sizeof(char*) * (ft_strslen(env) + 1)))
 	|| !(shell->env_items = malloc(sizeof(char*) * (ft_strslen(env) + 1))))
-		return (0); // error
+		exit_error(shell, 0);
 	while (env[i])
 	{
-		check_split_var(env[i], &key, &item);
+		if ((ret = check_split_var(env[i], &key, &item)) < 0)
+			exit_error(shell, 0);
 		shell->env_keys[i] = key;
 		shell->env_items[i] = item;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 21:43:43 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 17:30:55 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,51 @@ char		*ft_shlvl(t_shell *shell)
 	return (ft_strdup("1"));
 }
 
-int			ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
+void		ft_open_line(char *file, t_shell *shell)
+{
+	if ((shell->fd_line = open(file, O_RDONLY)) < 0) //peut etre on peut le mettre dans fd_input en fait...
+	{
+		ft_printf("minishell: %s: %s\n", file, strerror(errno));
+		exit (1);
+	}
+}
+
+void		ft_first_init_struct(t_shell *shell)
+{
+	shell->env_keys = 0;
+	shell->env_items = 0;
+	shell->arg.str = 0;
+	shell->output = 0;
+	shell->pwd = 0;
+	shell->oldpwd = 0;
+	shell->pipeline = 0;
+	shell->tab = 0;
+	shell->cursor = 0;
+	shell->fd_line = 0;
+	shell->fd_input = 0;
+	shell->fd_output = 1;
+}
+
+void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 {
 	char	*buf;
 
-	(void)argc;
+	ft_first_init_struct(shell);
+	if (argc > 1)
+		ft_open_line(argv[1], shell);
 	ft_env_lib(shell, envp);
 	buf = 0;
 	if (!(buf = getcwd(buf, 0)))
-		return (0); //ERROR MESSAGE ??
+		exit_error(shell, 0);
 	shell->pwd = buf;
-	if (!replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("PWD"), ft_strdup(buf))
-		|| !replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("_"), ft_strdup(argv[0]))
-		|| !replace_or_add(&shell->env_keys, &shell->env_items, ft_strdup("SHLVL"), ft_shlvl(shell))
+	if (!replace_or_add(&shell->env_keys, &shell->env_items,
+		ft_strdup("PWD"), ft_strdup(buf))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items,
+		ft_strdup("_"), ft_strdup(argv[0]))
+		|| !replace_or_add(&shell->env_keys, &shell->env_items,
+		ft_strdup("SHLVL"), ft_shlvl(shell))
 		|| !init_oldpwd(&shell->env_keys, &shell->env_items))
-		return (0);
-	return (1);
+		exit_error(shell, 0);
 }
 
 int			run_command(t_shell *shell)
@@ -195,13 +224,13 @@ int			main(int argc, char **argv, char **envp)
 	int			keepreading;
 	int			stillcommand;
 
-	if (!(ft_mainargs(argc, argv, envp, &shell)))
-		return (0);
+	ft_mainargs(argc, argv, envp, &shell);
 	while (1)
 	{
-		ft_putstr_fd("\033[0;32mminishell$ \033[0m", 0);
-		if ((keepreading = get_next_line(0, &line)) < 0)
-			exit (0); //ERROR
+		if (shell.fd_input == 0 && shell.fd_line == 0)
+			ft_putstr_fd("\033[0;32mminishell$ \033[0m", 0);
+		if ((keepreading = get_next_line(shell.fd_line, &line)) < 0)
+			exit_error(&shell, 0);
 		shell.cursor = &line;
 		stillcommand = 1;
 		while (stillcommand)

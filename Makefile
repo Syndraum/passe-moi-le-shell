@@ -10,7 +10,8 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_arg_translation_utils.c \
 								ft_cursor_utils.c \
 								ft_echo.c \
-								ft_executable.c)
+								ft_executable.c \
+								ft_error.c)
 
 OBJS = ${SRCS:.c=.o}
 

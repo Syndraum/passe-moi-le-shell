@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 16:21:25 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 17:25:32 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 {
 	int		idx;
 
+	if (!key || !item)
+		return (0);
 	idx = get_tabidx(key, *keys);
 	if (idx >= 0)
 	{

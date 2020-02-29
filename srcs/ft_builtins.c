@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 16:37:40 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:48:08 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,10 @@ int			command_export(t_shell *shell)
 	i = 1;
 	while (shell->tab[i])
 	{
-		if (!(ret = check_split_var(shell->tab[i], &key, &item)))
-			replace_or_add(&shell->env_keys, &shell->env_items, key, item);
-		else if (ret < 0)
+		if ((ret = check_split_var(shell->tab[i], &key, &item)) < 0 || (!ret
+		&& !replace_or_add(&shell->env_keys, &shell->env_items, key, item)))
 			exit_error(shell, "export");
-		else
+		else if (ret > 0)
 			return (1); // wrong identifier?
 		i++;
 	}
