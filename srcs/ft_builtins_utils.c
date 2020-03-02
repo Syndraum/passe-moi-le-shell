@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 19:00:36 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:32:05 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ void			pwd_env(t_shell *shell)
 	if (idx >= 0)
 	{
 		if (shell->env_items[idx])
+		{
+			ft_freez((void**)&shell->oldpwd);
 			shell->oldpwd = shell->env_items[idx];
+		}
 		if (!(shell->env_items[idx] = ft_strdup(shell->pwd)))
 			exit_error(shell, "cd");
 	}

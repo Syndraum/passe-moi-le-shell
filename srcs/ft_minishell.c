@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 20:06:10 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:34:30 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void		ft_first_init_struct(t_shell *shell)
 	shell->oldpwd = 0;
 	shell->pipeline = 0;
 	shell->tab = 0;
-	shell->line = 0;
-	shell->cursor = 0;
+	shell->line[0] = 0;
+	shell->cursor[0] = 0;
 	shell->fd_line = 0;
 	shell->fd_input = 0;
 	shell->fd_output = 1;
@@ -214,11 +214,10 @@ void	print_list_tab(t_list *list)
 	}
 }
 
-
-// __attribute__((destructor)) void lul(void)
-// {
-// 	system("leaks minishell");
-// }
+__attribute__((destructor)) void lul(void)
+{
+	system("leaks minishell");
+}
 
 int			main(int argc, char **argv, char **envp)
 {
@@ -230,9 +229,11 @@ int			main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		ft_putstr_fd("\033[0;32mminishell$ \033[0m", shell.fd_line);
-		if ((keepreading = get_next_line(shell.fd_line, &shell.line)) < 0)
+		if ((keepreading = get_next_line(shell.fd_line, shell.line)) < 0)
 			exit_error(&shell, 0);
-		shell.cursor = &shell.line;
+		
+	ft_printf("%p\n", shell.line[0]);
+		shell.cursor[0] = shell.line[0];
 		stillcommand = 1;
 		while (stillcommand)
 		{
@@ -252,7 +253,7 @@ int			main(int argc, char **argv, char **envp)
 				exit_end(&shell);
 			if (shell.arg.sep == END_LINE)
 				stillcommand = 0;
-			ft_lstclear(&shell.pipeline, free_cmd);
+			free_line(&shell);
 		}
 	}
 	exit_end(&shell);

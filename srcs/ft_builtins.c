@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 16:39:36 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:28:04 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int			command_cd(t_shell *shell)
 	char	*buf;
 
 	buf = shell->tab[1];
-	if ((buf == 0 || (ft_strlen(buf) == 1 && ft_strncmp(buf, "~", 1) == 0))
-	&& !(buf = home_path(shell->env_keys, shell->env_items)))
+	if (!buf && !(buf = home_path(shell->env_keys, shell->env_items)))
 		return (1);
 	if (chdir(buf) < 0 && (buf[0] == '/' || !cd_path(shell, buf)))
 	{
@@ -95,6 +94,7 @@ int			command_cd(t_shell *shell)
 			shell->tab[1], strerror(errno)); //
 		return (1); // error message?
 	}
+	ft_freez((void**)shell->oldpwd);
 	shell->oldpwd = shell->pwd;
 	shell->pwd = buf;
 	pwd_env(shell);
@@ -189,6 +189,7 @@ int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE G
 			|| !(shell->output = ft_strjoin_gnl(shell->output, tmp)))
 				exit_error(shell, "env");
 		}
+		ft_freez((void**)&tmp);
 		i++;
 	}
 	return (0);

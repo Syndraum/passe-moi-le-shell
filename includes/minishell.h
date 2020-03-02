@@ -52,8 +52,8 @@ typedef	struct	s_shell
 {
 	char		**tab;
 	char		*output;
-	char		**cursor;
-	char		*line;
+	char		*cursor[1];
+	char		*line[1];
 	int			fd_line; // fd de lecture des commandes
 	int			fd_input;
 	int			fd_output;
@@ -113,6 +113,7 @@ int			ft_cmp(char *str, char *cursor);
 int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
 // FT_ERROR
+void		free_line(t_shell *shell);
 void		exit_error(t_shell *shell, char *fonction);
 void		exit_end(t_shell *shell);
 

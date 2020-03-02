@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 18:53:37 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:04:28 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void		free_line(t_shell *shell)
 {
 	ft_freez((void **)&shell->output);
 	ft_lstclear(&shell->pipeline, free_cmd);
-	// ft_freez((void **)&shell->line);
+	ft_freez((void **)&shell->line[0]);
 }
 
 void		free_all(t_shell *shell)
