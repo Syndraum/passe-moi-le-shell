@@ -73,7 +73,7 @@ int			command_unset(t_shell *shell);
 int			command_env(t_shell *shell);
 // FT_BUILTINS_UTILS
 int			replace_var(char **keys, char **items, char *var);
-void		unset_var(char **keys, char **items, char *key);
+int			unset_var(char **keys, char **items, char *key);
 int			replace_or_add(char ***keys, char ***items, char *key, char *item);
 void		pwd_env(t_shell *shell);
 int			last_arg_env(char ***keys, char ***items, char **tab);
@@ -111,11 +111,12 @@ void   		skip_char(char **cursor, char c);
 int			ft_cmp(char *str, char *cursor);
 int			cmp_skip(char **cursor, char *str);
 int			get_arg(char **cursor);
+// FT_ERROR
+void		exit_error(t_shell *shell, char *fonction);
+void		exit_end(t_shell *shell);
 
 int			ft_env_lib(t_shell *shell, char **env);
 int			del_oldpwd(char **keys, char **items);
 int			init_oldpwd(char ***keys, char ***items);
 int			check_split_var(char *var, char **key, char **item);
-void		exit_error(t_shell *shell, char *fonction);
-
 #endif

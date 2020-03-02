@@ -6,14 +6,14 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:16:16 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 15:34:56 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:31:28 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_freez(void *elem)
+void	ft_freez(void **elem)
 {
-	free(elem);
-	elem = 0;
+	free(*elem);
+	*elem = 0;
 }

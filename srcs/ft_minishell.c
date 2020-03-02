@@ -6,19 +6,19 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 17:30:55 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:27:18 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_exit(t_shell *shell)
-{
-	ft_free_strs(shell->tab);
-	ft_freez(shell->output);
-	ft_free_strs(shell->env_keys);
-	ft_freez(shell->pwd);
-}
+// void		ft_exit(t_shell *shell)
+// {
+// 	ft_free_strs(shell->tab);
+// 	ft_freez(shell->output);
+// 	ft_free_strs(shell->env_keys);
+// 	ft_freez(shell->pwd);
+// }
 
 int			get_command(char *command)
 {
@@ -108,7 +108,7 @@ void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 		|| !replace_or_add(&shell->env_keys, &shell->env_items,
 		ft_strdup("_"), ft_strdup(argv[0]))
 		|| !replace_or_add(&shell->env_keys, &shell->env_items,
-		ft_strdup("SHLVL"), ft_shlvl(shell))
+		ft_strdup("SHLVL"), ft_shlvl(shell))                             //A DECOUPER !!!!!!!!!!!!!!!!!!!!!!!!
 		|| !init_oldpwd(&shell->env_keys, &shell->env_items))
 		exit_error(shell, 0);
 }
@@ -138,7 +138,7 @@ int			run_command(t_shell *shell)
 	else if (shell->command == ENV)
 		return (command_env(shell));
 	else if (shell->command == EXIT)
-		exit(0);
+		exit_end(shell);
 	return (1);
 }
 
@@ -239,7 +239,7 @@ int			main(int argc, char **argv, char **envp)
 			if (analyse_args(&shell))
 			{
 				if (!(last_arg_env(&shell.env_keys, &shell.env_items, shell.tab)))
-					return (0); // ERROR MALLOC
+					exit_error(&shell, shell.tab[0]);
 				if (ft_lstsize(shell.pipeline) == 1)
 					shell.stop = run_command(&shell);
 				else if (ft_lstsize(shell.pipeline) > 1)
@@ -248,11 +248,11 @@ int			main(int argc, char **argv, char **envp)
 					ft_putstr_fd(shell.output, shell.fd_output);
 			}
 			if (keepreading == 0)
-				exit (0); // FREE
+				exit_end(&shell);
 			if (shell.arg.sep == END_LINE)
 				stillcommand = 0;
 			ft_lstclear(&shell.pipeline, free_cmd);
 		}
 	}
-	exit(EXIT_SUCCESS);
+	exit_end(&shell);
 }

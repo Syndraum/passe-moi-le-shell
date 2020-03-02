@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 17:25:32 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 18:32:07 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int				check_split_var(char *var, char **key, char **item) // coupe var en key e
 	return (0); //went well 
 }
 
-void			unset_var(char **keys, char **items, char *key)
+int			unset_var(char **keys, char **items, char *key)
 {
 	int		idx;
 	int		last;
@@ -51,15 +51,26 @@ void			unset_var(char **keys, char **items, char *key)
 		items[idx] = items[last];
 		keys[last] = 0;
 		items[last] = 0;
+		if (!ft_strncmp(key, "PWD", 4))
+		{
+			idx = get_tabidx("OLDPWD", keys);
+			if (idx >= 0 && items[idx])
+			{
+				ft_freez(items[idx]);
+				if(!(items[idx] = ft_strdup("")))
+					return (0);
+			}
+		}
 	}
+	return (1);
 }
 
 int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 {
 	int		idx;
 
-	if (!key || !item)
-		return (0);
+	// if (!key || !item) >> completement teubé, a revoir
+	// 	return (0);
 	idx = get_tabidx(key, *keys);
 	if (idx >= 0)
 	{
@@ -113,7 +124,7 @@ int				last_arg_env(char ***keys, char ***items, char **tab)
 	if (!(key = ft_strdup("_"))
 	|| !(item = ft_strdup(tab[i - 1]))
 	|| !replace_or_add(keys, items, key, item))
-		return (0); //error malloc
+		return (0);
 	return (1);
 }
 

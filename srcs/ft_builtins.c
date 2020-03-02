@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 16:48:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/02/29 18:22:18 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,10 @@ int			command_unset(t_shell *shell)
 	while (shell->tab[i])
 	{
 		if (!(ret = check_split_var(shell->tab[i], &key, &item) && !item))
-			unset_var(shell->env_keys, shell->env_items, key);
+		{
+			if (!unset_var(shell->env_keys, shell->env_items, key))
+				exit_error(shell, "unset");
+		}
 		else if (ret < 0)
 			exit_error(shell, "unset");
 		else

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 17:29:02 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:33:08 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void		free_all(t_shell *shell)
 	i = 0;
 	while (shell->env_keys && shell->env_items && shell->env_keys[i])
 	{
-		ft_freez(shell->env_keys[i]);
-		ft_freez(shell->env_items[i]);
+		ft_freez(&shell->env_keys[i]);
+		ft_freez(&shell->env_items[i]);
 		i++;
 	}
-	ft_freez(shell->arg.str);
-	ft_freez(shell->env_keys);
-	ft_freez(shell->env_items);
-	ft_freez(shell->output);
-	ft_freez(shell->pwd);
-	ft_freez(shell->oldpwd);
+	ft_freez(&shell->arg.str);
+	ft_freez(&shell->env_keys);
+	ft_freez(&shell->env_items);
+	ft_freez(&shell->output);
+	ft_freez(&shell->pwd);
+	ft_freez(&shell->oldpwd);
 	ft_lstclear(&shell->pipeline, free_cmd);
 }
 
@@ -51,4 +51,12 @@ void		exit_error(t_shell *shell, char *fonction)
 	close_all(shell);
 	free_all(shell);
 	exit(1);
+}
+
+void		exit_end(t_shell *shell)
+{
+	ft_putstr_fd("exit", 0);
+	close_all(shell);
+	free_all(shell);
+	exit(0);
 }

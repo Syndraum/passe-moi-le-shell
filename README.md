@@ -11,6 +11,7 @@
 Erreurs a pas oublier de gerer :
 - [ ] redirections vers un directory au lieu d'un file
 - [ ] ecrire exit dans entrée standard si exit
+- [ ] binary file check (for arg du main && executables)
 
 ###### Finish
 - [x] ./a.out | echo "loulou"
