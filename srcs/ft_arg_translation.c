@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/02 15:34:47 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:52:15 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	var = get_item(arg, shell->env_keys, shell->env_items);
 	if (var)
 		var = ft_strdup(var);
-	ft_freez(arg);
+	ft_freez((void **)&arg);
 	return (var);
 }
 
@@ -113,7 +113,7 @@ char	*get_tmp_dquote(char **cursor, char *dquote, int len, int i)
 	strncmp_esc_dquote(tmp, *cursor, i);
 	(*cursor) += i;
 	quote = ft_strjoin_gnl(dquote, tmp);
-	ft_freez(tmp);
+	ft_freez((void **)&tmp);
 	return (quote);
 }
 
@@ -246,13 +246,13 @@ void	*get_argument(char **cursor, t_shell *shell)
 		if (arg != NULL)
 			cpy = ft_strdup(arg);
 		if (arg != NULL)
-			ft_freez(arg);
+			ft_freez((void **)&arg);
 		arg = NULL;
 		if (!(arg = ft_strjoin(cpy, ret)))
 			return (NULL);
-		ft_freez(cpy);
+		ft_freez((void **)&cpy);
 		cpy = NULL;
-		ft_freez(ret);
+		ft_freez((void **)&ret);
 		ret = NULL;
 	}
 	return (arg);

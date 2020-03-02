@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:01:41 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 15:31:50 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:51:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 char			*ft_strdup_no_sp(char *src);
 char			**ft_strs_plus_one(char **strs, char *add);
-void			ft_free_strs(char **grid);
+void			ft_free_strs(char ***grid);
 size_t			ft_strslen(char **s);
 char			**ft_strs_cpy(char **strs);
 int				ft_iswhitespace(char c);

@@ -6,19 +6,11 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 13:27:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 20:06:10 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void		ft_exit(t_shell *shell)
-// {
-// 	ft_free_strs(shell->tab);
-// 	ft_freez(shell->output);
-// 	ft_free_strs(shell->env_keys);
-// 	ft_freez(shell->pwd);
-// }
 
 int			get_command(char *command)
 {
@@ -85,6 +77,7 @@ void		ft_first_init_struct(t_shell *shell)
 	shell->oldpwd = 0;
 	shell->pipeline = 0;
 	shell->tab = 0;
+	shell->line = 0;
 	shell->cursor = 0;
 	shell->fd_line = 0;
 	shell->fd_input = 0;
@@ -94,6 +87,9 @@ void		ft_first_init_struct(t_shell *shell)
 void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 {
 	char	*buf;
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
 
 	ft_first_init_struct(shell);
 	if (argc > 1)
@@ -103,12 +99,13 @@ void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
 	if (!(buf = getcwd(buf, 0)))
 		exit_error(shell, 0);
 	shell->pwd = buf;
-	if (!replace_or_add(&shell->env_keys, &shell->env_items,
-		ft_strdup("PWD"), ft_strdup(buf))
+	if (!(tmp1 = ft_strdup(buf)) || !(tmp2 = ft_strdup(argv[0])) || !(tmp3 = ft_shlvl(shell))
 		|| !replace_or_add(&shell->env_keys, &shell->env_items,
-		ft_strdup("_"), ft_strdup(argv[0]))
+		ft_strdup("PWD"), tmp1)
 		|| !replace_or_add(&shell->env_keys, &shell->env_items,
-		ft_strdup("SHLVL"), ft_shlvl(shell))                             //A DECOUPER !!!!!!!!!!!!!!!!!!!!!!!!
+		ft_strdup("_"), tmp2)
+		|| !replace_or_add(&shell->env_keys, &shell->env_items,
+		ft_strdup("SHLVL"), tmp3)
 		|| !init_oldpwd(&shell->env_keys, &shell->env_items))
 		exit_error(shell, 0);
 }
@@ -217,9 +214,14 @@ void	print_list_tab(t_list *list)
 	}
 }
 
+
+// __attribute__((destructor)) void lul(void)
+// {
+// 	system("leaks minishell");
+// }
+
 int			main(int argc, char **argv, char **envp)
 {
-	char		*line;
 	t_shell		shell;
 	int			keepreading;
 	int			stillcommand;
@@ -227,11 +229,10 @@ int			main(int argc, char **argv, char **envp)
 	ft_mainargs(argc, argv, envp, &shell);
 	while (1)
 	{
-		if (shell.fd_input == 0 && shell.fd_line == 0)
-			ft_putstr_fd("\033[0;32mminishell$ \033[0m", 0);
-		if ((keepreading = get_next_line(shell.fd_line, &line)) < 0)
+		ft_putstr_fd("\033[0;32mminishell$ \033[0m", shell.fd_line);
+		if ((keepreading = get_next_line(shell.fd_line, &shell.line)) < 0)
 			exit_error(&shell, 0);
-		shell.cursor = &line;
+		shell.cursor = &shell.line;
 		stillcommand = 1;
 		while (stillcommand)
 		{

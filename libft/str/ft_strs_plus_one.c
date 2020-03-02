@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:46:41 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 15:40:28 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:39:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char		**ft_strs_plus_one(char **strs, char *add)
 		size++;
 	if (!(new = malloc(sizeof(char*) * (size + 2))))
 	{
-		ft_free_strs(strs);
+		ft_free_strs(&strs);
 		return (0);
 	}
 	new[size + 1] = 0;
@@ -34,7 +34,7 @@ char		**ft_strs_plus_one(char **strs, char *add)
 		new[size] = strs[size];
 		size--;
 	}
-	ft_freez(strs);
+	ft_freez((void **)&strs);
 	strs = 0;
 	return (new);
 }

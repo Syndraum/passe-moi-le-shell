@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 16:03:21 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:50:28 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ int		init_tab(t_shell *shell)
 
 void	free_cmd(void *content)
 {
-	t_cmd * cmd;
+	t_cmd *cmd;
 
 	cmd = (t_cmd*)content;
 	if (cmd->fd_output != 1) //Faudrait pas mettre >2 plutôt?
 		close(cmd->fd_output);
-	ft_free_strs(cmd->arg);
+	ft_free_strs(&cmd->arg);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
@@ -83,7 +83,7 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
 		return (0); //NOT EXIT
 	}
-	ft_freez(shell->arg.str);
+	ft_freez((void **)&shell->arg.str);
 	return (1);
 }
 
@@ -92,11 +92,9 @@ int		analyse_args(t_shell *shell)
 	t_separator prev;
 	t_list		*elmt;
 	t_cmd	*command;
-	int			pipeline;
 
-	pipeline = 1;
 	init_struct(shell);
-	while (pipeline)
+	while (1)
 	{
 		if (!(init_tab(shell)))
 			return (0);
@@ -105,7 +103,7 @@ int		analyse_args(t_shell *shell)
 			prev = shell->arg.sep;
 			if (!(set_arg(shell)))
 			{
-				ft_free_strs(shell->tab);
+				ft_free_strs(&shell->tab);
 				return (0);
 			}
 			if (prev == ARG &&
@@ -123,7 +121,7 @@ int		analyse_args(t_shell *shell)
 			exit_error(shell, 0);
 		ft_lstadd_back(&shell->pipeline, elmt);
 		if (shell->arg.sep != PIPE)
-			pipeline = 0;
+			break ;
 	}
 	return (1);
 }

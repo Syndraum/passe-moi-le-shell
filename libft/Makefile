@@ -20,7 +20,7 @@ SRCS_GNL	= $(addprefix ${PREF_GNL}, get_next_line.c get_next_line_utils.c)
 
 SRCS_IS		= $(addprefix ${PREF_IS}, ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isprint.c ft_isdigit.c ft_iswhitespace.c)
 
-SRCS_LST	= $(addprefix ${PREF_LST}, ft_lstadd_back.c ft_lstnew.c ft_lstsize.c ft_lstdelone.c ft_lstlast.c ft_lstmap.c ft_lstiter.c ft_lstclear.c ft_lstadd_front.c)
+SRCS_LST	= $(addprefix ${PREF_LST}, ft_lstdelone.c ft_lstadd_back.c ft_lstnew.c ft_lstsize.c ft_lstlast.c ft_lstmap.c ft_lstiter.c ft_lstclear.c ft_lstadd_front.c)
 
 SRCS_MEM	= $(addprefix ${PREF_MEM}, ft_freez.c ft_memccpy.c ft_bzero.c ft_memchr.c ft_calloc.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c)
 

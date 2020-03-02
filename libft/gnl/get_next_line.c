@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:36:58 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 15:48:14 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:41:00 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i)
 		return (0);
 	if ((*i = read(fd, tab->buf[0], B)) == -1)
 	{
-		ft_freez(*str);
+		ft_freez((void**)str);
 		return (0);
 	}
 	tab->buf[0][*i] = 0;

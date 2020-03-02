@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:22:45 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 15:41:28 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:48:11 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void	ft_free(char **strs, int count)
 	i = 0;
 	while (i < count)
 	{
-		ft_freez(strs[i]);
+		ft_freez((void **)&strs[i]);
 		strs[i] = 0;
 		i++;
 	}
-	ft_freez(strs);
+	ft_freez((void **)&strs);
 	strs = 0;
 }
 

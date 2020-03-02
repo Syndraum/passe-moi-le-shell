@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 18:32:07 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:00:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int			unset_var(char **keys, char **items, char *key)
 	idx = get_tabidx(key, keys);
 	if (idx >= 0)
 	{
-		ft_freez(keys[idx]);
-		ft_freez(items[idx]);
+		ft_freez((void **)&keys[idx]);
+		ft_freez((void **)&items[idx]);
 		keys[idx] = keys[last];
 		items[idx] = items[last];
 		keys[last] = 0;
@@ -56,7 +56,7 @@ int			unset_var(char **keys, char **items, char *key)
 			idx = get_tabidx("OLDPWD", keys);
 			if (idx >= 0 && items[idx])
 			{
-				ft_freez(items[idx]);
+				ft_freez((void **)&items[idx]);
 				if(!(items[idx] = ft_strdup("")))
 					return (0);
 			}
@@ -69,18 +69,18 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 {
 	int		idx;
 
-	// if (!key || !item) >> completement teubé, a revoir
-	// 	return (0);
+	if (!key)
+		return (0);
 	idx = get_tabidx(key, *keys);
 	if (idx >= 0)
 	{
 		if (item)
 		{
 			// ft_printf("key =  %s\n", key);
-			ft_freez(items[0][idx]);
+			ft_freez((void **)&items[0][idx]);
 			items[0][idx] = item;
 		}
-		ft_freez(key);
+		ft_freez((void **)&key);
 		return (1);
 	}
 	else
@@ -108,7 +108,7 @@ void			pwd_env(t_shell *shell)
 	idx = get_tabidx("OLDPWD", shell->env_keys);
 	if (idx >= 0 && shell->oldpwd)
 	{
-		ft_freez(shell->env_items[idx]);
+		ft_freez((void **)&shell->env_items[idx]);
 		if (!(shell->env_items[idx] = ft_strdup(shell->oldpwd)))
 			exit_error(shell, "cd"); // free old
 	}
@@ -157,7 +157,7 @@ int				last_arg_env(char ***keys, char ***items, char **tab)
 // 	{
 // 		if (!ft_strncmp(keys[i], key, ft_strlen(key) + 1))
 // 		{
-// 			ft_freez(items[i]);
+// 			ft_freez((void **)&items[i]);
 // 			items[i] = item;
 // 			return (1);
 // 		}

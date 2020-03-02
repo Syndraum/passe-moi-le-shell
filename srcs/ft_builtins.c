@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/29 18:22:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:39:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,18 @@ int			cd_path(t_shell *shell, char *dir)
 			: ft_sprintf("%s/%s", cd_paths[i], dir);
 			if (!new)
 			{
-				ft_free_strs(cd_paths);
+				ft_free_strs(&cd_paths);
 				exit_error(shell, "cd");
 			}
 			if (chdir(new) >= 0)
 			{
-				ft_free_strs(cd_paths);
+				ft_free_strs(&cd_paths);
 				shell->output = ft_strjoin_gnl(new, "\n");
 				return (1);
 			}
-			ft_freez(new);
+			ft_freez((void **)&new);
 		}
-	ft_free_strs(cd_paths);
+	ft_free_strs(&cd_paths);
 	}
 	return (0);
 }
@@ -118,7 +118,7 @@ char		*print_export(char **keys, char **items)
 		if (!tmp)
 			return (0);
 		output = ft_strjoin_gnl(output, tmp);
-		ft_freez(tmp);
+		ft_freez((void **)&tmp);
 		i++;
 	}
 	return (output);
@@ -168,8 +168,8 @@ int			command_unset(t_shell *shell)
 		else if (ret < 0)
 			exit_error(shell, "unset");
 		else
-			ft_freez(item);
-		ft_freez(key);
+			ft_freez((void **)&item);
+		ft_freez((void **)&key);
 		i++;
 	}
 	return (0);

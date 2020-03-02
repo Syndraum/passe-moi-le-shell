@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:00:29 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 15:40:34 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:47:52 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*ft_fill_p(char *str, t_flags *conv, char c)
 		new_str = ft_fill_z(pre, conv->size - len, c);
 	else
 		new_str = ft_fill_sp(pre, conv->size - len, 0);
-	ft_freez(pre);
+	ft_freez((void **)&pre);
 	return (new_str);
 }
 
@@ -102,12 +102,12 @@ char	*ft_conversion(char *to_conv, t_flags *conv, char c)
 		&& to_conv[0] == '0' && c != 'c' && c != 's' && c != '%')
 	{
 		new_str = ft_fill_sp(0, conv->size, 0);
-		ft_freez(to_conv);
+		ft_freez((void **)&to_conv);
 		return (new_str);
 	}
 	else if (conv->size == 1 && c != 'c' && c != 's' && c != '%')
 		conv->size = 0;
 	new_str = ft_fill_p(to_conv, conv, c);
-	ft_freez(to_conv);
+	ft_freez((void **)&to_conv);
 	return (new_str);
 }

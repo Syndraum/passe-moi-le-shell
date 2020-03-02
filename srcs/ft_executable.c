@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/28 21:42:39 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:39:10 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ int		ft_strncmp_case(char *s1, char *s2, size_t n)
 		return (-1);
 	if (!(lower_s2 = ft_lowercase(s2)))
 	{
-		ft_freez(lower_s1);
+		ft_freez((void **)&lower_s1);
 		return (-1);
 	}
 	cmp = ft_strncmp(lower_s1, lower_s2, n);
-	ft_freez(lower_s1);
-	ft_freez(lower_s2);
+	ft_freez((void **)&lower_s1);
+	ft_freez((void **)&lower_s2);
 	return (cmp);
 }
 
@@ -122,11 +122,11 @@ char	*getpath(t_shell *shell)
 	{
 		if ((path = try_path(shell->tab[0], tab[i])))
 		{
-			ft_free_strs(tab);
+			ft_free_strs(&tab);
 			return (path);
 		}
 	}
-	ft_free_strs(tab);
+	ft_free_strs(&tab);
 	if (!(path = ft_strdup(shell->tab[0])))
 		return (NULL);
 	if (-1 == stat(path, &sb))
