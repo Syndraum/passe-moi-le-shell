@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 16:39:10 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 23:30:42 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,10 @@ char	*getpath(t_shell *shell)
 	if (!(path = ft_strdup(shell->tab[0])))
 		return (NULL);
 	if (-1 == stat(path, &sb))
+	{
+		free(path);
 		return (NULL);
+	}
 	return (path);
 }
 
@@ -155,7 +158,7 @@ int	launch_exec(t_shell *shell, char *path)
 		return (127);
 	if (child == 0)
 	{
-		if (shell->fd_output!= 1)
+		if (shell->fd_output != 1)
 		{
 			pipe(fd);
 			dup2(shell->fd_output, 1);
@@ -181,11 +184,14 @@ int	launch_exec(t_shell *shell, char *path)
 int		executable(t_shell *shell)
 {
 	char		*path;
+	int			code;
 
 	if ((path = getpath(shell)) == NULL)
 		return (127);
 	if (ft_lstsize(shell->pipeline) == 1)
-		return (launch_exec(shell, path));
+		code = launch_exec(shell, path);
 	else
-		return (change_exec(shell, path));
+		code = change_exec(shell, path);
+	ft_freez((void**)&path);
+	return (code);
 }

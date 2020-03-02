@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 17:50:28 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 22:53:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,18 @@ void	free_cmd(void *content)
 	t_cmd *cmd;
 
 	cmd = (t_cmd*)content;
-	if (cmd->fd_output != 1) //Faudrait pas mettre >2 plutôt?
+	if (cmd->fd_output > 2)
 		close(cmd->fd_output);
+	if (cmd->fd_input > 2)
+		close(cmd->fd_input);
 	ft_free_strs(&cmd->arg);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
 {
-	if (shell->fd_input != 0 && prev == FROM_FILE) // >2?
+	if (shell->fd_input > 2 && prev == FROM_FILE)
 		close(shell->fd_input);
-	if (shell->fd_output != 1 && (prev == TO_FILE || prev == TO_END)) // >2 ?
+	if (shell->fd_output > 2 && (prev == TO_FILE || prev == TO_END))
 		close(shell->fd_output);
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)

@@ -3,4 +3,6 @@
 *.out
 minishell
 .vscode/
+*.txt
 .gitignore
+42TESTERS-MINISHELL

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 21:34:30 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 22:49:20 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,6 @@ int			main(int argc, char **argv, char **envp)
 		ft_putstr_fd("\033[0;32mminishell$ \033[0m", shell.fd_line);
 		if ((keepreading = get_next_line(shell.fd_line, shell.line)) < 0)
 			exit_error(&shell, 0);
-		
-	ft_printf("%p\n", shell.line[0]);
 		shell.cursor[0] = shell.line[0];
 		stillcommand = 1;
 		while (stillcommand)
