@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/02/29 17:55:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/02 15:34:47 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,44 +79,74 @@ char	*get_quote(char **cursor)
 	return (quote);
 }
 
-char	*get_tmp_quote(char **cursor, char *bquote, int i)
+char	*strncmp_esc_dquote(char *dest, char *src, int len)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (src[i] && i < len)
+	{
+		if (src[i] == '\\' && src[i + 1] == '"')
+			i++;
+		if (src[i])
+		{
+			dest[j] = src[i];
+			i++;
+			j++;
+		}
+	}
+	dest[j] = 0;
+	return (dest);
+}
+
+char	*get_tmp_dquote(char **cursor, char *dquote, int len, int i)
 {
 	char	*tmp;
 	char	*quote;
 
 	tmp = NULL;
 	quote = NULL;
-	if (!(tmp = ft_calloc(i + 1, sizeof(char))))
+	if (!(tmp = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
-	ft_strlcpy(tmp, *cursor, i + 1);
+	strncmp_esc_dquote(tmp, *cursor, i);
 	(*cursor) += i;
-	quote = ft_strjoin_gnl(bquote, tmp);
+	quote = ft_strjoin_gnl(dquote, tmp);
 	ft_freez(tmp);
 	return (quote);
 }
 
 char	*get_dquote(char **cursor, t_shell *shell)
 {
-	char	*bquote;
+	char	*dquote;
+	int		len;
 	int		i;
 
-	bquote = NULL;
+	dquote = NULL;
+	len = 0;
 	i = 0;
 	(*cursor)++;
-	while ((*cursor)[i] != '"' && !is_stoparg((*cursor)[i]))
+	while ((*cursor)[i] != '"' && (*cursor)[i] != 0)
 	{
 		if ((*cursor)[i] == '$')
 		{
-			bquote = get_tmp_quote(cursor, bquote, i);
-			bquote = ft_strjoin_gnl(bquote, get_dollar(cursor, shell));
+			dquote = get_tmp_dquote(cursor, dquote, len, i);
+			dquote = ft_strjoin_gnl(dquote, get_dollar(cursor, shell));
 			i = 0;
+			len = 0;
 		}
 		else
+		{
+			if ((*cursor)[i] == '\\' && (*cursor)[i + 1] == '"')
+				i++;
 			i++;
+			len++;
+		}
 	}
-	bquote = get_tmp_quote(cursor, bquote, i);
+	dquote = get_tmp_dquote(cursor, dquote, len, i);
 	(*cursor)++;
-	return (bquote);
+	return (dquote);
 }
 
 char	*strncmp_esc(char *dest, char *src, int len)
