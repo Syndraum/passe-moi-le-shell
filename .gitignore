@@ -6,3 +6,4 @@ minishell
 *.txt
 .gitignore
 42TESTERS-MINISHELL
+minishell.dSYM

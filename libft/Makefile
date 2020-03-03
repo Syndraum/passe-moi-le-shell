@@ -40,7 +40,7 @@ NAME		= libft.a
 
 CC			= gcc
 
-CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES}
+CFLAGS		= -g -Wall -Wextra -Werror -I ${INCLUDES}
 
 RM			= rm -f
 

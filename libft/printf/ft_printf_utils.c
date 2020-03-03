@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 09:52:28 by mchardin          #+#    #+#             */
-/*   Updated: 2019/11/17 11:07:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:44:41 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cont		*ft_strct(char *str, char czero)
 {
 	t_cont	*cont;
 
-	if (!(cont = malloc(sizeof(cont) * 1)))
+	if (!(cont = malloc(sizeof(t_cont))))
 		return (0);
 	cont->str = str;
 	cont->czero = czero;
