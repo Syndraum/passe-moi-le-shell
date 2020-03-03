@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_strs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:39:44 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 17:56:13 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:23:48 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	ft_free_strs(char ***grid)
 		ft_freez((void **)&grid[0][i]);
 		i++;
 	}
-	ft_freez((void **)grid[0]);
+	ft_freez((void **)&grid[0]);
 }
