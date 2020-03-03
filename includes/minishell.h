@@ -10,7 +10,9 @@
 # include <dirent.h>
 
 # define FILE_RIGHTS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
-
+# define ERR_HOME "HOME not set"
+# define ERR_CMD_NF "command not found"
+# define ERR_ID "not a valid identifer"
 typedef enum	e_command
 {
 	EXEC = 1,
@@ -116,6 +118,11 @@ int			get_arg(char **cursor);
 void		free_line(t_shell *shell);
 void		exit_error(t_shell *shell, char *fonction);
 void		exit_end(t_shell *shell);
+//FT_INIT
+char		*ft_shlvl(t_shell *shell);
+void		ft_open_line(char *file, t_shell *shell);
+void		ft_first_init_struct(t_shell *shell);
+void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell);
 
 int			ft_env_lib(t_shell *shell, char **env);
 int			del_oldpwd(char **keys, char **items);

@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 21:32:05 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:18:00 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,41 +130,3 @@ int				last_arg_env(char ***keys, char ***items, char **tab)
 		return (0);
 	return (1);
 }
-
-// int			replace_or_add_key(char ***keys, char ***items, char *var)
-// {
-// 	char	*new_key;
-// 	char	*new_item;
-
-// 	new_item = 0;
-// 	if (is_var_ret_idx(var) == ft_strlen(var) &&
-// 	!(new_key = ft_strdup(var)))
-// 		return (0); //error
-// 	else if (!replace_var(*keys, *items, var) &&
-// 	(!(new_key = ft_strndup(var, strlen_to(var, '=')))
-// 		|| !(new_item = ft_strdup(ft_strchr(var, '=') + 1))))
-// 			return (0); //error
-// 	else
-// 		return (1);
-// 		|| !(*keys = ft_strs_plus_one(*keys, new_key))
-// 		|| !(*items = ft_strs_plus_one(*items, new_item))))
-// 	return (1);
-// }
-
-// int				replace_var(char **keys, char **items, char *key, char *item)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (keys[i])
-// 	{
-// 		if (!ft_strncmp(keys[i], key, ft_strlen(key) + 1))
-// 		{
-// 			ft_freez((void **)&items[i]);
-// 			items[i] = item;
-// 			return (1);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }

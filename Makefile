@@ -1,17 +1,18 @@
 PREFIX = srcs/
 
 SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
+								ft_init.c \
+								ft_init_env.c \
 								ft_is_var.c \
-								ft_builtins_utils.c \
 								ft_builtins.c \
-								ft_env_lib.c \
+								ft_builtins_utils.c \
 								ft_arg_interpretation.c \
 								ft_arg_translation.c \
 								ft_arg_translation_utils.c \
 								ft_cursor_utils.c \
 								ft_echo.c \
 								ft_executable.c \
-								ft_error.c)
+								ft_free_quit.c)
 
 OBJS = ${SRCS:.c=.o}
 

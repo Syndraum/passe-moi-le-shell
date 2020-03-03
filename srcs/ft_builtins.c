@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 21:28:04 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 19:36:43 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char		*home_path(char **keys, char **items)
 			return (items[i]);
 		i++;
 	}
-	ft_printf("minishell: cd: HOME not set\n");
+	ft_dprintf(2, "minishell: cd: %s\n", ERR_HOME);
 	return (0);
 }
 
@@ -46,7 +46,7 @@ int			cd_path(t_shell *shell, char *dir)
 	{
 		if (!ft_strncmp("CDPATH", shell->env_keys[i], 7) && shell->env_items[i]
 		&& !(cd_paths = ft_split(shell->env_items[i], ':')))
-			exit_error(shell, "cd"); //FREE A FAIRE
+			exit_error(shell, "cd");
 	}
 	i = -1;
 	if (cd_paths)
@@ -90,8 +90,8 @@ int			command_cd(t_shell *shell)
 	buf = 0;
 	if (!(buf = getcwd(buf, 0)))
 	{
-		ft_dprintf(2, "minishell: cd: %s : %s\n", //
-			shell->tab[1], strerror(errno)); //
+		ft_dprintf(2, "minishell: cd: %s : %s\n",
+			shell->tab[1], strerror(errno));
 		return (1); // error message?
 	}
 	ft_freez((void**)shell->oldpwd);
@@ -130,7 +130,9 @@ int			command_export(t_shell *shell)
 	char	*key;
 	char	*item;
 	int		ret;
+	int		err;
 
+	err = 0;
 	if (!shell->tab[1])
 	{
 		if (!(shell->output = print_export(shell->env_keys, shell->env_items)))
@@ -144,10 +146,10 @@ int			command_export(t_shell *shell)
 		&& !replace_or_add(&shell->env_keys, &shell->env_items, key, item)))
 			exit_error(shell, "export");
 		else if (ret > 0)
-			return (1); // wrong identifier?
+			err += ft_dprintf(2, "minishell: export: `%s': %s\n", shell->tab[i], ERR_ID);
 		i++;
 	}
-	return (0);
+	return (err > 0 ? 1 : 0);
 }
 
 int			command_unset(t_shell *shell)
@@ -156,23 +158,24 @@ int			command_unset(t_shell *shell)
 	char	*key;
 	char	*item;
 	int		ret;
+	int		err;
 
 	i = 1;
+	err = 0;
 	while (shell->tab[i])
 	{
-		if (!(ret = check_split_var(shell->tab[i], &key, &item) && !item))
-		{
-			if (!unset_var(shell->env_keys, shell->env_items, key))
-				exit_error(shell, "unset");
-		}
-		else if (ret < 0)
+		if ((ret = check_split_var(shell->tab[i], &key, &item)) < 0 ||
+		(!ret && !item && !unset_var(shell->env_keys, shell->env_items, key)))
 			exit_error(shell, "unset");
-		else
-			ft_freez((void **)&item);
+		else if (ret > 0 || item)
+		{
+			err += ft_dprintf(2, "minishell: unset: `%s': %s\n", shell->tab[i], ERR_ID);
+		}
+		ft_freez((void **)&item);
 		ft_freez((void **)&key);
 		i++;
 	}
-	return (0);
+	return (err > 0 ? 1 : 0);
 }
 
 int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE GERER LES ARGUMENTS
