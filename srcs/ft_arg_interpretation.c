@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 22:53:36 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:08:53 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	free_cmd(void *content)
 	if (cmd->fd_input > 2)
 		close(cmd->fd_input);
 	ft_free_strs(&cmd->arg);
+	free(cmd);
 }
 
 int		ft_redirection(t_shell *shell, t_separator prev)
@@ -117,7 +118,7 @@ int		analyse_args(t_shell *shell)
 		if (!(command = malloc(sizeof(t_cmd))))
 			exit_error(shell, 0);
 		command->arg = shell->tab;
-		command->fd_output = shell->fd_input;
+		command->fd_input = shell->fd_input;
 		command->fd_output = shell->fd_output;
 		if (!(elmt = ft_lstnew(command)))
 			exit_error(shell, 0);
