@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/02 18:52:15 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:17:07 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	ft_strlcpy(arg, *cursor, len + 1);
 	(*cursor) += len;
 	var = get_item(arg, shell->env_keys, shell->env_items);
-	if (var)
-		var = ft_strdup(var);
 	ft_freez((void **)&arg);
 	return (var);
 }
