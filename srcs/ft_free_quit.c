@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_quit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/03 19:30:22 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/03 19:44:02 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void		free_line(t_shell *shell)
 {
 	ft_freez((void **)&shell->output);
 	ft_lstclear(&shell->pipeline, free_cmd);
-	ft_freez((void **)&shell->line[0]);
 }
 
 void		free_all(t_shell *shell)
@@ -35,6 +34,7 @@ void		free_all(t_shell *shell)
 	ft_freez((void **)&shell->pwd);
 	ft_freez((void **)&shell->oldpwd);
 	free_line(shell);
+	ft_freez((void **)&shell->line[0]);
 }
 
 void		close_all(t_shell *shell)
