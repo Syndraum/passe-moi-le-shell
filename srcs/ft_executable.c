@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/03 19:36:41 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:03:17 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*try_path(char *filename, char *path_dir)
 	{
 		while ((entry = readdir(dir)) != NULL)
 		{
-			if (ft_strncmp_case(entry->d_name, filename, len) == 0)
+			if (ft_strncmp_case(entry->d_name, filename, len) == 0 && entry->d_type == DT_REG)
 			{
 				closedir(dir);
 				if (!(find = ft_sprintf("%s%c%s", path_dir, '/', filename)))
