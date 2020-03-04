@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 17:19:42 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/04 18:20:12 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			command_cd(t_shell *shell)
 			shell->tab[1], strerror(errno));
 		return (1);
 	}
-	ft_freez((void**)shell->oldpwd);
+	ft_freez((void**)&shell->oldpwd);
 	shell->oldpwd = shell->pwd;
 	shell->pwd = buf;
 	pwd_env(shell);
