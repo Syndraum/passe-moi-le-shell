@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/03 16:17:07 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:36:39 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_item(char *key, char **keys, char **items)
 	return (items[index]);
 }
 
-char	*get_dollar(char **cursor, t_shell *shell)
+char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
 {
 	char	*arg;
 	char	*var;
@@ -47,7 +47,7 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	len = 0;
 	(*cursor)++;
 	len = is_var_ret_idx(*cursor);
-	if (is_stoparg(**cursor))
+	if (is_stoparg(**cursor) || stop_char == **cursor)
 		return (ft_strdup("$"));
 	if (**cursor == '?')
 	{
@@ -59,6 +59,8 @@ char	*get_dollar(char **cursor, t_shell *shell)
 	ft_strlcpy(arg, *cursor, len + 1);
 	(*cursor) += len;
 	var = get_item(arg, shell->env_keys, shell->env_items);
+	if (var)
+		var = ft_strdup(var);
 	ft_freez((void **)&arg);
 	return (var);
 }
@@ -118,6 +120,7 @@ char	*get_tmp_dquote(char **cursor, char *dquote, int len, int i)
 char	*get_dquote(char **cursor, t_shell *shell)
 {
 	char	*dquote;
+	char	*dollar;
 	int		len;
 	int		i;
 
@@ -130,7 +133,9 @@ char	*get_dquote(char **cursor, t_shell *shell)
 		if ((*cursor)[i] == '$')
 		{
 			dquote = get_tmp_dquote(cursor, dquote, len, i);
-			dquote = ft_strjoin_gnl(dquote, get_dollar(cursor, shell));
+			dollar = get_dollar(cursor, shell, '"');
+			dquote = ft_strjoin_gnl(dquote, dollar);
+			ft_freez((void**)&dollar);
 			i = 0;
 			len = 0;
 		}
@@ -172,6 +177,7 @@ char	*strncmp_esc(char *dest, char *src, int len)
 char	*get_unquote(char **cursor, t_shell *shell)
 {
 	char	*arg;
+	char	*dollar;
 	int		len;
 	int		i;
 
@@ -190,7 +196,11 @@ char	*get_unquote(char **cursor, t_shell *shell)
 	strncmp_esc(arg, *cursor, i);
 	(*cursor) += i;
 	if (**cursor == '$')
-		arg = ft_strjoin_gnl(arg, get_dollar(cursor, shell));
+	{
+		dollar = get_dollar(cursor, shell, ' ');
+		arg = ft_strjoin_gnl(arg, dollar);
+		ft_freez((void**)&dollar);
+	}
 	return (arg);
 }
 
