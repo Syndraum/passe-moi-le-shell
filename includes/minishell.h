@@ -37,6 +37,13 @@ typedef enum	e_separator
 	ARG
 }				t_separator;
 
+typedef enum	e_signal
+{
+	NONE,
+	CTRL_C,
+	CTRL_D,
+	CTRL_K
+}				t_signal;
 typedef struct	s_cmd
 {
 	char		**arg;
@@ -68,6 +75,7 @@ typedef	struct	s_shell
 	char		*oldpwd;
 	int			stop;
 	t_list		*pipeline;
+	t_signal	sig;			
 }				t_shell;
 // FT_MINISHELL //
 int			get_command(char *command);

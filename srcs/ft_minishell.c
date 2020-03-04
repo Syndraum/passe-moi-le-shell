@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 16:49:46 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/04 21:29:53 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,21 @@ int			main(int argc, char **argv, char **envp)
 {
 	t_shell		shell;
 	int			keepreading;
+	char		*line;
 
+	// signal(SIGQUIT, SIG_IGN);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (1)
 	{
 		ft_putstr_fd(PROMPT, shell.fd_line);
-		if ((keepreading = get_next_line(shell.fd_line, shell.line)) < 0)
+		// signal(SIGINT, )
+		while ((keepreading = get_next_line(shell.fd_line, &line)) >= 0)
+		{
+			shell.line[0] = ft_strjoin_gnl(shell.line[0], line);
+			if (keepreading == 1 || !shell.line[0][0])
+				break ;
+		}
+		if (keepreading < 0)
 			exit_error(&shell, 0);
 		shell.cursor[0] = shell.line[0];
 		while (main_loop(&shell))
