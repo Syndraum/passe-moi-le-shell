@@ -10,6 +10,7 @@
 # include <dirent.h>
 
 # define FILE_RIGHTS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
+# define PROMPT "\033[0;32mminishell$ \033[0m"
 # define ERR_HOME "HOME not set"
 # define ERR_CMD_NF "command not found"
 # define ERR_ID "not a valid identifer"
