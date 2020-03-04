@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 16:35:51 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/04 16:49:46 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,81 +59,6 @@ int			run_command(t_shell *shell)
 	else if (shell->command == EXIT)
 		exit_end(shell);
 	return (1);
-}
-
-void		loop_pipe(t_shell *shell)
-{
-	int		fd[2];
-	int		fd_input[2];
-	pid_t	child;
-	int		save_fd;
-	t_list	*elmt;
-	t_cmd 	*cmd;
-
-	save_fd = 0;
-	elmt = shell->pipeline;
-	while (elmt != NULL)
-	{
-		cmd = (t_cmd*)elmt->content;
-		pipe(fd);
-		if ((child = fork()) < 0)
-			exit(1);
-		if (child == 0)
-		{
-			shell->tab = cmd->arg;
-			shell->fd_input = cmd->fd_input;
-			shell->fd_output = cmd->fd_output;
-			if (shell->fd_input != 0)
-			{
-				pipe(fd_input);
-				dup2(shell->fd_input, 0);
-				close(fd_input[0]);
-			}
-			dup2(save_fd, 0);
-			if (shell->fd_output != 1)
-				dup2(shell->fd_output, 1);
-			else if (elmt->next != NULL)
-				dup2(fd[1], 1);
-			close(fd[0]);
-			shell->stop = run_command(shell);
-			ft_putstr_fd(shell->output, 1);
-			exit(shell->stop);
-		}
-		else
-		{
-			waitpid(child, &shell->stop, 0);
-			shell->stop = WEXITSTATUS(shell->stop);
-			close(fd[1]);
-			save_fd = fd[0];
-			elmt = elmt->next;
-		}
-	}
-}
-
-void	print_tab_str(char **tab)
-{
-	int i;
-
-	if (tab == NULL)
-		ft_printf("NULL\n");
-	else
-	{
-		i = -1;
-		while (tab[++i])
-			ft_printf("[%d]:%s\n", i, tab[i]);
-	}
-}
-
-void	print_list_tab(t_list *list)
-{
-	t_list	*cursor;
-
-	cursor = list;
-	while (cursor != NULL)
-	{
-		print_tab_str((char**)cursor->content);
-		cursor = cursor->next;
-	}
 }
 
 int			main_loop(t_shell *shell)

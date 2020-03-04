@@ -5,128 +5,87 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/03 18:18:00 by mchardin         ###   ########.fr       */
+/*   Created: 2020/03/04 17:19:59 by mchardin          #+#    #+#             */
+/*   Updated: 2020/03/04 17:20:37 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				check_split_var(char *var, char **key, char **item) // coupe var en key et item
-{
-	int		idx;
-
-	*key = 0;
-	*item = 0;
-	if (!(idx = is_var_ret_idx(var)))
-		return (1); // "not a valid identifer"
-	if (idx == (int)ft_strlen(var))
-	{
-		if (!(*key = ft_strdup(var)))
-			return (-1); //error
-	}
-	else if (var[idx] == '=')
-	{
-		if (!(*key = ft_strndup(var, strlen_to(var, '=')))
-		|| !(*item = ft_strdup(ft_strchr(var, '=') + 1)))
-			return (-1); //error
-	}
-	else
-		return (1);
-	return (0); //went well 
-}
-
-int			unset_var(char **keys, char **items, char *key)
-{
-	int		idx;
-	int		last;
-
-	last = ft_strslen(keys) - 1;
-	idx = get_tabidx(key, keys);
-	if (idx >= 0)
-	{
-		ft_freez((void **)&keys[idx]);
-		ft_freez((void **)&items[idx]);
-		keys[idx] = keys[last];
-		items[idx] = items[last];
-		keys[last] = 0;
-		items[last] = 0;
-		if (!ft_strncmp(key, "PWD", 4))
-		{
-			idx = get_tabidx("OLDPWD", keys);
-			if (idx >= 0 && items[idx])
-			{
-				ft_freez((void **)&items[idx]);
-				if(!(items[idx] = ft_strdup("")))
-					return (0);
-			}
-		}
-	}
-	return (1);
-}
-
-int			replace_or_add(char ***keys, char ***items, char *key, char *item)
-{
-	int		idx;
-
-	if (!key)
-		return (0);
-	idx = get_tabidx(key, *keys);
-	if (idx >= 0)
-	{
-		if (item)
-		{
-			// ft_printf("key =  %s\n", key);
-			ft_freez((void **)&items[0][idx]);
-			items[0][idx] = item;
-		}
-		ft_freez((void **)&key);
-		return (1);
-	}
-	else
-	{
-		idx = ft_strslen(*keys);
-		if (!(*keys = ft_strs_plus_one(*keys, key))
-		|| !(*items = ft_strs_add_end(*items, item, idx)))
-			return (0); //malloc error
-	}
-	return (1);
-}
-
-void			pwd_env(t_shell *shell)
-{
-	int		idx;
-
-	idx = get_tabidx("PWD", shell->env_keys);
-	if (idx >= 0)
-	{
-		if (shell->env_items[idx])
-		{
-			ft_freez((void**)&shell->oldpwd);
-			shell->oldpwd = shell->env_items[idx];
-		}
-		if (!(shell->env_items[idx] = ft_strdup(shell->pwd)))
-			exit_error(shell, "cd");
-	}
-	idx = get_tabidx("OLDPWD", shell->env_keys);
-	if (idx >= 0 && shell->oldpwd)
-	{
-		ft_freez((void **)&shell->env_items[idx]);
-		if (!(shell->env_items[idx] = ft_strdup(shell->oldpwd)))
-			exit_error(shell, "cd"); // free old
-	}
-}
-
-int				last_arg_env(char ***keys, char ***items, char **tab)
+char		*home_path(char **keys, char **items)
 {
 	int		i;
-	char	*key;
-	char	*item;
 
-	i = ft_strslen(tab);
-	if (!(key = ft_strdup("_"))
-	|| !(item = ft_strdup(tab[i - 1]))
-	|| !replace_or_add(keys, items, key, item))
-		return (0);
-	return (1);
+	i = 0;
+	while (keys[i])
+	{
+		if (!ft_strncmp("HOME", keys[i], 5))
+			return (items[i]);
+		i++;
+	}
+	ft_dprintf(2, "minishell: cd: %s\n", ERR_HOME);
+	return (0);
+}
+
+int			cd_path(t_shell *shell, char *dir)
+{
+	char		**cd_paths;
+	int			i;
+	char		*new;
+
+	i = -1;
+	cd_paths = 0;
+	while (shell->env_keys[++i])
+	{
+		if (!ft_strncmp("CDPATH", shell->env_keys[i], 7) && shell->env_items[i]
+		&& !(cd_paths = ft_split(shell->env_items[i], ':')))
+			exit_error(shell, "cd");
+	}
+	i = -1;
+	if (cd_paths)
+	{
+		while (cd_paths[++i])
+		{
+			new = cd_paths[i][ft_strlen(cd_paths[i])] == '/' ?
+			ft_sprintf("%s%s", cd_paths[i], dir)
+			: ft_sprintf("%s/%s", cd_paths[i], dir);
+			if (!new)
+			{
+				ft_free_strs(&cd_paths);
+				exit_error(shell, "cd");
+			}
+			if (chdir(new) >= 0)
+			{
+				ft_free_strs(&cd_paths);
+				shell->output = ft_strjoin_gnl(new, "\n");
+				return (1);
+			}
+			ft_freez((void **)&new);
+		}
+		ft_free_strs(&cd_paths);
+	}
+	return (0);
+}
+
+char		*print_export(char **keys, char **items)
+{
+	int		i;
+	char	*output;
+	char	*tmp;
+
+	i = 0;
+	output = 0;
+	while (keys[i])
+	{
+		if (items[i])
+			tmp = ft_sprintf("declare -x %s=\"%s\"\n", keys[i], items[i]);
+		else
+			tmp = ft_sprintf("declare -x %s\n", keys[i]);
+		if (!tmp)
+			return (0);
+		output = ft_strjoin_gnl(output, tmp);
+		ft_freez((void **)&tmp);
+		i++;
+	}
+	return (output);
 }

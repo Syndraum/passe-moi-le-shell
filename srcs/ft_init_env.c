@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env_lib.c                                       :+:      :+:    :+:   */
+/*   ft_init_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 15:48:23 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/04 16:53:36 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			ft_env_lib(t_shell *shell, char **env)
 	return (1);
 }
 
-int			change_item(char **keys, char **items, char *key, char *item)
+int			replace_item(char **keys, char **items, char *key, char *item)
 {
 	int		idx;
 
@@ -55,7 +55,7 @@ int			init_oldpwd(char ***keys, char ***items)
 	int		end;
 
 	end = ft_strslen(*keys);
-	if (!change_item(*keys, *items, "OLDPWD", 0) &&
+	if (!replace_item(*keys, *items, "OLDPWD", 0) &&
 	(!(*items = ft_strs_add_end(*items, 0, end))
 	|| !(*keys = ft_strs_plus_one(*keys, ft_strdup("OLDPWD")))))
 		return (0); // malooc error

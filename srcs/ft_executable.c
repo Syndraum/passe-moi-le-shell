@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 13:03:17 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:45:17 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	*getpath(t_shell *shell)
 	return (path);
 }
 
-int	change_exec(t_shell *shell, char *path)
+int		change_exec(t_shell *shell, char *path)
 {
 	char		**env;
 
@@ -148,7 +148,7 @@ int	change_exec(t_shell *shell, char *path)
 	return (0);
 }
 
-int	launch_exec(t_shell *shell, char *path)
+int		launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
 	int			fd[2];

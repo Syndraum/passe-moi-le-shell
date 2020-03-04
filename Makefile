@@ -6,13 +6,17 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_is_var.c \
 								ft_builtins.c \
 								ft_builtins_utils.c \
+								ft_env_utils.c \
 								ft_arg_interpretation.c \
+								ft_arg_interpretation_utils.c \
 								ft_arg_translation.c \
 								ft_arg_translation_utils.c \
 								ft_cursor_utils.c \
 								ft_echo.c \
 								ft_executable.c \
-								ft_free_quit.c)
+								ft_exit.c \
+								ft_pipes_n_signals.c \
+								ft_free_close.c)
 
 OBJS = ${SRCS:.c=.o}
 
