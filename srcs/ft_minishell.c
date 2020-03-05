@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/05 12:20:15 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:59:44 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ int			main(int argc, char **argv, char **envp)
 	t_shell		shell;
 	int			keepreading;
 	char		*line;
-
+	struct stat stats;
+	
+	fstat(0, &stats);
 	// signal(SIGQUIT, SIG_IGN);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (1)
@@ -99,7 +101,7 @@ int			main(int argc, char **argv, char **envp)
 		{
 			shell.line[0] = ft_strjoin_gnl(shell.line[0], line);
 			ft_freez((void**)&line);
-			if (keepreading == 1 || !shell.line[0][0])
+			if (shell.fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode) || keepreading == 1 || !shell.line[0][0])
 				break ;
 		}
 		if (keepreading < 0)
