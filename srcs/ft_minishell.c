@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 21:29:53 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:20:15 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int			main(int argc, char **argv, char **envp)
 		while ((keepreading = get_next_line(shell.fd_line, &line)) >= 0)
 		{
 			shell.line[0] = ft_strjoin_gnl(shell.line[0], line);
+			ft_freez((void**)&line);
 			if (keepreading == 1 || !shell.line[0][0])
 				break ;
 		}
