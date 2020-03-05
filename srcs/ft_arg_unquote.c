@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:20:49 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/05 17:21:15 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/05 18:00:26 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*get_unquote(char **cursor, t_shell *shell)
 	arg = NULL;
 	while (!is_stop_unquote((*cursor)[i]))
 	{
-		if (**cursor == '\\')
+		if ((*cursor)[i] == '\\')
 			i++;
 		len++;
 		i++;
