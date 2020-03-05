@@ -100,8 +100,6 @@ int			is_redirection(t_separator sep);
 void		init_struct(t_shell *shell);
 int			init_tab(t_shell *shell);
 // FT_ARG_TRANSLATION //
-int			get_tabidx(char *key, char **tab);
-char		*get_item(char *key, char **keys, char **items);
 char		*get_dollar(char **cursor, t_shell *shell, char stop_char);
 char		*get_quote(char **cursor);
 void		*get_tilde(char **cursor, t_shell *shell);
@@ -172,4 +170,7 @@ void		close_all(t_shell *shell);
 // FT_EXIT //
 void		exit_error(t_shell *shell, char *fonction);
 void		exit_end(t_shell *shell);
+// FT_FIND_ENV //
+int			get_tabidx(char *key, char **tab);
+char		*get_item(char *key, char **keys, char **items);
 #endif

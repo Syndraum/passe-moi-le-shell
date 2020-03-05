@@ -18,7 +18,8 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_executable.c \
 								ft_exit.c \
 								ft_pipes_n_signals.c \
-								ft_free_close.c)
+								ft_free_close.c \
+								ft_find_env.c)
 
 OBJS = ${SRCS:.c=.o}
 
