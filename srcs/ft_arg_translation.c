@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/05 17:23:01 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:41:51 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
 	len = 0;
 	(*cursor)++;
 	len = is_var_ret_idx(*cursor);
-	if (is_stoparg(**cursor) || stop_char == **cursor)
+	if (is_stoparg(**cursor) || stop_char == **cursor || **cursor == '\\')
 		return (ft_strdup("$"));
 	if (**cursor == '?')
 	{
