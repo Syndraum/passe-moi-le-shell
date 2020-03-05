@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 10:28:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/02/20 15:47:25 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:08:47 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			cmp_skip(char **cursor, char *str)
 	return (1);
 }
 
-int			get_arg(char **cursor)
+int			get_sep(char **cursor)
 {
 	*cursor = skip_if(*cursor, ft_iswhitespace);
 	if (cmp_skip(cursor, ">>"))

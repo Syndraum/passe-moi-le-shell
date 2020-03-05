@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/04 13:36:39 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:12:14 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
 	ft_strlcpy(arg, *cursor, len + 1);
 	(*cursor) += len;
 	var = get_item(arg, shell->env_keys, shell->env_items);
-	if (var)
-		var = ft_strdup(var);
 	ft_freez((void **)&arg);
+	var = var ? ft_strdup(var) : ft_strdup("");
 	return (var);
 }
 
@@ -75,81 +74,10 @@ char	*get_quote(char **cursor)
 	if (!(quote = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
 	ft_strlcpy(quote, *cursor, len + 1);
-	(*cursor) += len + 1;
+	(*cursor) += len;
+	if (**cursor == '\'')
+		(*cursor)++;
 	return (quote);
-}
-
-char	*strncmp_esc_dquote(char *dest, char *src, int len)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (src[i] && i < len)
-	{
-		if (src[i] == '\\' && src[i + 1] == '"')
-			i++;
-		if (src[i])
-		{
-			dest[j] = src[i];
-			i++;
-			j++;
-		}
-	}
-	dest[j] = 0;
-	return (dest);
-}
-
-char	*get_tmp_dquote(char **cursor, char *dquote, int len, int i)
-{
-	char	*tmp;
-	char	*quote;
-
-	tmp = NULL;
-	quote = NULL;
-	if (!(tmp = ft_calloc(len + 1, sizeof(char))))
-		return (NULL);
-	strncmp_esc_dquote(tmp, *cursor, i);
-	(*cursor) += i;
-	quote = ft_strjoin_gnl(dquote, tmp);
-	ft_freez((void **)&tmp);
-	return (quote);
-}
-
-char	*get_dquote(char **cursor, t_shell *shell)
-{
-	char	*dquote;
-	char	*dollar;
-	int		len;
-	int		i;
-
-	dquote = NULL;
-	len = 0;
-	i = 0;
-	(*cursor)++;
-	while ((*cursor)[i] != '"' && (*cursor)[i] != 0)
-	{
-		if ((*cursor)[i] == '$')
-		{
-			dquote = get_tmp_dquote(cursor, dquote, len, i);
-			dollar = get_dollar(cursor, shell, '"');
-			dquote = ft_strjoin_gnl(dquote, dollar);
-			ft_freez((void**)&dollar);
-			i = 0;
-			len = 0;
-		}
-		else
-		{
-			if ((*cursor)[i] == '\\' && (*cursor)[i + 1] == '"')
-				i++;
-			i++;
-			len++;
-		}
-	}
-	dquote = get_tmp_dquote(cursor, dquote, len, i);
-	(*cursor)++;
-	return (dquote);
 }
 
 char	*strncmp_esc(char *dest, char *src, int len)
@@ -174,10 +102,23 @@ char	*strncmp_esc(char *dest, char *src, int len)
 	return (dest);
 }
 
+char	*get_dollar_unquote(char **cursor, t_shell *shell, char *arg)
+{
+	char	*dollar;
+
+	if (!(dollar = get_dollar(cursor, shell, ' ')))
+	{
+		free(arg);
+		return (NULL);
+	}
+	arg = ft_strjoin_gnl(arg, dollar);
+	ft_freez((void**)&dollar);
+	return (arg);
+}
+
 char	*get_unquote(char **cursor, t_shell *shell)
 {
 	char	*arg;
-	char	*dollar;
 	int		len;
 	int		i;
 
@@ -195,12 +136,8 @@ char	*get_unquote(char **cursor, t_shell *shell)
 		return (NULL);
 	strncmp_esc(arg, *cursor, i);
 	(*cursor) += i;
-	if (**cursor == '$')
-	{
-		dollar = get_dollar(cursor, shell, ' ');
-		arg = ft_strjoin_gnl(arg, dollar);
-		ft_freez((void**)&dollar);
-	}
+	if (**cursor == '$' && !(arg = get_dollar_unquote(cursor, shell, arg)))
+		return (NULL);
 	return (arg);
 }
 
@@ -213,7 +150,7 @@ void	*get_tilde(char **cursor, t_shell *shell)
 	{
 		home = get_item("HOME", shell->env_keys, shell->env_items);
 		if (home == NULL)
-			arg = (strdup(""));
+			arg = strdup("");
 		else
 			arg = strdup(home);
 	}
@@ -226,42 +163,28 @@ void	*get_tilde(char **cursor, t_shell *shell)
 void	*get_argument(char **cursor, t_shell *shell)
 {
 	char *arg;
-	char *cpy;
 	char *ret;
 
 	arg = NULL;
-	cpy = NULL;
-	ret = NULL;
 	while (!is_stoparg(**cursor))
 	{
 		if (**cursor == '\'')
-		{
-			if (!(ret = get_quote(cursor)))
-				return (NULL);
-		}
+			ret = get_quote(cursor);
 		else if (**cursor == '"')
-		{
-			if (!(ret = get_dquote(cursor, shell)))
-				return (NULL);
-		}
+			ret = get_dquote(cursor, shell);
 		else if (**cursor == '~' && arg == NULL)
 			ret = get_tilde(cursor, shell);
 		else
+			ret = get_unquote(cursor, shell);
+		if (!ret)
 		{
-			if (!(ret = get_unquote(cursor, shell)))
-				return (NULL);
-		}
-		if (arg != NULL)
-			cpy = ft_strdup(arg);
-		if (arg != NULL)
-			ft_freez((void **)&arg);
-		arg = NULL;
-		if (!(arg = ft_strjoin(cpy, ret)))
+			free(arg);
 			return (NULL);
-		ft_freez((void **)&cpy);
-		cpy = NULL;
+		}
+		arg = ft_strjoin_gnl(arg, ret);
 		ft_freez((void **)&ret);
-		ret = NULL;
+		if (!arg)
+			return (NULL);
 	}
 	return (arg);
 }
@@ -273,8 +196,14 @@ void	*set_arg(t_shell *shell)
 
 	cursor = shell->cursor;
 	*cursor = skip_if(*cursor, ft_iswhitespace);
-	arg = get_argument(cursor, shell);
+	if (**cursor != 0)
+	{
+		if (!(arg = get_argument(cursor, shell)))
+			exit_error(shell, 0);
+	}
+	else
+		arg = NULL;
 	shell->arg.str = arg;
-	shell->arg.sep = get_arg(cursor);
+	shell->arg.sep = get_sep(cursor);
 	return (arg);
 }
