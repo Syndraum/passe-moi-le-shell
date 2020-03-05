@@ -12,6 +12,7 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_arg_translation.c \
 								ft_arg_translation_utils.c \
 								ft_arg_dquote.c \
+								ft_arg_unquote.c \
 								ft_cursor_utils.c \
 								ft_echo.c \
 								ft_executable.c \

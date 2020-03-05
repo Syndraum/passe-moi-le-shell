@@ -104,8 +104,6 @@ int			get_tabidx(char *key, char **tab);
 char		*get_item(char *key, char **keys, char **items);
 char		*get_dollar(char **cursor, t_shell *shell, char stop_char);
 char		*get_quote(char **cursor);
-char		*strncmp_esc(char *dest, char *src, int len);
-char		*get_unquote(char **cursor, t_shell *shell);
 void		*get_tilde(char **cursor, t_shell *shell);
 void		*get_argument(char **cursor, t_shell *shell);
 void		*set_arg(t_shell *shell);
@@ -121,6 +119,10 @@ char		*get_tmp_dquote(char **cursor, char *dquote, int len, int i);
 char		*get_dollar_dquote(char **cursor, t_shell *shell, char *dquote);
 char		*init_dquote(char **cursor, int *len, int *i);
 char		*get_dquote(char **cursor, t_shell *shell);
+// FT_ARG_UNQUOTE //
+char		*strncmp_esc(char *dest, char *src, int len);
+char		*get_dollar_unquote(char **cursor, t_shell *shell, char *arg);
+char		*get_unquote(char **cursor, t_shell *shell);
 // FT_CURSOR_UTILS //
 void   		skip_char(char **cursor, char c);
 int			ft_cmp(char *str, char *cursor);
