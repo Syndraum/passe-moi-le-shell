@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/05 15:59:44 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 17:38:47 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int			main_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
+	ft_freez((void **)&shell->output);
+	ft_lstclear(&shell->pipeline, free_cmd);
 	return (shell->arg.sep == END_LINE ? 0 : 1);
 }
 
