@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:19:59 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 17:20:37 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 16:25:59 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			cd_path(t_shell *shell, char *dir)
 	{
 		while (cd_paths[++i])
 		{
-			new = cd_paths[i][ft_strlen(cd_paths[i])] == '/' ?
+			new = cd_paths[i][ft_strlen(cd_paths[i]) - 1] == '/' ?
 			ft_sprintf("%s%s", cd_paths[i], dir)
 			: ft_sprintf("%s/%s", cd_paths[i], dir);
 			if (!new)

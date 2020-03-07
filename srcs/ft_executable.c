@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 17:45:17 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 16:42:18 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int		count_malloc_env(char **keys, char **items)
 	i = -1;
 	while (keys[++i])
 		count += (items[i] != 0);
-	return (count);
+	return (count + 1);
 }
 
-char	**convert_env(t_shell *shell)
+char	**convert_env(t_shell *shell, char *path)
 {
 	int		len;
 	int		i;
@@ -37,7 +37,7 @@ char	**convert_env(t_shell *shell)
 	env = malloc(sizeof(char*) * (len + 1));
 	while (shell->env_keys[i])
 	{
-		if (shell->env_items[i])
+		if (ft_strncmp(shell->env_keys[i], "_", 2) && shell->env_items[i])
 		{
 			env[j] = ft_sprintf("%s=%s",
 				shell->env_keys[i], shell->env_items[i]);
@@ -45,7 +45,8 @@ char	**convert_env(t_shell *shell)
 		}
 		i++;
 	}
-	env[j] = 0;
+	env[j] = ft_sprintf("_=%s", path);
+	env[j + 1] = 0;
 	return (env);
 }
 
@@ -95,10 +96,13 @@ char	*try_path(char *filename, char *path_dir)
 	{
 		while ((entry = readdir(dir)) != NULL)
 		{
-			if (ft_strncmp_case(entry->d_name, filename, len) == 0 && entry->d_type == DT_REG)
+			if (ft_strncmp_case(entry->d_name, filename, len) == 0
+				&& entry->d_type == DT_REG)
 			{
 				closedir(dir);
-				if (!(find = ft_sprintf("%s%c%s", path_dir, '/', filename)))
+				if (!(find = path_dir[ft_strlen(path_dir) - 1] == '/' ?
+				ft_sprintf("%s%s", path_dir, filename)
+				: ft_sprintf("%s/%s", path_dir, filename)))
 					return (NULL);
 				return (find);
 			}
@@ -127,7 +131,7 @@ char	*getpath(t_shell *shell)
 		}
 	}
 	ft_free_strs(&tab);
-	if (!(path = ft_strdup(shell->tab[0])))
+	if (!(path = ft_sprintf("%s%c%s", shell->pwd, '/', shell->tab[0])))
 		return (NULL);
 	if (-1 == stat(path, &sb))
 	{
@@ -141,7 +145,7 @@ int		change_exec(t_shell *shell, char *path)
 {
 	char		**env;
 
-	if (!(env = convert_env(shell)))
+	if (!(env = convert_env(shell, path)))
 		return (127);
 	if (0 > execve(path, shell->tab, env))
 		return (127);

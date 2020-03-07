@@ -73,6 +73,7 @@ typedef	struct	s_shell
 	char		**env_items;
 	char		*pwd;
 	char		*oldpwd;
+	char		*lastarg;
 	int			stop;
 	t_list		*pipeline;
 	t_signal	sig;			
@@ -147,7 +148,7 @@ char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);
 // FT_EXECUTABLE //
 int			count_malloc_env(char **keys, char **items);
-char		**convert_env(t_shell *shell);
+char		**convert_env(t_shell *shell, char *path);
 char		*ft_lowercase(char *str);
 int			ft_strncmp_case(char *s1, char *s2, size_t n);
 char		*try_path(char *filename, char *path_dir);
