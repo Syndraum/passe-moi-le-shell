@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 15:23:36 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 21:24:37 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int			ft_env_lib(t_shell *shell, char **env)
 		shell->env_keys[i] = key;
 		shell->env_items[i] = item;
 		// ft_printf("%s, %s\n", key, item);
+		if (!ft_strncmp(key, "_", 2) && !(shell->lastarg = ft_strdup(item)))
+			exit_error(shell, 0);
 		i++;
 	}
 	shell->env_keys[i] = 0;

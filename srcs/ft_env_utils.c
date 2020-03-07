@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 21:15:32 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 21:23:19 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char			*last_arg_env(t_shell *shell, char **tab)
 	equal = strlen_to(tab[i - 1], '=');
 	if (equal == (int)ft_strlen(tab[i - 1]))
 		last_arg = ft_strdup(tab[i - 1]);
-	else if (i == 0)
+	else if (i == 1)
 		last_arg = ft_strdup("");
 	else
 		last_arg = ft_strndup(tab[i - 1], equal);
