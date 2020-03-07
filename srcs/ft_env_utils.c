@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 16:46:07 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 21:15:32 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,21 @@ void			pwd_env(t_shell *shell)
 	}
 }
 
-int				last_arg_env(char ***keys, char ***items, char **tab)
+char			*last_arg_env(t_shell *shell, char **tab)
 {
 	int		i;
-	char	*key;
-	char	*item;
+	int		equal;
+	char	*last_arg;
 
 	i = ft_strslen(tab);
-	if (!(key = ft_strdup("_"))
-	|| !(item = ft_strdup(tab[i - 1]))
-	|| !replace_or_add(keys, items, key, item))
-		return (0);
-	return (1);
+	equal = strlen_to(tab[i - 1], '=');
+	if (equal == (int)ft_strlen(tab[i - 1]))
+		last_arg = ft_strdup(tab[i - 1]);
+	else if (i == 0)
+		last_arg = ft_strdup("");
+	else
+		last_arg = ft_strndup(tab[i - 1], equal);
+	if (!last_arg)
+		exit_error(shell, tab[0]);
+	return (last_arg);
 }

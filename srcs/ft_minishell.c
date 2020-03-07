@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 19:08:13 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/07 21:06:55 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ int			main_loop(t_shell *shell)
 	shell->pipeline = NULL;
 	if (analyse_args(shell))
 	{
-		if (!(last_arg_env(&shell->env_keys, &shell->env_items, shell->tab)))
-			exit_error(shell, shell->tab[0]);
 		if (ft_lstsize(shell->pipeline) == 1)
 			shell->stop = run_command(shell);
 		else if (ft_lstsize(shell->pipeline) > 1)
@@ -75,6 +73,8 @@ int			main_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
+	shell->lastarg = last_arg_env(shell, shell->tab);
+	unset_var(shell->env_keys, shell->env_items, "_");
 	ft_freez((void **)&shell->output);
 	ft_lstclear(&shell->pipeline, free_cmd);
 	return (shell->arg.sep == END_LINE ? 0 : 1);

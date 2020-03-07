@@ -14,6 +14,7 @@
 # define ERR_HOME "HOME not set"
 # define ERR_CMD_NF "command not found"
 # define ERR_ID "not a valid identifer"
+# define ENV_COMMAND "_=env\n"
 typedef enum	e_command
 {
 	EXEC = 1,
@@ -142,7 +143,7 @@ int			check_split_var(char *var, char **key, char **item);
 int			unset_var(char **keys, char **items, char *key);
 int			replace_or_add(char ***keys, char ***items, char *key, char *item);
 void		pwd_env(t_shell *shell);
-int			last_arg_env(char ***keys, char ***items, char **tab);
+char		*last_arg_env(t_shell *shell, char **tab);
 // FT_ECHO //
 char		*skip_if(char *str, int (*f)(char));
 int			command_echo(t_shell *shell);

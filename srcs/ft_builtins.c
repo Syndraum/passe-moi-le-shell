@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 18:20:12 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 21:12:00 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE G
 	i = 0;
 	while (shell->env_keys[i])
 	{
-		if (shell->env_items[i])
+		if (shell->env_items[i] && ft_strncmp(shell->env_keys[i], "_", 2))
 		{
 			if (!(tmp = ft_sprintf("%s=%s\n",
 				shell->env_keys[i], shell->env_items[i]))
@@ -123,5 +123,7 @@ int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE G
 		ft_freez((void**)&tmp);
 		i++;
 	}
+	if (!(shell->output = ft_strjoin_gnl(shell->output, ENV_COMMAND)))
+		exit_error(shell, "env");
 	return (0);
 }

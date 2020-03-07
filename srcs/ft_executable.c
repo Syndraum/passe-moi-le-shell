@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 16:42:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 19:39:07 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int		count_malloc_env(char **keys, char **items)
 	count = 0;
 	i = -1;
 	while (keys[++i])
-		count += (items[i] != 0);
+		if (ft_strncmp(keys[i], "_", 2))
+			count += (items[i] != 0);
 	return (count + 1);
 }
 
