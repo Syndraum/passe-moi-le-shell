@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/05 18:11:06 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/07 17:26:35 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ void	*get_argument(char **cursor, t_shell *shell)
 		if (!ret)
 		{
 			free(arg);
-			return (NULL);
+			exit_error(shell, 0);
 		}
 		arg = ft_strjoin_gnl(arg, ret);
 		ft_freez((void **)&ret);
 		if (!arg)
-			return (NULL);
+			exit_error(shell, 0);
 	}
 	return (arg);
 }
@@ -111,13 +111,7 @@ void	*set_arg(t_shell *shell)
 
 	cursor = shell->cursor;
 	*cursor = skip_if(*cursor, ft_iswhitespace);
-	if (**cursor != 0)
-	{
-		if (!(arg = get_argument(cursor, shell)))
-			exit_error(shell, 0);
-	}
-	else
-		arg = NULL;
+	arg = get_argument(cursor, shell);
 	shell->arg.str = arg;
 	shell->arg.sep = get_sep(cursor);
 	return (arg);
