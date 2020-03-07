@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/05 15:59:44 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 16:46:40 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int			main_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
+	unset_var(&shell->env_keys, &shell->env_items, "_");
 	return (shell->arg.sep == END_LINE ? 0 : 1);
 }
 

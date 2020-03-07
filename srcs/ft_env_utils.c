@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins_utils.c                                :+:      :+:    :+:   */
+/*   ft_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/03 18:18:00 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/07 16:46:07 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			unset_var(char **keys, char **items, char *key)
 			if (idx >= 0 && items[idx])
 			{
 				ft_freez((void **)&items[idx]);
-				if(!(items[idx] = ft_strdup("")))
+				if (!(items[idx] = ft_strdup("")))
 					return (0);
 			}
 		}
