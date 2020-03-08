@@ -12,7 +12,6 @@ Erreurs a pas oublier de gerer :
 - [ ] redirections vers un directory au lieu d'un file
 - [ ] ecrire exit dans entrée standard si exit
 - [ ] binary file check (for arg du main && executables)
-- [ ] segfault "| wc" >> Ça vien du last_arg_env
 
 ###### Finish
 - [x] ./a.out | echo "loulou"
@@ -40,6 +39,7 @@ Erreurs a pas oublier de gerer :
 - [x] unset OLDPWD ou PWD >> n'est plus jamais recréé si on les redefinie pas a la main
 - [x] ecrire le pwd si on passe par CDPATH
 - [x] peut etre faut gerer les var d'env dans un dictionnaire (exemple : export lala, export >>> declare -x lala apparait) (exemple2 : le OLDPWD qui se met pas a jour si il est unset. La key existe plus. Si on unset PWD, OLDPWD devient une chaine vide, OLDPWD se remet a jour meme si on unset PWD....)
+- [X] segfault "| wc" >> Ça vien du last_arg_env
 
 # Cher journal
 
