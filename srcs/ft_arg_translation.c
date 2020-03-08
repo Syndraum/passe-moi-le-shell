@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/07 21:14:36 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 17:41:13 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	*get_argument(char **cursor, t_shell *shell)
 	return (arg);
 }
 
-void	*set_arg(t_shell *shell)
+char	*set_arg(t_shell *shell)
 {
 	char	*arg;
 	char	**cursor;

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 15:34:16 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 17:35:24 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ int		analyse_args(t_shell *shell)
 		while (!is_end_of_command(shell->arg.sep))
 			if (!arg_loop(shell))
 				;
-		if (!shell->tab)
-			return (0);
 		if (!(command = malloc(sizeof(t_cmd))))
 			exit_error(shell, 0);
 		command->arg = shell->tab;

@@ -106,7 +106,7 @@ char		*get_dollar(char **cursor, t_shell *shell, char stop_char);
 char		*get_quote(char **cursor);
 void		*get_tilde(char **cursor, t_shell *shell);
 void		*get_argument(char **cursor, t_shell *shell);
-void		*set_arg(t_shell *shell);
+char		*set_arg(t_shell *shell);
 // FT_ARG_TRANSLATION_UTILS //
 int			is_stoparg(char c);
 int			is_stop_unquote(char c);

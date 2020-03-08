@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 15:15:31 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 17:40:42 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ int			main_loop(t_shell *shell)
 			loop_pipe(shell);
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
+	}
+	if (shell->arg.sep == PIPE)
+	{
+		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
+		return (0);
 	}
 	shell->lastarg = last_arg_env(shell, shell->tab);
 	unset_var(shell->env_keys, shell->env_items, "_");
