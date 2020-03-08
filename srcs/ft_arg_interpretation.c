@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 17:35:24 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 17:57:38 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ int		arg_loop(t_shell *shell)
 	return (1);
 }
 
+void	skip_redirection(t_shell *shell)
+{
+	while (!is_end_of_command(shell->arg.sep))
+		free(set_arg(shell));
+}
+
 int		analyse_args(t_shell *shell)
 {
 	t_list		*elmt;
@@ -66,7 +72,7 @@ int		analyse_args(t_shell *shell)
 			return (0);
 		while (!is_end_of_command(shell->arg.sep))
 			if (!arg_loop(shell))
-				;
+				skip_redirection(shell);
 		if (!(command = malloc(sizeof(t_cmd))))
 			exit_error(shell, 0);
 		command->arg = shell->tab;
