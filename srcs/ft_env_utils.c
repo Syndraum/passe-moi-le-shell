@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 15:59:17 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 18:50:46 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char			*last_arg_env(t_shell *shell, char **tab)
 
 	ft_freez((void**)&shell->lastarg);
 	if (!tab)
-		return (ft_strdup(""));
+		return (0);
 	i = ft_strslen(tab);
 	equal = strlen_to(tab[i - 1], '=');
 	if (equal == (int)ft_strlen(tab[i - 1]))

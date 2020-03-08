@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 15:17:58 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/08 19:21:55 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char	*getpath(t_shell *shell)
 		}
 	}
 	ft_free_strs(&tab);
-	if (!(path = ft_sprintf("%s%c%s", shell->pwd, '/', shell->tab[0])))
+	if (!(path = ft_strdup(shell->tab[0])))
 		return (NULL);
 	if (-1 == stat(path, &sb))
 	{

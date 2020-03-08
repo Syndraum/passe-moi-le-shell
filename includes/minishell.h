@@ -82,7 +82,7 @@ typedef	struct	s_shell
 // FT_MINISHELL //
 int			get_command(char *command);
 int			run_command(t_shell *shell);
-int			main_loop(t_shell *shell);
+int			cmd_loop(t_shell *shell);
 // FT_INIT //
 char		*ft_shlvl(t_shell *shell);
 void		ft_open_line(char *file, t_shell *shell);
