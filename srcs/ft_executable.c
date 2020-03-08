@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 19:39:07 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:17:58 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,25 +156,15 @@ int		change_exec(t_shell *shell, char *path)
 int		launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
-	int			fd[2];
-	int			fd_input[2];
 
 	if ((child = fork()) < 0)
 		return (127);
 	if (child == 0)
 	{
-		if (shell->fd_output != 1)
-		{
-			pipe(fd);
+		if (shell->fd_output > 2)
 			dup2(shell->fd_output, 1);
-			close(fd[0]);
-		}
-		if (shell->fd_input != 0)
-		{
-			pipe(fd_input);
+		if (shell->fd_input > 2)
 			dup2(shell->fd_input, 0);
-			close(fd_input[0]);
-		}
 		if ((change_exec(shell, path)))
 			return (127);
 	}

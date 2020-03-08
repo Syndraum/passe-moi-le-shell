@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 17:45:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:34:16 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,26 @@
 
 int		ft_redirection(t_shell *shell, t_separator prev)
 {
+	int ret;
+
+	ret = 1;
 	if (shell->fd_input > 2 && prev == FROM_FILE)
 		close(shell->fd_input);
 	else if (shell->fd_output > 2 && (prev == TO_FILE || prev == TO_END))
 		close(shell->fd_output);
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
-	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
-		return (0);
-	}
 	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
-	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
-		return (0);
-	}
 	else if (prev == FROM_FILE
 		&& (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)
-	{
 		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
-		return (0);
-	}
 	ft_freez((void **)&shell->arg.str);
-	return (1);
+	if (shell->fd_input == -1 || shell->fd_output == -1)
+		ret = 0;
+	return (ret);
 }
 
 int		arg_loop(t_shell *shell)
@@ -70,7 +66,9 @@ int		analyse_args(t_shell *shell)
 			return (0);
 		while (!is_end_of_command(shell->arg.sep))
 			if (!arg_loop(shell))
-				return (0);
+				;
+		if (!shell->tab)
+			return (0);
 		if (!(command = malloc(sizeof(t_cmd))))
 			exit_error(shell, 0);
 		command->arg = shell->tab;

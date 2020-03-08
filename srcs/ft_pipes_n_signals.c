@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipes_n_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 19:33:51 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:29:20 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@
 void		loop_pipe(t_shell *shell)
 {
 	int		fd[2];
-	int		fd_input[2];
 	pid_t	child;
 	int		save_fd;
 	t_list	*elmt;
-	t_cmd 	*cmd;
+	t_cmd	*cmd;
 
 	save_fd = 0;
 	elmt = shell->pipeline;
@@ -39,14 +38,11 @@ void		loop_pipe(t_shell *shell)
 			shell->tab = cmd->arg;
 			shell->fd_input = cmd->fd_input;
 			shell->fd_output = cmd->fd_output;
-			if (shell->fd_input != 0)
-			{
-				pipe(fd_input);
+			if (shell->fd_input > 2)
 				dup2(shell->fd_input, 0);
-				close(fd_input[0]);
-			}
-			dup2(save_fd, 0);
-			if (shell->fd_output != 1)
+			else
+				dup2(save_fd, 0);
+			if (shell->fd_output > 2)
 				dup2(shell->fd_output, 1);
 			else if (elmt->next != NULL)
 				dup2(fd[1], 1);

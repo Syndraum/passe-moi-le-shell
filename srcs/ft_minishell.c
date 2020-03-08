@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 21:06:55 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:15:31 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int			run_command(t_shell *shell)
 {
 	int ret;
 
+	if (shell->fd_input == -1 || shell->fd_output == -1)
+		return (1);
 	shell->command = get_command(shell->tab[0]);
 	if (shell->command == EXEC)
 	{
