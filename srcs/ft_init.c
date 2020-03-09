@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 14:19:15 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 22:09:50 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 22:32:02 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void		ft_first_init_struct(t_shell *shell)
 	shell->tab = 0;
 	shell->line[0] = 0;
 	shell->cursor[0] = 0;
+	shell->cursor2[0] = 0;
 	shell->fd_line = 0;
 	shell->fd_input = 0;
 	shell->fd_output = 1;
