@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 19:17:59 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:35:22 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int			run_command(t_shell *shell)
 
 int			cmd_loop(t_shell *shell)
 {
+	shell->lists = NULL;
 	shell->pipeline = NULL;
 	if (analyse_args(shell))
 	{
@@ -75,11 +76,8 @@ int			cmd_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
-	if (shell->arg.sep == PIPE)
-	{
-		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
+	else
 		return (0);
-	}
 	shell->lastarg = last_arg_env(shell, shell->tab);
 	unset_var(shell->env_keys, shell->env_items, "_");
 	ft_freez((void **)&shell->output);

@@ -77,6 +77,7 @@ typedef	struct	s_shell
 	char		*lastarg;
 	int			stop;
 	t_list		*pipeline;
+	t_list		*lists;
 	t_signal	sig;			
 }				t_shell;
 // FT_MINISHELL //
