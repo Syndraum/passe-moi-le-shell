@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 15:33:07 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 20:55:53 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,25 @@ int			run_command(t_shell *shell)
 
 int			cmd_loop(t_shell *shell)
 {
-	t_list	*lists;
-	t_cmd	*cmd;
-
-	lists = shell->lists;
-	while (lists != NULL)
+	shell->pipeline = NULL;
+	if (analyse_args(shell))
 	{
-		shell->pipeline = (t_list*)lists->content;
-		cmd = (t_cmd*)shell->pipeline->content;
-		shell->tab = cmd->arg;
-		shell->fd_input = cmd->fd_input;
-		shell->fd_output = cmd->fd_output;
 		if (ft_lstsize(shell->pipeline) == 1)
 			shell->stop = run_command(shell);
 		else if (ft_lstsize(shell->pipeline) > 1)
 			loop_pipe(shell);
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
-		shell->lastarg = last_arg_env(shell, shell->tab);
-		unset_var(shell->env_keys, shell->env_items, "_");
-		ft_freez((void **)&shell->output);
-		lists = lists->next;
 	}
+	if (shell->arg.sep == PIPE)
+	{
+		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
+		return (0);
+	}
+	shell->lastarg = last_arg_env(shell, shell->tab);
+	unset_var(shell->env_keys, shell->env_items, "_");
+	ft_freez((void **)&shell->output);
+	ft_lstclear(&shell->pipeline, free_cmd);
 	return (shell->arg.sep == END_LINE ? 0 : 1);
 }
 
@@ -106,11 +103,8 @@ int			line_loop(t_shell *shell, struct stat stats)
 	if (keepreading < 0)
 		exit_error(shell, 0);
 	shell->cursor[0] = shell->line[0];
-	shell->lists = NULL;
-	if (analyse_args(shell))
-		cmd_loop(shell);
-	else
-		ft_lstclear(&shell->pipeline, free_cmd);
+	while (cmd_loop(shell))
+		;
 	if (!keepreading)
 		exit_end(shell);
 	free_line(shell);

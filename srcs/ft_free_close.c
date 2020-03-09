@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:00:30 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 15:34:49 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 20:56:12 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void		free_line(t_shell *shell)
 {
 	ft_freez((void **)&shell->output);
-	ft_lstclear(&shell->lists, free_lists);
-	// ft_lstclear(&shell->pipeline, free_cmd);
+	ft_lstclear(&shell->pipeline, free_cmd);
 	ft_freez((void **)&shell->line[0]);
 }
 
@@ -31,14 +30,6 @@ void		free_cmd(void *content)
 		close(cmd->fd_input);
 	ft_free_strs(&cmd->arg);
 	free(cmd);
-}
-
-void		free_lists(void *content)
-{
-	t_list	*pipeline;
-
-	pipeline = (t_list*)content;
-	ft_lstclear(&pipeline, free_cmd);
 }
 
 void		free_all(t_shell *shell)

@@ -77,7 +77,6 @@ typedef	struct	s_shell
 	char		*lastarg;
 	int			stop;
 	t_list		*pipeline;
-	t_list		*lists;
 	t_signal	sig;			
 }				t_shell;
 // FT_MINISHELL //
@@ -168,7 +167,6 @@ void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
 void		free_line(t_shell *shell);
 void		free_cmd(void *tab);
-void		free_lists(void *content);
 void		free_all(t_shell *shell);
 void		close_all(t_shell *shell);
 // FT_EXIT //

@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:06:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 13:48:48 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 20:55:59 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	init_struct(t_shell *shell)
 {
 	shell->output = 0;
 	shell->fd_output = 1;
-	shell->pipeline = NULL;
 }
 
 int		init_tab(t_shell *shell)
