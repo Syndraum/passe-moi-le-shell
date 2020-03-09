@@ -6,11 +6,18 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:09:04 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/05 21:06:19 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 22:59:08 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		is_esc_dquote(char c)
+{
+	if (c == '"' || c == '\\' || c == '$')
+		return (1);
+	return (0);
+}
 
 char	*strncmp_esc_dquote(char *dest, char *src, int len)
 {
@@ -21,7 +28,7 @@ char	*strncmp_esc_dquote(char *dest, char *src, int len)
 	j = 0;
 	while (src[i] && i < len)
 	{
-		if (src[i] == '\\' && src[i + 1] == '"')
+		if (src[i] == '\\' && is_esc_dquote(src[i + 1]))
 			i++;
 		if (src[i])
 		{
@@ -95,7 +102,7 @@ char	*get_dquote(char **cursor, t_shell *shell)
 			i = -1;
 			len = -1;
 		}
-		else if ((*cursor)[i] == '\\' && (*cursor)[i + 1] == '"')
+		else if ((*cursor)[i] == '\\' && is_esc_dquote((*cursor)[i + 1]))
 			i++;
 		len++;
 	}
