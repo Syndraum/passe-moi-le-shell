@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 14:19:15 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 19:41:28 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 22:09:50 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		ft_open_line(char *file, t_shell *shell)
 {
 	if ((shell->fd_line = open(file, O_RDONLY)) < 0)
 	{
-		ft_printf("minishell: %s: %s\n", file, strerror(errno));
+		ft_dprintf(2, "minishell: %s: %s\n", file, strerror(errno));
 		exit(1);
 	}
 }

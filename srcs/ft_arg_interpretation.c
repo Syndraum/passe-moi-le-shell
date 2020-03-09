@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 20:58:30 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 22:07:53 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		close(shell->fd_output);
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
-		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		ft_dprintf(2, "minishell: %s: %s\n", shell->arg.str, strerror(errno));
 	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
-		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		ft_dprintf(2, "minishell: %s: %s\n", shell->arg.str, strerror(errno));
 	else if (prev == FROM_FILE
 		&& (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)
-		ft_printf("minishell: %s: %s\n", shell->arg.str, strerror(errno));
+		ft_dprintf(2, "minishell: %s: %s\n", shell->arg.str, strerror(errno));
 	ft_freez((void **)&shell->arg.str);
 	if (shell->fd_input == -1 || shell->fd_output == -1)
 		ret = 0;
