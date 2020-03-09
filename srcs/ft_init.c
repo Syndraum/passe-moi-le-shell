@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 14:19:15 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 21:17:52 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/09 19:41:28 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void		ft_first_init_struct(t_shell *shell)
 	shell->fd_input = 0;
 	shell->fd_output = 1;
 	shell->lastarg = 0;
+	shell->stop = 0;
 }
 
 void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell)
