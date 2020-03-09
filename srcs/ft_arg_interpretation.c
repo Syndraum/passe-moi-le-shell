@@ -6,7 +6,7 @@
 /*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 12:34:09 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 15:02:22 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		analyse_args(t_shell *shell)
 	int		ret;
 
 	elmt = NULL;
-	while ((ret = set_pipeline(shell)) && shell->arg.sep != END_LINE)
+	while ((ret = set_pipeline(shell)))
 	{
 		if (!(elmt = ft_lstnew(shell->pipeline)))
 			exit_error(shell, 0);
@@ -101,7 +101,9 @@ int		analyse_args(t_shell *shell)
 	}
 	if (!ret && shell->arg.sep == PIPE)
 		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
-	if (!ret && shell->arg.sep == SEMICOLON)
+	else if (!ret && shell->arg.sep == SEMICOLON)
 		ft_dprintf(2, "minishell: syntax error near unexpected token `;'\n");
+	else if (!ret && shell->arg.sep == END_LINE)
+		ret = 1;
 	return (ret);
 }

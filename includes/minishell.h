@@ -168,6 +168,7 @@ void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
 void		free_line(t_shell *shell);
 void		free_cmd(void *tab);
+void		free_lists(void *content);
 void		free_all(t_shell *shell);
 void		close_all(t_shell *shell);
 // FT_EXIT //
@@ -176,4 +177,6 @@ void		exit_end(t_shell *shell);
 // FT_FIND_ENV //
 int			get_tabidx(char *key, char **tab);
 char		*get_item(char *key, char **keys, char **items);
+
+void	print_list_tab(t_list *list);
 #endif
