@@ -6,14 +6,14 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:36:58 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/02 15:41:00 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/09 14:10:05 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
 
-static int		ft_first_read(t_buf *tab, int fd, int *i)
+int		ft_first_read(t_buf *tab, int fd, int *i)
 {
 	if ((*i = read(fd, tab->buf[0], B)) == -1)
 		return (0);
@@ -24,7 +24,7 @@ static int		ft_first_read(t_buf *tab, int fd, int *i)
 	return (1);
 }
 
-static int		ft_check(char *str)
+int		ft_check(char *str)
 {
 	int		i;
 
@@ -38,7 +38,7 @@ static int		ft_check(char *str)
 	return (-1);
 }
 
-static int		ft_copy(char **line, t_buf *tab, char **str)
+int		ft_copy(char **line, t_buf *tab, char **str)
 {
 	int		i;
 	int		j;
@@ -63,7 +63,7 @@ static int		ft_copy(char **line, t_buf *tab, char **str)
 	return (1);
 }
 
-static int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i)
+int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i)
 {
 	if (!(*str = ft_strjoin_gnl(*str, tab->buf[0])))
 		return (0);

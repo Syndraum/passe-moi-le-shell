@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipes_n_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 15:29:20 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:42:30 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void		sig_ctrl_c(t_shell *shell)
+// void		sig_ctrl_c(t_shell *shell, struct stat stats)
 // {
-// 	shell->sig = CTRL_C;
+// 	free_line(shell);
+// 	line_loop(shell, stats);
 // }
 
 void		loop_pipe(t_shell *shell)

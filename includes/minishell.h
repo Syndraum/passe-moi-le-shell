@@ -163,6 +163,7 @@ int			is_key_var(char *key, char *var);
 int			is_var_to_unset(char *var, char *vardef);
 int			is_var_def(char *var);
 // FT_PIPES_N_SIGNALS //
+void		sig_ctrl_c(t_shell *shell, struct stat stats);
 void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
 void		free_line(t_shell *shell);
@@ -175,4 +176,6 @@ void		exit_end(t_shell *shell);
 // FT_FIND_ENV //
 int			get_tabidx(char *key, char **tab);
 char		*get_item(char *key, char **keys, char **items);
+// FT_GNL_MINISHELL //
+int			gnl_minishell(int fd, char **line);
 #endif

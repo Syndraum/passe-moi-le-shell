@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 19:17:59 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/09 14:18:21 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,13 @@ int			line_loop(t_shell *shell, struct stat stats)
 	char		*line;
 	ft_putstr_fd(PROMPT, shell->fd_line);
 	// signal(SIGINT, )
-	while ((keepreading = get_next_line(shell->fd_line, &line)) >= 0)
+	while ((keepreading = gnl_minishell(shell->fd_line, &line)) >= 0)
 	{
+		if (keepreading == 2)
+		{
+			ft_printf("SIGNAL INTERRUPTED\n");
+			break ;
+		}
 		shell->line[0] = ft_strjoin_gnl(shell->line[0], line);
 		ft_freez((void**)&line);
 		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode) || keepreading == 1 || !shell->line[0][0])
@@ -103,13 +108,14 @@ int			line_loop(t_shell *shell, struct stat stats)
 	if (keepreading < 0)
 		exit_error(shell, 0);
 	shell->cursor[0] = shell->line[0];
-	while (cmd_loop(shell))
+	while (keepreading == 2 && cmd_loop(shell))
 		;
 	if (!keepreading)
 		exit_end(shell);
 	free_line(shell);
 	return (1);
 }
+
 // __attribute__((destructor)) void lul(void) // A EFFACER
 // {
 // 	system("leaks minishell");
