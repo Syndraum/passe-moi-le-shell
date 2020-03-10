@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 14:18:21 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/10 10:32:10 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,45 @@ int			run_command(t_shell *shell)
 	return (1);
 }
 
+char		*get_separator(int sep)
+{
+	if (sep == TO_FILE)
+		return (">");
+	else if (sep == TO_END)
+		return (">>");
+	else if (sep == FROM_FILE)
+		return ("<");
+	else if (sep == SEMICOLON)
+		return (";");
+	else if (sep == PIPE)
+		return ("|");
+	return (NULL);
+}
+
+int			check_arg(t_shell *shell)
+{
+	char	**cursor;
+
+	cursor = shell->cursor2;
+	while (**cursor)
+	{
+		shell->arg.str = NULL;
+		shell->arg.sep = 0;
+		*cursor = skip_if(*cursor, ft_iswhitespace);
+		shell->arg.str = get_argument(cursor, shell);
+		shell->arg.sep = get_sep(cursor);
+		if (!shell->arg.str && shell->arg.sep)
+		{
+			free(shell->arg.str);
+			ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n", get_separator(shell->arg.sep));
+			ft_dprintf(2, "minishell: `%s'\n", *shell->line);
+			return (0);
+		}
+		free(shell->arg.str);
+	}
+	return (1);
+}
+
 int			cmd_loop(t_shell *shell)
 {
 	shell->pipeline = NULL;
@@ -75,11 +114,11 @@ int			cmd_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
-	if (shell->arg.sep == PIPE)
-	{
-		ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
-		return (0);
-	}
+	// if (shell->arg.sep == PIPE)
+	// {
+	// 	ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
+	// 	return (0);
+	// }
 	shell->lastarg = last_arg_env(shell, shell->tab);
 	unset_var(shell->env_keys, shell->env_items, "_");
 	ft_freez((void **)&shell->output);

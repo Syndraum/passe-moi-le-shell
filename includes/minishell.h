@@ -64,6 +64,7 @@ typedef	struct	s_shell
 	char		**tab;
 	char		*output;
 	char		*cursor[1];
+	char		*cursor2[1];
 	char		*line[1];
 	int			fd_line; // fd de lecture des commandes
 	int			fd_input;
