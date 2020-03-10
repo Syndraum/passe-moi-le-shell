@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 19:21:55 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:05:29 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int		change_exec(t_shell *shell, char *path)
 		return (127);
 	if (0 > execve(path, shell->tab, env))
 		return (127);
+	signal(SIGINT, sig_ctrl_c); // TROUVER LE BON ENDROIT POUR METTRE CA (retour au prompt)
 	return (0);
 }
 
@@ -157,6 +158,7 @@ int		launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
 
+	signal(SIGINT, SIG_DFL); // TROUVER LE BON ENDROIT POUR METTRE CA (couper le programme, comportement default de sigint)
 	if ((child = fork()) < 0)
 		return (127);
 	if (child == 0)

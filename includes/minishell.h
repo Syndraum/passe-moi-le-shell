@@ -178,6 +178,4 @@ void		exit_end(t_shell *shell);
 // FT_FIND_ENV //
 int			get_tabidx(char *key, char **tab);
 char		*get_item(char *key, char **keys, char **items);
-// FT_GNL_MINISHELL //
-int			gnl_minishell(int fd, char **line);
 #endif
