@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 19:26:26 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:34:17 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int		launch_exec(t_shell *shell, char *path)
 
 	if ((child = fork()) < 0)
 		return (127);
+	signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
 	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL); // C'ETAIT ICI :)
@@ -172,6 +173,7 @@ int		launch_exec(t_shell *shell, char *path)
 	else
 	{
 		waitpid(child, &shell->stop, 0);
+		signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
 		return (WEXITSTATUS(shell->stop));
 	}
 	return (0);
@@ -182,7 +184,6 @@ int		executable(t_shell *shell)
 	char		*path;
 	int			code;
 
-	signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
 	if ((path = getpath(shell)) == NULL)
 		return (127);
 	if (ft_lstsize(shell->pipeline) == 1)
@@ -190,6 +191,5 @@ int		executable(t_shell *shell)
 	else
 		code = change_exec(shell, path);
 	ft_freez((void**)&path);
-	signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
 	return (code);
 }
