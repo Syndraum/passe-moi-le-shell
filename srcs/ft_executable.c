@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 19:08:50 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:26:26 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ int		executable(t_shell *shell)
 	char		*path;
 	int			code;
 
+	signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
 	if ((path = getpath(shell)) == NULL)
 		return (127);
 	if (ft_lstsize(shell->pipeline) == 1)
@@ -189,5 +190,6 @@ int		executable(t_shell *shell)
 	else
 		code = change_exec(shell, path);
 	ft_freez((void**)&path);
+	signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
 	return (code);
 }
