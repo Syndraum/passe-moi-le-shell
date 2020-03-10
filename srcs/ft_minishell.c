@@ -6,11 +6,20 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 10:32:10 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:33:18 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int			g_error_signal = 0;
+
+void		sig_ctrl_c(int i)
+{
+	(void)i;
+	ft_dprintf(0, "\n%s", PROMPT);
+	g_error_signal = 1;
+}
 
 int			get_command(char *command)
 {
@@ -93,8 +102,8 @@ int			check_arg(t_shell *shell)
 		if (!shell->arg.str && shell->arg.sep)
 		{
 			free(shell->arg.str);
-			ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n", get_separator(shell->arg.sep));
-			ft_dprintf(2, "minishell: `%s'\n", *shell->line);
+			ft_dprintf(2, "minishell: %s `%s'\n", ERR_TOKEN, get_separator(shell->arg.sep));
+			// ft_dprintf(2, "minishell: `%s'\n", *shell->line); // pourquoi cette ligne ?
 			return (0);
 		}
 		free(shell->arg.str);
@@ -128,17 +137,17 @@ int			cmd_loop(t_shell *shell)
 
 int			line_loop(t_shell *shell, struct stat stats)
 {
-	int			keepreading;
 	char		*line;
+	int			keepreading;
+
 	ft_putstr_fd(PROMPT, shell->fd_line);
-	// signal(SIGINT, )
-	while ((keepreading = gnl_minishell(shell->fd_line, &line)) >= 0)
+	while ((keepreading = get_next_line(shell->fd_line, &line)) >= 0)
 	{
-		if (keepreading == 2)
-		{
-			ft_printf("SIGNAL INTERRUPTED\n");
-			break ;
-		}
+		// if (keepreading == 2)
+		// {
+		// 	ft_printf("SIGNAL INTERRUPTED\n");
+		// 	break ;
+		// }
 		shell->line[0] = ft_strjoin_gnl(shell->line[0], line);
 		ft_freez((void**)&line);
 		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode) || keepreading == 1 || !shell->line[0][0])
@@ -147,8 +156,12 @@ int			line_loop(t_shell *shell, struct stat stats)
 	if (keepreading < 0)
 		exit_error(shell, 0);
 	shell->cursor[0] = shell->line[0];
-	while (keepreading == 2 && cmd_loop(shell))
-		;
+	shell->cursor2[0] = shell->line[0];
+	if (check_arg(shell))
+		while (cmd_loop(shell))
+			;
+	// else if (g_error_signal)
+	// 	g_error_signal = 0;
 	if (!keepreading)
 		exit_end(shell);
 	free_line(shell);
@@ -166,6 +179,7 @@ int			main(int argc, char **argv, char **envp)
 	struct stat stats;
 
 	fstat(0, &stats);
+	signal(SIGINT, sig_ctrl_c);
 	// signal(SIGQUIT, SIG_IGN);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (line_loop(&shell, stats))

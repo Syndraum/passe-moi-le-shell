@@ -14,6 +14,7 @@
 # define ERR_HOME "HOME not set"
 # define ERR_CMD_NF "command not found"
 # define ERR_ID "not a valid identifer"
+# define ERR_TOKEN "syntax error near unexpected token"
 # define ENV_COMMAND "_=env\n"
 typedef enum	e_command
 {
@@ -164,7 +165,7 @@ int			is_key_var(char *key, char *var);
 int			is_var_to_unset(char *var, char *vardef);
 int			is_var_def(char *var);
 // FT_PIPES_N_SIGNALS //
-void		sig_ctrl_c(t_shell *shell, struct stat stats);
+void		sig_ctrl_c(int i);
 void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
 void		free_line(t_shell *shell);

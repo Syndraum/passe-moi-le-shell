@@ -6,17 +6,11 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 12:42:30 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:20:51 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void		sig_ctrl_c(t_shell *shell, struct stat stats)
-// {
-// 	free_line(shell);
-// 	line_loop(shell, stats);
-// }
 
 void		loop_pipe(t_shell *shell)
 {
