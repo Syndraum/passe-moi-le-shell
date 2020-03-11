@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 18:17:46 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 19:50:41 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ int			check_arg(t_shell *shell)
 	char	*sep;
 
 	cursor = shell->cursor2;
+	shell->arg.sep = 0;
 	while (**cursor)
 	{
-		shell->arg.str = NULL;
-		shell->arg.sep = 0;
 		*cursor = skip_if(*cursor, ft_iswhitespace);
 		shell->arg.str = get_argument(cursor, shell);
 		shell->arg.sep = get_sep(cursor);
@@ -98,7 +97,13 @@ int			check_arg(t_shell *shell)
 			ft_dprintf(2, "%s%s `%s'%s", shell->error_beg, ERR_TOKEN, sep, shell->error_line);
 			return (0);
 		}
-		free(shell->arg.str);
+		ft_freez((void**)&shell->arg.str);
+		*cursor = skip_if(*cursor, ft_iswhitespace);
+	}
+	if (!shell->arg.str && is_redirection(shell->arg.sep))
+	{
+		ft_dprintf(2, "%s%s `newline'%s", shell->error_beg, ERR_TOKEN, shell->error_line);
+		return (0);
 	}
 	return (1);
 }
