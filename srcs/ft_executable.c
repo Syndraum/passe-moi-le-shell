@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 15:34:55 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:05:17 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int		launch_exec(t_shell *shell, char *path)
 		return (127);
 	if (child == 0)
 	{
-		signal(SIGINT, SIG_DFL); // C'ETAIT ICI :)
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (shell->fd_output > 2)
 			dup2(shell->fd_output, 1);
@@ -172,17 +172,25 @@ int		launch_exec(t_shell *shell, char *path)
 	}
 	else
 	{
-		signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
-		signal(SIGCHLD, sig_ignore); // C'ETAIT ICI :)
+		signal(SIGINT, SIG_IGN);
+		signal(SIGCHLD, sig_ignore);
 		waitpid(child, &shell->stop, 0);
-if (shell->stop == 2)
-	ft_putchar_fd('\n', 0);
-else if (shell->stop == 3)
-	ft_putstr_fd("Quit: 3\n", 0);
-// signal(SIGCHLD, sig_ctrl_backslash);
-		signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
-		// signal(SIGQUIT, SIG_IGN);
-		return (WEXITSTATUS(shell->stop));
+		signal(SIGINT, sig_ctrl_c);
+		if (WIFSIGNALED(shell->stop))
+		{
+			if (shell->stop == 2)
+			{
+				ft_putchar_fd('\n', 0);
+				return (1);
+			}
+			else if (shell->stop == 3)
+			{
+				ft_putstr_fd("Quit: 3\n", 0);
+				return (131);
+			}
+		}
+		else
+			return (WEXITSTATUS(shell->stop));
 	}
 	return (0);
 }
