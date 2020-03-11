@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 14:16:01 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 14:32:51 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,9 @@ int			main(int argc, char **argv, char **envp)
 	t_shell		shell;
 	struct stat stats;
 
-	fstat(0, &stats);
 	signal(SIGINT, sig_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
+	fstat(0, &stats);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (line_loop(&shell, stats))
 		;

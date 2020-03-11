@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 14:20:25 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 15:34:55 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,6 @@ int		launch_exec(t_shell *shell, char *path)
 
 	if ((child = fork()) < 0)
 		return (127);
-	signal(SIGINT, sig_ret_line); // C'ETAIT ICI :)
-	signal(SIGQUIT, sig_ctrl_backslash);
 	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL); // C'ETAIT ICI :)
@@ -174,9 +172,16 @@ int		launch_exec(t_shell *shell, char *path)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
+		signal(SIGCHLD, sig_ignore); // C'ETAIT ICI :)
 		waitpid(child, &shell->stop, 0);
+if (shell->stop == 2)
+	ft_putchar_fd('\n', 0);
+else if (shell->stop == 3)
+	ft_putstr_fd("Quit: 3\n", 0);
+// signal(SIGCHLD, sig_ctrl_backslash);
 		signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
-		signal(SIGQUIT, SIG_IGN);
+		// signal(SIGQUIT, SIG_IGN);
 		return (WEXITSTATUS(shell->stop));
 	}
 	return (0);
