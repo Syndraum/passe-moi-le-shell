@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 18:33:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 13:47:39 by roalvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char		*get_separator(int sep)
 int			check_arg(t_shell *shell)
 {
 	char	**cursor;
+	char	*sep;
 
 	cursor = shell->cursor2;
 	while (**cursor)
@@ -102,8 +103,8 @@ int			check_arg(t_shell *shell)
 		if (!shell->arg.str && shell->arg.sep)
 		{
 			free(shell->arg.str);
-			ft_dprintf(2, "minishell: %s `%s'\n", ERR_TOKEN, get_separator(shell->arg.sep));
-			// ft_dprintf(2, "minishell: `%s'\n", *shell->line); // pourquoi cette ligne ?
+			sep = get_separator(shell->arg.sep);
+			ft_dprintf(2, "minishell: %s `%s'\n", ERR_TOKEN, sep);
 			return (0);
 		}
 		free(shell->arg.str);
@@ -123,11 +124,6 @@ int			cmd_loop(t_shell *shell)
 		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
-	// if (shell->arg.sep == PIPE)
-	// {
-	// 	ft_dprintf(2, "minishell: syntax error near unexpected token `|'\n");
-	// 	return (0);
-	// }
 	shell->lastarg = last_arg_env(shell, shell->tab);
 	unset_var(shell->env_keys, shell->env_items, "_");
 	ft_freez((void **)&shell->output);
