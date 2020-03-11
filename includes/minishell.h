@@ -165,7 +165,9 @@ int			is_key_var(char *key, char *var);
 int			is_var_to_unset(char *var, char *vardef);
 int			is_var_def(char *var);
 // FT_PIPES_N_SIGNALS //
+void		sig_ret_line(int i);
 void		sig_ctrl_c(int i);
+void		sig_ctrl_backslash(int i);
 void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
 void		free_line(t_shell *shell);

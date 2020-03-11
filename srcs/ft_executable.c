@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 19:34:17 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/11 14:20:25 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,12 @@ int		launch_exec(t_shell *shell, char *path)
 
 	if ((child = fork()) < 0)
 		return (127);
-	signal(SIGINT, SIG_IGN); // C'ETAIT ICI :)
+	signal(SIGINT, sig_ret_line); // C'ETAIT ICI :)
+	signal(SIGQUIT, sig_ctrl_backslash);
 	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL); // C'ETAIT ICI :)
+		signal(SIGQUIT, SIG_DFL);
 		if (shell->fd_output > 2)
 			dup2(shell->fd_output, 1);
 		if (shell->fd_input > 2)
@@ -174,6 +176,7 @@ int		launch_exec(t_shell *shell, char *path)
 	{
 		waitpid(child, &shell->stop, 0);
 		signal(SIGINT, sig_ctrl_c); // C'ETAIT ICI :)
+		signal(SIGQUIT, SIG_IGN);
 		return (WEXITSTATUS(shell->stop));
 	}
 	return (0);

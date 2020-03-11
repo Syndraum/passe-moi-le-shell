@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 13:47:39 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/11 14:16:01 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int			g_error_signal = 0;
-
-void		sig_ctrl_c(int i)
-{
-	(void)i;
-	ft_dprintf(0, "\n%s", PROMPT);
-	g_error_signal = 1;
-}
 
 int			get_command(char *command)
 {
@@ -176,7 +167,7 @@ int			main(int argc, char **argv, char **envp)
 
 	fstat(0, &stats);
 	signal(SIGINT, sig_ctrl_c);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (line_loop(&shell, stats))
 		;

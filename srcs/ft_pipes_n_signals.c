@@ -6,11 +6,29 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/10 18:20:51 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 14:22:07 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		sig_ret_line(int i)
+{
+	(void)i;
+	ft_putchar_fd('\n', 0);
+}
+
+void		sig_ctrl_c(int i)
+{
+	(void)i;
+	ft_dprintf(0, "\n%s", PROMPT);
+}
+
+void		sig_ctrl_backslash(int i)
+{
+	(void)i;
+	ft_putstr_fd("Quit: 3\n", 0);
+}
 
 void		loop_pipe(t_shell *shell)
 {
