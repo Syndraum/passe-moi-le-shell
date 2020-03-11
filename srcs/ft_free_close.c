@@ -3,20 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_close.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:00:30 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 20:56:12 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/03/11 17:39:05 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		error_strings(t_shell *shell)
+{
+	if (shell->line_nb == 0)
+	{
+		shell->error_beg = ft_strdup("minishell : ");
+		shell->error_line = ft_strdup("\n");
+	}
+	else
+	{
+		shell->error_beg = ft_sprintf("minishell : line %d: ", shell->line_nb);
+		shell->error_line = ft_sprintf("\nminishell : line %d: `%s'\n",
+		shell->line_nb, shell->line[0]);
+	}
+	if (!shell->error_beg || !shell->error_line)
+		exit_error(shell, 0);
+}
 
 void		free_line(t_shell *shell)
 {
 	ft_freez((void **)&shell->output);
 	ft_lstclear(&shell->pipeline, free_cmd);
 	ft_freez((void **)&shell->line[0]);
+	ft_freez((void **)&shell->error_beg);
+	ft_freez((void **)&shell->error_line);
 }
 
 void		free_cmd(void *content)

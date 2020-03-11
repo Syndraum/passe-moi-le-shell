@@ -80,6 +80,9 @@ typedef	struct	s_shell
 	int			stop;
 	t_list		*pipeline;
 	t_signal	sig;			
+	int			line_nb;
+	char		*error_beg;
+	char		*error_line;
 }				t_shell;
 // FT_MINISHELL //
 int			get_command(char *command);
@@ -161,14 +164,12 @@ int			launch_exec(t_shell *shell, char *path);
 int			executable(t_shell *shell);
 // FT_IS_VAR //
 int			is_var_ret_idx(char *var);
-int			is_key_var(char *key, char *var);
-int			is_var_to_unset(char *var, char *vardef);
-int			is_var_def(char *var);
 // FT_PIPES_N_SIGNALS //
 void		sig_ignore(int i);
 void		sig_ctrl_c(int i);
 void		loop_pipe(t_shell *shell);
 // FT_FREE_CLOSE //
+void		error_strings(t_shell *shell);
 void		free_line(t_shell *shell);
 void		free_cmd(void *tab);
 void		free_all(t_shell *shell);

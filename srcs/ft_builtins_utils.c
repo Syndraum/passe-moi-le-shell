@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:19:59 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 16:25:59 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:16:40 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char		*home_path(char **keys, char **items)
 			return (items[i]);
 		i++;
 	}
-	ft_dprintf(2, "minishell: cd: %s\n", ERR_HOME);
+	ft_dprintf(2, "%scd: %s\n", ERR_HOME);
 	return (0);
 }
 

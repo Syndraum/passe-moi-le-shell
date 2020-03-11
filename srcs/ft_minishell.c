@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 14:32:51 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:17:46 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			run_command(t_shell *shell)
 	{
 		ret = executable(shell);
 		if (ret == 127)
-			ft_dprintf(2, "minishell : %s: %s\n", shell->tab[0], ERR_CMD_NF);
+			ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->tab[0], ERR_CMD_NF, shell->error_line);
 		return (ret);
 	}
 	else if (shell->command == ECHO)
@@ -95,7 +95,7 @@ int			check_arg(t_shell *shell)
 		{
 			free(shell->arg.str);
 			sep = get_separator(shell->arg.sep);
-			ft_dprintf(2, "minishell: %s `%s'\n", ERR_TOKEN, sep);
+			ft_dprintf(2, "%s%s `%s'%s", shell->error_beg, ERR_TOKEN, sep, shell->error_line);
 			return (0);
 		}
 		free(shell->arg.str);
@@ -137,11 +137,17 @@ int			line_loop(t_shell *shell, struct stat stats)
 		// }
 		shell->line[0] = ft_strjoin_gnl(shell->line[0], line);
 		ft_freez((void**)&line);
-		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode) || keepreading == 1 || !shell->line[0][0])
+		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode)
+			|| keepreading == 1 || !shell->line[0][0])
+		{
+			if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode))
+				shell->line_nb++;
+		}
 			break ;
 	}
 	if (keepreading < 0)
 		exit_error(shell, 0);
+	error_strings(shell);
 	shell->cursor[0] = shell->line[0];
 	shell->cursor2[0] = shell->line[0];
 	if (check_arg(shell))

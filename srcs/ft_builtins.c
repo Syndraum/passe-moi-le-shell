@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 22:11:18 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 21:12:00 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:21:00 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ int			command_cd(t_shell *shell)
 		return (1);
 	if (chdir(buf) < 0 && (buf[0] == '/' || !cd_path(shell, buf)))
 	{
-		ft_dprintf(2, "minishell: cd: %s : %s\n",
-			shell->tab[1], strerror(errno));
+		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg, 
+			shell->tab[1], strerror(errno), shell->error_line);
 		return (1);
 	}
 	buf = 0;
 	if (!(buf = getcwd(buf, 0)))
 	{
-		ft_dprintf(2, "minishell: cd: %s : %s\n",
-			shell->tab[1], strerror(errno));
+		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg, 
+			shell->tab[1], strerror(errno), shell->error_line);
 		return (1);
 	}
 	ft_freez((void**)&shell->oldpwd);
@@ -68,8 +68,8 @@ int			command_export(t_shell *shell)
 		&& !replace_or_add(&shell->env_keys, &shell->env_items, key, item)))
 			exit_error(shell, "export");
 		else if (ret > 0)
-			err += ft_dprintf(2, "minishell: export: `%s': %s\n",
-			shell->tab[i], ERR_ID);
+			err += ft_dprintf(2, "%sexport: `%s': %s%s", shell->error_beg, 
+			shell->tab[i], ERR_ID, shell->error_line);
 		i++;
 	}
 	return (err > 0 ? 1 : 0);
@@ -92,8 +92,8 @@ int			command_unset(t_shell *shell)
 			exit_error(shell, "unset");
 		else if (ret > 0 || item)
 		{
-			err += ft_dprintf(2, "minishell: unset: `%s': %s\n",
-			shell->tab[i], ERR_ID);
+			err += ft_dprintf(2, "%sunset: `%s': %s%s", shell->error_beg, 
+			shell->tab[i], ERR_ID, shell->error_line);
 		}
 		ft_freez((void **)&item);
 		ft_freez((void **)&key);
