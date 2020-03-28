@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_close.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: syndraum <syndraum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:00:30 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 17:39:05 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/03/28 17:45:51 by syndraum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void		free_all(t_shell *shell)
 	ft_freez((void **)&shell->env_items);
 	ft_freez((void **)&shell->pwd);
 	ft_freez((void **)&shell->oldpwd);
+	ft_freez((void**)&shell->lastarg);
 	free_line(shell);
 }
 
