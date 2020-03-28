@@ -45,7 +45,7 @@ all:	${NAME}
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}:	makelib ${OBJS}
-	${CC} ${CFLAGS} ${LIBFT_FLAGS} ${OBJS} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT_FLAGS} -o ${NAME}
 
 run:	all
 	./$(NAME)
