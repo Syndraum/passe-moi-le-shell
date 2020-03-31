@@ -6,7 +6,7 @@
 /*   By: syndraum <syndraum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/28 17:55:05 by syndraum         ###   ########.fr       */
+/*   Updated: 2020/03/31 16:17:59 by syndraum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	*getpath(t_shell *shell)
 	ft_free_strs(&tab);
 	if (!(path = ft_strdup(shell->tab[0])))
 		return (NULL);
-	if (-1 == stat(path, &sb))
+	if (-1 == stat(path, &sb) || (!S_ISREG(sb.st_mode) && !S_ISLNK(sb.st_mode)))
 	{
 		free(path);
 		return (NULL);
@@ -147,9 +147,9 @@ int		change_exec(t_shell *shell, char *path)
 	char		**env;
 
 	if (!(env = convert_env(shell, path)))
-		return (127);
+		return (1);
 	if (0 > execve(path, shell->tab, env))
-		return (127);
+		return (1);
 	return (0);
 }
 
@@ -168,7 +168,7 @@ int		launch_exec(t_shell *shell, char *path)
 		if (shell->fd_input > 2)
 			dup2(shell->fd_input, 0);
 		if ((change_exec(shell, path)))
-			return (127);
+			exit(127);
 	}
 	else
 	{
@@ -201,7 +201,11 @@ int		executable(t_shell *shell)
 	int			code;
 
 	if ((path = getpath(shell)) == NULL)
+	{
+		if (ft_strchr(shell->tab[0], '/'))
+			return (126);
 		return (127);
+	}
 	if (ft_lstsize(shell->pipeline) == 1)
 		code = launch_exec(shell, path);
 	else
