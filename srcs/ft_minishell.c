@@ -44,6 +44,8 @@ int			run_command(t_shell *shell)
 		ret = executable(shell);
 		if (ret == 127)
 			ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->tab[0], ERR_CMD_NF, shell->error_line);
+		else if (ret == 126)
+			ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->tab[0], ERR_FILE_DIR, shell->error_line);
 		return (ret);
 	}
 	else if (shell->command == ECHO)
