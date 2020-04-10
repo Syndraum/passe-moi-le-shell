@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	open_file(t_shell *shell, t_separator prev)
+{
+	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
+		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
+		print_error(shell, shell->arg.str, strerror(errno));
+	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
+		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
+		print_error(shell, shell->arg.str, strerror(errno));
+	else if (prev == FROM_FILE
+		&& (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)
+		print_error(shell, shell->arg.str, strerror(errno));
+}
+
 int		ft_redirection(t_shell *shell, t_separator prev)
 {
 	int ret;
@@ -21,15 +34,7 @@ int		ft_redirection(t_shell *shell, t_separator prev)
 		close(shell->fd_input);
 	else if (shell->fd_output > 2 && (prev == TO_FILE || prev == TO_END))
 		close(shell->fd_output);
-	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
-		ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->arg.str, strerror(errno), shell->error_line);
-	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
-		ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->arg.str, strerror(errno), shell->error_line);
-	else if (prev == FROM_FILE
-		&& (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)
-		ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->arg.str, strerror(errno), shell->error_line);
+	open_file(shell, prev);
 	ft_freez((void **)&shell->arg.str);
 	if (shell->fd_input == -1 || shell->fd_output == -1)
 		ret = 0;

@@ -32,6 +32,11 @@ int			get_command(char *command)
 		return (EXEC);
 }
 
+void		print_error(t_shell *shell, char *s2, char *s1)
+{
+	ft_dprintf(2, "%s%s: %s%s", shell->error_beg, s2, s1, shell->error_line);
+}
+
 int			run_command(t_shell *shell)
 {
 	int ret;
@@ -43,9 +48,9 @@ int			run_command(t_shell *shell)
 	{
 		ret = executable(shell);
 		if (ret == 127)
-			ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->tab[0], ERR_CMD_NF, shell->error_line);
+			print_error(shell, shell->tab[0], ERR_CMD_NF);
 		else if (ret == 126)
-			ft_dprintf(2, "%s%s: %s%s", shell->error_beg, shell->tab[0], ERR_FILE_DIR, shell->error_line);
+			print_error(shell, shell->tab[0], ERR_FILE_DIR);
 		return (ret);
 	}
 	else if (shell->command == ECHO)
@@ -96,7 +101,7 @@ int			check_arg(t_shell *shell)
 		{
 			free(shell->arg.str);
 			sep = get_separator(shell->arg.sep);
-			ft_dprintf(2, "%s%s `%s'%s", shell->error_beg, ERR_TOKEN, sep, shell->error_line);
+			print_error(shell, ERR_TOKEN, sep);
 			return (0);
 		}
 		ft_freez((void**)&shell->arg.str);
@@ -104,7 +109,7 @@ int			check_arg(t_shell *shell)
 	}
 	if (!shell->arg.str && is_redirection(shell->arg.sep))
 	{
-		ft_dprintf(2, "%s%s `newline'%s", shell->error_beg, ERR_TOKEN, shell->error_line);
+		print_error(shell, ERR_TOKEN, "'mewline'");
 		return (0);
 	}
 	return (1);
@@ -137,11 +142,6 @@ int			line_loop(t_shell *shell, struct stat stats)
 	ft_putstr_fd(PROMPT, shell->fd_line);
 	while ((keepreading = get_next_line(shell->fd_line, &line)) >= 0)
 	{
-		// if (keepreading == 2)
-		// {
-		// 	ft_printf("SIGNAL INTERRUPTED\n");
-		// 	break ;
-		// }
 		shell->line[0] = ft_strjoin_gnl(shell->line[0], line);
 		ft_freez((void**)&line);
 		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode)
@@ -150,7 +150,7 @@ int			line_loop(t_shell *shell, struct stat stats)
 			if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode))
 				shell->line_nb++;
 		}
-			break ;
+			break;
 	}
 	if (keepreading < 0)
 		exit_error(shell, 0);
@@ -160,18 +160,11 @@ int			line_loop(t_shell *shell, struct stat stats)
 	if (check_arg(shell))
 		while (cmd_loop(shell))
 			;
-	// else if (g_error_signal)
-	// 	g_error_signal = 0;
 	if (!keepreading)
 		exit_end(shell);
 	free_line(shell);
 	return (1);
 }
-
-// __attribute__((destructor)) void lul(void) // A EFFACER
-// {
-// 	system("leaks minishell");
-// }
 
 int			main(int argc, char **argv, char **envp)
 {

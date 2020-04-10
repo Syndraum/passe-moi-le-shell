@@ -29,7 +29,6 @@ int			ft_env_lib(t_shell *shell, char **env)
 			exit_error(shell, 0);
 		shell->env_keys[i] = key;
 		shell->env_items[i] = item;
-		// ft_printf("%s, %s\n", key, item);
 		if (!ft_strncmp(key, "_", 2) && !(shell->lastarg = ft_strdup(item)))
 			exit_error(shell, 0);
 		i++;

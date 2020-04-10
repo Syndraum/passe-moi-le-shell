@@ -88,6 +88,7 @@ typedef	struct	s_shell
 // FT_MINISHELL //
 int			get_command(char *command);
 int			run_command(t_shell *shell);
+void		print_error(t_shell *shell, char *first, char *second);
 int			cmd_loop(t_shell *shell);
 // FT_INIT //
 char		*ft_shlvl(t_shell *shell);

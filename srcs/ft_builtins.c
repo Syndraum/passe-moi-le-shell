@@ -28,14 +28,14 @@ int			command_cd(t_shell *shell)
 		return (1);
 	if (chdir(buf) < 0 && (buf[0] == '/' || !cd_path(shell, buf)))
 	{
-		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg, 
+		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg,
 			shell->tab[1], strerror(errno), shell->error_line);
 		return (1);
 	}
 	buf = 0;
 	if (!(buf = getcwd(buf, 0)))
 	{
-		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg, 
+		ft_dprintf(2, "%scd: %s : %s%s", shell->error_beg,
 			shell->tab[1], strerror(errno), shell->error_line);
 		return (1);
 	}
@@ -68,7 +68,7 @@ int			command_export(t_shell *shell)
 		&& !replace_or_add(&shell->env_keys, &shell->env_items, key, item)))
 			exit_error(shell, "export");
 		else if (ret > 0)
-			err += ft_dprintf(2, "%sexport: `%s': %s%s", shell->error_beg, 
+			err += ft_dprintf(2, "%sexport: `%s': %s%s", shell->error_beg,
 			shell->tab[i], ERR_ID, shell->error_line);
 		i++;
 	}
@@ -92,7 +92,7 @@ int			command_unset(t_shell *shell)
 			exit_error(shell, "unset");
 		else if (ret > 0 || item)
 		{
-			err += ft_dprintf(2, "%sunset: `%s': %s%s", shell->error_beg, 
+			err += ft_dprintf(2, "%sunset: `%s': %s%s", shell->error_beg,
 			shell->tab[i], ERR_ID, shell->error_line);
 		}
 		ft_freez((void **)&item);
@@ -102,7 +102,7 @@ int			command_unset(t_shell *shell)
 	return (err > 0 ? 1 : 0);
 }
 
-int			command_env(t_shell *shell) //JE RAPPELLE QUE LE SUJET NE DEMANDE PAS DE GERER LES ARGUMENTS
+int			command_env(t_shell *shell)
 {
 	int		i;
 	char	*tmp;

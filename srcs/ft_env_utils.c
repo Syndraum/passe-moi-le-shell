@@ -76,7 +76,6 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 	{
 		if (item)
 		{
-			// ft_printf("key =  %s\n", key);
 			ft_freez((void **)&items[0][idx]);
 			items[0][idx] = item;
 		}

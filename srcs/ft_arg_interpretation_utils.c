@@ -39,12 +39,10 @@ int		init_tab(t_shell *shell)
 	if (!(set_arg(shell)))
 	{
 		shell->tab = 0;
-		return (0); // EXIT ? RETURN ? 
+		return (0);
 	}
 	if (!(shell->tab = malloc(sizeof(char*) * 2)))
-	{
 		exit_error(shell, shell->arg.str);
-	}
 	shell->tab[0] = shell->arg.str;
 	shell->tab[1] = NULL;
 	return (1);

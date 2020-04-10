@@ -27,7 +27,7 @@ INCLUDES	=	./includes/
 
 INCLUDES_L	=	./libft/includes/
 
-CC	= gcc
+CC	= clang
 
 CFLAGS = -g -Werror -Wextra -Wall -I ${INCLUDES} -I ${INCLUDES_L}
 
