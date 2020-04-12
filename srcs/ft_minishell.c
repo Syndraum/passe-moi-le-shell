@@ -150,7 +150,7 @@ int			line_loop(t_shell *shell, struct stat stats)
 			if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode))
 				shell->line_nb++;
 		}
-			break;
+		break ;
 	}
 	if (keepreading < 0)
 		exit_error(shell, 0);

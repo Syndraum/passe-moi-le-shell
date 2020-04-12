@@ -12,28 +12,28 @@
 
 #include "minishell.h"
 
-int				check_split_var(char *var, char **key, char **item) // coupe var en key et item
+int				check_split_var(char *var, char **key, char **item)
 {
 	int		idx;
 
 	*key = 0;
 	*item = 0;
 	if (!(idx = is_var_ret_idx(var)))
-		return (1); // "not a valid identifer"
+		return (1);
 	if (idx == (int)ft_strlen(var))
 	{
 		if (!(*key = ft_strdup(var)))
-			return (-1); //error
+			return (-1);
 	}
 	else if (var[idx] == '=')
 	{
 		if (!(*key = ft_strndup(var, strlen_to(var, '=')))
 		|| !(*item = ft_strdup(ft_strchr(var, '=') + 1)))
-			return (-1); //error
+			return (-1);
 	}
 	else
 		return (1);
-	return (0); //went well 
+	return (0); 
 }
 
 int			unset_var(char **keys, char **items, char *key)
@@ -87,7 +87,7 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 		idx = ft_strslen(*keys);
 		if (!(*keys = ft_strs_plus_one(*keys, key))
 		|| !(*items = ft_strs_add_end(*items, item, idx)))
-			return (0); //malloc error
+			return (0);
 	}
 	return (1);
 }
@@ -112,7 +112,7 @@ void			pwd_env(t_shell *shell)
 	{
 		ft_freez((void **)&shell->env_items[idx]);
 		if (!(shell->env_items[idx] = ft_strdup(shell->oldpwd)))
-			exit_error(shell, "cd"); // free old
+			exit_error(shell, "cd");
 	}
 }
 
