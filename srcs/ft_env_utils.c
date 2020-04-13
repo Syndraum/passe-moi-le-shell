@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/08 18:50:46 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/13 13:09:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				check_split_var(char *var, char **key, char **item)
+int			check_split_var(char *var, char **key, char **item)
 {
 	int		idx;
 
@@ -92,7 +92,7 @@ int			replace_or_add(char ***keys, char ***items, char *key, char *item)
 	return (1);
 }
 
-void			pwd_env(t_shell *shell)
+void		pwd_env(t_shell *shell)
 {
 	int		idx;
 
@@ -116,7 +116,7 @@ void			pwd_env(t_shell *shell)
 	}
 }
 
-char			*last_arg_env(t_shell *shell, char **tab)
+char		*last_arg_env(t_shell *shell, char **tab)
 {
 	int		i;
 	int		equal;

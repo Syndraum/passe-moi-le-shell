@@ -109,7 +109,6 @@ int			is_redirection(t_separator sep);
 void		init_struct(t_shell *shell);
 int			init_tab(t_shell *shell);
 // FT_ARG_TRANSLATION //
-char		*get_dollar(char **cursor, t_shell *shell, char stop_char);
 char		*get_quote(char **cursor);
 void		*get_tilde(char **cursor, t_shell *shell);
 void		*get_argument(char **cursor, t_shell *shell);
@@ -123,13 +122,15 @@ int			strlen_if(char *str, int (*f)(char));
 // FT_ARG_DQUOTE //
 char		*strncmp_esc_dquote(char *dest, char *src, int len);
 char		*get_tmp_dquote(char **cursor, char *dquote, int len, int i);
-char		*get_dollar_dquote(char **cursor, t_shell *shell, char *dquote);
 char		*init_dquote(char **cursor, int *len, int *i);
 char		*get_dquote(char **cursor, t_shell *shell);
 // FT_ARG_UNQUOTE //
 char		*strncmp_esc(char *dest, char *src, int len);
-char		*get_dollar_unquote(char **cursor, t_shell *shell, char *arg);
 char		*get_unquote(char **cursor, t_shell *shell);
+// FT_ARG_DOLLAR //
+char		*get_dollar_dquote(char **cursor, t_shell *shell, char *dquote);
+char		*get_dollar_unquote(char **cursor, t_shell *shell, char *arg);
+char		*get_dollar(char **cursor, t_shell *shell, char stop_char);
 // FT_CURSOR_UTILS //
 void   		skip_char(char **cursor, char c);
 int			ft_cmp(char *str, char *cursor);

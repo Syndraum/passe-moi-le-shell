@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_dquote.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:09:04 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/09 22:59:08 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/04/13 12:58:36 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,6 @@ char	*get_tmp_dquote(char **cursor, char *dquote, int len, int i)
 	quote = ft_strjoin_gnl(dquote, tmp);
 	ft_freez((void **)&tmp);
 	return (quote);
-}
-
-char	*get_dollar_dquote(char **cursor, t_shell *shell, char *dquote)
-{
-	char	*dollar;
-
-	if (!(dollar = get_dollar(cursor, shell, '"')))
-	{
-		free(dquote);
-		return (NULL);
-	}
-	dquote = ft_strjoin_gnl(dquote, dollar);
-	ft_freez((void**)&dollar);
-	if (!dquote)
-		return (NULL);
-	return (dquote);
 }
 
 char	*init_dquote(char **cursor, int *len, int *i)

@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/08 17:41:13 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/04/13 12:59:26 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
-{
-	char	*arg;
-	char	*var;
-	int		len;
-
-	var = NULL;
-	arg = NULL;
-	len = 0;
-	(*cursor)++;
-	len = is_var_ret_idx(*cursor);
-	if (is_stoparg(**cursor) || stop_char == **cursor || **cursor == '\\')
-		return (ft_strdup("$"));
-	if (**cursor == '?')
-	{
-		(*cursor)++;
-		return (ft_itoa(shell->stop));
-	}
-	else if (**cursor == '_')
-	{
-		(*cursor)++;
-		return (ft_strdup(shell->lastarg));
-	}
-	if (!(arg = ft_calloc(len + 1, sizeof(char))))
-		return (NULL);
-	ft_strlcpy(arg, *cursor, len + 1);
-	(*cursor) += len;
-	var = get_item(arg, shell->env_keys, shell->env_items);
-	ft_freez((void **)&arg);
-	var = var ? ft_strdup(var) : ft_strdup("");
-	return (var);
-}
 
 char	*get_quote(char **cursor)
 {

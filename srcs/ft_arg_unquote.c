@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_unquote.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:20:49 by roalvare          #+#    #+#             */
-/*   Updated: 2020/03/05 18:00:26 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/04/13 13:02:11 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,6 @@ char	*strncmp_esc(char *dest, char *src, int len)
 	}
 	dest[j] = 0;
 	return (dest);
-}
-
-char	*get_dollar_unquote(char **cursor, t_shell *shell, char *arg)
-{
-	char	*dollar;
-
-	if (!(dollar = get_dollar(cursor, shell, ' ')))
-	{
-		free(arg);
-		return (NULL);
-	}
-	arg = ft_strjoin_gnl(arg, dollar);
-	ft_freez((void**)&dollar);
-	return (arg);
 }
 
 char	*get_unquote(char **cursor, t_shell *shell)
