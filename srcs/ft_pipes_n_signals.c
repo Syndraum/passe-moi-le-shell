@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipes_n_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 15:25:18 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/13 16:19:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,47 +23,46 @@ void		sig_ctrl_c(int i)
 	ft_dprintf(0, "\n%s", PROMPT);
 }
 
+void		pipe_child(t_shell *shell, t_pipeline *pipeline)
+{
+	shell->tab = pipeline->cmd->arg;
+	shell->fd_input = pipeline->cmd->fd_input;
+	shell->fd_output = pipeline->cmd->fd_output;
+	if (shell->fd_input > 2)
+		dup2(shell->fd_input, 0);
+	else
+		dup2(pipeline->save_fd, 0);
+	if (shell->fd_output > 2)
+		dup2(shell->fd_output, 1);
+	else if (pipeline->elmt->next != NULL)
+		dup2(pipeline->fd[1], 1);
+	close(pipeline->fd[0]);
+	shell->stop = run_command(shell);
+	ft_putstr_fd(shell->output, 1);
+	exit(shell->stop);
+}
+
 void		loop_pipe(t_shell *shell)
 {
-	int		fd[2];
-	pid_t	child;
-	int		save_fd;
-	t_list	*elmt;
-	t_cmd	*cmd;
+	t_pipeline pipeline;
 
-	save_fd = 0;
-	elmt = shell->pipeline;
-	while (elmt != NULL)
+	pipeline.save_fd = 0;
+	pipeline.elmt = shell->pipeline;
+	while (pipeline.elmt != NULL)
 	{
-		cmd = (t_cmd*)elmt->content;
-		pipe(fd);
-		if ((child = fork()) < 0)
+		pipeline.cmd = (t_cmd*)pipeline.elmt->content;
+		pipe(pipeline.fd);
+		if ((pipeline.child = fork()) < 0)
 			exit(1);
-		if (child == 0)
-		{
-			shell->tab = cmd->arg;
-			shell->fd_input = cmd->fd_input;
-			shell->fd_output = cmd->fd_output;
-			if (shell->fd_input > 2)
-				dup2(shell->fd_input, 0);
-			else
-				dup2(save_fd, 0);
-			if (shell->fd_output > 2)
-				dup2(shell->fd_output, 1);
-			else if (elmt->next != NULL)
-				dup2(fd[1], 1);
-			close(fd[0]);
-			shell->stop = run_command(shell);
-			ft_putstr_fd(shell->output, 1);
-			exit(shell->stop);
-		}
+		if (pipeline.child == 0)
+			pipe_child(shell, &pipeline);
 		else
 		{
-			waitpid(child, &shell->stop, 0);
+			waitpid(pipeline.child, &shell->stop, 0);
 			shell->stop = WEXITSTATUS(shell->stop);
-			close(fd[1]);
-			save_fd = fd[0];
-			elmt = elmt->next;
+			close(pipeline.fd[1]);
+			pipeline.save_fd = pipeline.fd[0];
+			pipeline.elmt = pipeline.elmt->next;
 		}
 	}
 }

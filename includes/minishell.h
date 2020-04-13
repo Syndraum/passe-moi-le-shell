@@ -54,12 +54,21 @@ typedef struct	s_cmd
 	int			fd_output;
 }				t_cmd;
 
-
 typedef struct s_arg
 {
 	char		*str;
 	t_separator	sep;
 }				t_arg;
+
+typedef	struct	s_pipleine
+{
+	int			fd[2];
+	pid_t		child;
+	int			save_fd;
+	t_list		*elmt;
+	t_cmd		*cmd;
+}				t_pipeline;
+
 
 typedef	struct	s_shell
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/07 21:24:37 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/13 15:56:09 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ int			init_oldpwd(char ***keys, char ***items)
 	if (!replace_item(*keys, *items, "OLDPWD", 0) &&
 	(!(*items = ft_strs_add_end(*items, 0, end))
 	|| !(*keys = ft_strs_plus_one(*keys, ft_strdup("OLDPWD")))))
-		return (0); // malooc error
+		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 21:25:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/13 13:09:56 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/13 16:14:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			check_split_var(char *var, char **key, char **item)
 	}
 	else
 		return (1);
-	return (0); 
+	return (0);
 }
 
 int			unset_var(char **keys, char **items, char *key)
