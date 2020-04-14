@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:36:20 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 14:09:52 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/14 13:38:32 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ typedef struct	s_buf
 # define B BUFFER_SIZE
 
 int				get_next_line(int fd, char **line);
-int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i);
-int		ft_copy(char **line, t_buf *tab, char **str);
-int		ft_first_read(t_buf *tab, int fd, int *i);
-int		ft_check(char *str);
+int				ft_str_gnl(char **str, t_buf *tab, int fd, int *i);
+int				ft_copy(char **line, t_buf *tab, char **str);
+int				ft_first_read(t_buf *tab, int fd, int *i);
+int				ft_check(char *str);
 char			*ft_strjoin_gnl(char *s1, char *s2);
 
 #endif

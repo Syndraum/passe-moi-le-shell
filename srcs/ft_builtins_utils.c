@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:19:59 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 18:16:40 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/14 14:01:42 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,38 @@ char		*home_path(char **keys, char **items)
 	return (0);
 }
 
+int			cd_path_check(char **cd_paths, t_shell *shell, char *dir)
+{
+	char	*new;
+	int		i;
+
+	i = -1;
+	while (cd_paths[++i])
+	{
+		new = cd_paths[i][ft_strlen(cd_paths[i]) - 1] == '/' ?
+		ft_sprintf("%s%s", cd_paths[i], dir)
+		: ft_sprintf("%s/%s", cd_paths[i], dir);
+		if (!new)
+		{
+			ft_free_strs(&cd_paths);
+			exit_error(shell, "cd");
+		}
+		if (chdir(new) >= 0)
+		{
+			ft_free_strs(&cd_paths);
+			shell->output = ft_strjoin_gnl(new, "\n");
+			return (1);
+		}
+		ft_freez((void **)&new);
+	}
+	ft_free_strs(&cd_paths);
+	return (0);
+}
+
 int			cd_path(t_shell *shell, char *dir)
 {
 	char		**cd_paths;
 	int			i;
-	char		*new;
 
 	i = -1;
 	cd_paths = 0;
@@ -41,29 +68,8 @@ int			cd_path(t_shell *shell, char *dir)
 		&& !(cd_paths = ft_split(shell->env_items[i], ':')))
 			exit_error(shell, "cd");
 	}
-	i = -1;
 	if (cd_paths)
-	{
-		while (cd_paths[++i])
-		{
-			new = cd_paths[i][ft_strlen(cd_paths[i]) - 1] == '/' ?
-			ft_sprintf("%s%s", cd_paths[i], dir)
-			: ft_sprintf("%s/%s", cd_paths[i], dir);
-			if (!new)
-			{
-				ft_free_strs(&cd_paths);
-				exit_error(shell, "cd");
-			}
-			if (chdir(new) >= 0)
-			{
-				ft_free_strs(&cd_paths);
-				shell->output = ft_strjoin_gnl(new, "\n");
-				return (1);
-			}
-			ft_freez((void **)&new);
-		}
-		ft_free_strs(&cd_paths);
-	}
+		return (cd_path_check(cd_paths, shell, dir));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/13 15:56:09 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/14 14:59:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,13 @@ int			replace_item(char **keys, char **items, char *key, char *item)
 int			init_oldpwd(char ***keys, char ***items)
 {
 	int		end;
+	char	*tmp;
 
 	end = ft_strslen(*keys);
 	if (!replace_item(*keys, *items, "OLDPWD", 0) &&
-	(!(*items = ft_strs_add_end(*items, 0, end))
-	|| !(*keys = ft_strs_plus_one(*keys, ft_strdup("OLDPWD")))))
+	(!(tmp = ft_strdup("OLDPWD"))
+	|| !(*items = ft_strs_add_end(*items, 0, end))
+	|| !(*keys = ft_strs_plus_one(*keys, tmp))))
 		return (0);
 	return (1);
 }
