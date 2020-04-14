@@ -16,6 +16,7 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_cursor_utils.c \
 								ft_echo.c \
 								ft_executable.c \
+								ft_executable_utils.c \
 								ft_exit.c \
 								ft_pipes_n_signals.c \
 								ft_free_close.c \

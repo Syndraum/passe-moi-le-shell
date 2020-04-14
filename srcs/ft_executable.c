@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/14 12:54:20 by chucky           ###   ########.fr       */
+/*   Updated: 2020/04/14 15:06:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ char	*getpath(t_shell *shell)
 	char			*path;
 	struct stat		sb;
 
-	if ((i = -1) != 0 && !(tab = ft_split(
-		get_item("PATH", shell->env_keys, shell->env_items), ':')))
+	i = -1;
+	if (!(tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':')))
 		return (NULL);
 	while (tab[++i])
 	{
