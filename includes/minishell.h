@@ -55,7 +55,7 @@ typedef struct	s_cmd
 }				t_cmd;
 
 
-typedef struct s_arg
+typedef struct	s_arg
 {
 	char		*str;
 	t_separator	sep;
@@ -68,7 +68,7 @@ typedef	struct	s_shell
 	char		*cursor[1];
 	char		*cursor2[1];
 	char		*line[1];
-	int			fd_line; // fd de lecture des commandes
+	int			fd_line;
 	int			fd_input;
 	int			fd_output;
 	t_command	command;
@@ -85,25 +85,28 @@ typedef	struct	s_shell
 	char		*error_beg;
 	char		*error_line;
 }				t_shell;
-// FT_MINISHELL //
+
+/* FT_MINISHELL */
 int			get_command(char *command);
 int			run_command(t_shell *shell);
 void		print_error(t_shell *shell, char *first, char *second);
 int			cmd_loop(t_shell *shell);
-// FT_INIT //
+/* FT_INIT */
 char		*ft_shlvl(t_shell *shell);
 void		ft_open_line(char *file, t_shell *shell);
 void		ft_first_init_struct(t_shell *shell);
 void		ft_mainargs(int argc, char **argv, char **envp, t_shell *shell);
-// FT_INIT_ENV //
+/* FT_INIT_ENV */
 int			ft_env_lib(t_shell *shell, char **env);
 int			replace_item(char **keys, char **items, char *key, char *item);
 int			init_oldpwd(char ***keys, char ***items);
-// FT_ARG_INTERPRETATION //
+/*
+** FT_ARG_INTERPRETATION **
+*/
 int			ft_redirection(t_shell *shell, t_separator prev);
 int			arg_loop(t_shell *shell);
 int			analyse_args(t_shell *shell);
-// FT_ARG_INTERPRETATION_UTILS //
+/* FT_ARG_INTERPRETATION_UTILS */
 int			is_end_of_command(t_separator sep);
 int			is_redirection(t_separator sep);
 void		init_struct(t_shell *shell);
@@ -144,6 +147,7 @@ int			command_unset(t_shell *shell);
 int			command_env(t_shell *shell);
 // FT_BUILTINS_UTILS //
 char		*home_path(char **keys, char **items);
+int			cd_path_check(char **cd_paths, t_shell *shell, char *dir);
 int			cd_path(t_shell *shell, char *dir);
 char		*print_export(char **keys, char **items);
 // FT_ENV_UTILS //

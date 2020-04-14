@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:36:58 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 14:10:05 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/14 13:19:43 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		ft_str_gnl(char **str, t_buf *tab, int fd, int *i)
 	return (1);
 }
 
-int				get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
 	static t_buf	tab = {.buf[0][0] = -1, .r = 0};
 	int				i;
