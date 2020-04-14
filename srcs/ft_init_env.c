@@ -6,7 +6,7 @@
 /*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 15:25:03 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/14 12:59:41 by chucky           ###   ########.fr       */
+/*   Updated: 2020/04/14 14:01:30 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int			init_oldpwd(char ***keys, char ***items)
 	if (!replace_item(*keys, *items, "OLDPWD", 0) &&
 	(!(tmp = ft_strdup("OLDPWD"))
 	|| !(*items = ft_strs_add_end(*items, 0, end))
-	|| !(*keys = ft_strs_plus_one(*keys,tmp))))
+	|| !(*keys = ft_strs_plus_one(*keys, tmp))))
 		return (0);
 	return (1);
 }

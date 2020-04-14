@@ -6,7 +6,7 @@
 /*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:19:59 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/14 13:17:18 by chucky           ###   ########.fr       */
+/*   Updated: 2020/04/14 14:01:42 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			cd_path(t_shell *shell, char *dir)
 			exit_error(shell, "cd");
 	}
 	if (cd_paths)
-		return(cd_path_check(cd_paths, shell, dir));
+		return (cd_path_check(cd_paths, shell, dir));
 	return (0);
 }
 
