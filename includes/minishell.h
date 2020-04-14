@@ -6,7 +6,7 @@
 /*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/14 13:45:00 by chucky           ###   ########.fr       */
+/*   Updated: 2020/04/14 13:48:01 by chucky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-# define FILE_RIGHTS (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+# define FILE_RIGHTS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 # define PROMPT "\033[0;32mminishell$ \033[0m"
 # define ERR_HOME "HOME not set"
 # define ERR_CMD_NF "command not found"
@@ -191,7 +191,8 @@ char			*print_export(char **keys, char **items);
 */
 int				check_split_var(char *var, char **key, char **item);
 int				unset_var(char **keys, char **items, char *key);
-int				replace_or_add(char ***keys, char ***items, char *key, char *item);
+int				replace_or_add
+(char ***keys, char ***items, char *key, char *item);
 void			pwd_env(t_shell *shell);
 char			*last_arg_env(t_shell *shell, char **tab);
 /*
