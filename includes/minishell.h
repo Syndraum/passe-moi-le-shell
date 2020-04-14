@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
+/*   Updated: 2020/04/14 13:37:35 by chucky           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -17,6 +29,7 @@
 # define ERR_ID "not a valid identifer"
 # define ERR_TOKEN "syntax error near unexpected token"
 # define ENV_COMMAND "_=env\n"
+
 typedef enum	e_command
 {
 	EXEC = 1,
@@ -32,12 +45,9 @@ typedef enum	e_command
 typedef enum	e_separator
 {
 	END_LINE,
-	TO_FILE,  **
-*/>
-	TO_END,  **
-*/>>
-	FROM_FILE,  **
-*/<
+	TO_FILE,
+	TO_END,
+	FROM_FILE,
 	SEMICOLON,
 	PIPE,
 	ARG
