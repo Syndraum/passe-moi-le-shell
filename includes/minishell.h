@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/20 19:43:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 19:57:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,19 @@ typedef	struct	s_shell
 }				t_shell;
 
 /*
-** FT_MINISHELL **
+** FT_MAIN_LOOP **
 */
 int				cmd_loop(t_shell *shell);
+int				line_loop(t_shell *shell, struct stat stats);
 /*
 ** FT_COMMAND **
 */
 int				get_command(char *command);
 int				run_command(t_shell *shell);
+/*
+** FT_ON_VERRA **
+*/
+int				check_arg(t_shell *shell);
 /*
 ** FT_INIT **
 */
