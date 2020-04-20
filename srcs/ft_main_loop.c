@@ -6,13 +6,13 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:54:20 by user42            #+#    #+#             */
-/*   Updated: 2020/04/20 21:36:58 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/21 00:31:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			cmd_loop(t_shell *shell)
+int		cmd_loop(t_shell *shell)
 {
 	shell->pipeline = NULL;
 	if (analyse_args(shell))
@@ -31,7 +31,7 @@ int			cmd_loop(t_shell *shell)
 	return (shell->arg.sep == END_LINE ? 0 : 1);
 }
 
-void			line_utils(t_shell *shell)
+void	line_utils(t_shell *shell)
 {
 	error_strings(shell);
 	shell->cursor[0] = shell->line[0];
@@ -41,7 +41,7 @@ void			line_utils(t_shell *shell)
 			;
 }
 
-int			line_loop(t_shell *shell, struct stat stats)
+int		line_loop(t_shell *shell, struct stat stats)
 {
 	char		*line;
 	int			keepreading;

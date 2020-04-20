@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 19:48:21 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 18:16:26 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/21 00:38:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	open_file(t_shell *shell, t_separator prev)
 {
+	int file_rights;
+
+	file_rights = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_TRUNC, FILE_RIGHTS)) < 0)
+		O_CREAT | O_WRONLY | O_TRUNC, file_rights)) < 0)
 		print_error(shell, shell->arg.str, strerror(errno));
 	else if (prev == TO_END && (shell->fd_output = open(shell->arg.str,
-		O_CREAT | O_WRONLY | O_APPEND, FILE_RIGHTS)) < 0)
+		O_CREAT | O_WRONLY | O_APPEND, file_rights)) < 0)
 		print_error(shell, shell->arg.str, strerror(errno));
 	else if (prev == FROM_FILE
 		&& (shell->fd_input = open(shell->arg.str, O_RDONLY)) < 0)

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/20 20:20:52 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/21 00:29:50 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-# define FILE_RIGHTS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 # define PROMPT "\033[0;32mminishell$ \033[0m"
 # define ERR_HOME "HOME not set"
 # define ERR_CMD_NF "command not found"
@@ -81,7 +80,6 @@ typedef	struct	s_pipleine
 	t_list		*elmt;
 	t_cmd		*cmd;
 }				t_pipeline;
-
 
 typedef	struct	s_shell
 {
