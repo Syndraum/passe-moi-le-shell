@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:54:20 by user42            #+#    #+#             */
-/*   Updated: 2020/04/20 20:09:55 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 21:36:58 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ int			cmd_loop(t_shell *shell)
 	return (shell->arg.sep == END_LINE ? 0 : 1);
 }
 
+void			line_utils(t_shell *shell)
+{
+	error_strings(shell);
+	shell->cursor[0] = shell->line[0];
+	shell->cursor2[0] = shell->line[0];
+	if (check_arg(shell))
+		while (cmd_loop(shell))
+			;
+}
+
 int			line_loop(t_shell *shell, struct stat stats)
 {
 	char		*line;
@@ -44,19 +54,15 @@ int			line_loop(t_shell *shell, struct stat stats)
 		if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode)
 			|| keepreading == 1 || !shell->line[0][0])
 		{
-			if (shell->fd_line || S_ISFIFO(stats.st_mode) || S_ISREG(stats.st_mode))
+			if (shell->fd_line || S_ISFIFO(stats.st_mode) ||
+				S_ISREG(stats.st_mode))
 				shell->line_nb++;
+			break ;
 		}
-		break ;
 	}
 	if (keepreading < 0)
 		exit_error(shell, 0);
-	error_strings(shell);
-	shell->cursor[0] = shell->line[0];
-	shell->cursor2[0] = shell->line[0];
-	if (check_arg(shell))
-		while (cmd_loop(shell))
-			;
+	line_utils(shell);
 	if (!keepreading)
 		exit_end(shell);
 	free_line(shell);
