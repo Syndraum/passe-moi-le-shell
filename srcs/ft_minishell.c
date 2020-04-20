@@ -3,72 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/11 19:50:41 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/04/20 19:41:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int			get_command(char *command)
-{
-	if (ft_cmp(command, "echo"))
-		return (ECHO);
-	else if (ft_cmp(command, "cd"))
-		return (CD);
-	else if (ft_cmp(command, "pwd"))
-		return (PWD);
-	else if (ft_cmp(command, "export"))
-		return (EXPORT);
-	else if (ft_cmp(command, "unset"))
-		return (UNSET);
-	else if (ft_cmp(command, "env"))
-		return (ENV);
-	else if (ft_cmp(command, "exit"))
-		return (EXIT);
-	else
-		return (EXEC);
-}
-
-void		print_error(t_shell *shell, char *s2, char *s1)
-{
-	ft_dprintf(2, "%s%s: %s%s", shell->error_beg, s2, s1, shell->error_line);
-}
-
-int			run_command(t_shell *shell)
-{
-	int ret;
-
-	if (shell->fd_input == -1 || shell->fd_output == -1)
-		return (1);
-	shell->command = get_command(shell->tab[0]);
-	if (shell->command == EXEC)
-	{
-		ret = executable(shell);
-		if (ret == 127)
-			print_error(shell, shell->tab[0], ERR_CMD_NF);
-		else if (ret == 126)
-			print_error(shell, shell->tab[0], ERR_FILE_DIR);
-		return (ret);
-	}
-	else if (shell->command == ECHO)
-		return (command_echo(shell));
-	else if (shell->command == CD)
-		return (command_cd(shell));
-	else if (shell->command == PWD)
-		return (command_pwd(shell));
-	else if (shell->command == EXPORT)
-		return (command_export(shell));
-	else if (shell->command == UNSET)
-		return (command_unset(shell));
-	else if (shell->command == ENV)
-		return (command_env(shell));
-	else if (shell->command == EXIT)
-		exit_end(shell);
-	return (1);
-}
 
 char		*get_separator(int sep)
 {

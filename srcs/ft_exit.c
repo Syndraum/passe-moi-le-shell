@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_quit.c                                     :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/04 17:00:48 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/20 19:19:38 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,9 @@ void		exit_end(t_shell *shell)
 	close_all(shell);
 	free_all(shell);
 	exit(0);
+}
+
+void		print_error(t_shell *shell, char *s2, char *s1)
+{
+	ft_dprintf(2, "%s%s: %s%s", shell->error_beg, s2, s1, shell->error_line);
 }

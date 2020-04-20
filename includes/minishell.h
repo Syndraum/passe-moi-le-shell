@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/20 18:47:59 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 19:43:06 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,12 @@ typedef	struct	s_shell
 /*
 ** FT_MINISHELL **
 */
+int				cmd_loop(t_shell *shell);
+/*
+** FT_COMMAND **
+*/
 int				get_command(char *command);
 int				run_command(t_shell *shell);
-void			print_error(t_shell *shell, char *first, char *second);
-int				cmd_loop(t_shell *shell);
 /*
 ** FT_INIT **
 */
@@ -251,6 +253,7 @@ void			close_all(t_shell *shell);
 */
 void			exit_error(t_shell *shell, char *fonction);
 void			exit_end(t_shell *shell);
+void			print_error(t_shell *shell, char *first, char *second);
 /*
 ** FT_FIND_ENV **
 */
