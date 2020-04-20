@@ -24,7 +24,8 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 								ft_find_env.c \
 								ft_arg_dollar.c \
 								ft_command.c \
-								ft_main_loop.c)
+								ft_main_loop.c \
+								ft_check_arg.c)
 
 OBJS = ${SRCS:.c=.o}
 

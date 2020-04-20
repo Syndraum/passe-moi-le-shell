@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/20 19:57:27 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 20:20:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int				line_loop(t_shell *shell, struct stat stats);
 int				get_command(char *command);
 int				run_command(t_shell *shell);
 /*
-** FT_ON_VERRA **
+** FT_CHECK_ARG **
 */
 int				check_arg(t_shell *shell);
 /*
