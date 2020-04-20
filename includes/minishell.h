@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/14 14:59:47 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 18:47:59 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,15 +213,21 @@ int				command_echo(t_shell *shell);
 /*
 ** FT_EXECUTABLE **
 */
+int				change_exec(t_shell *shell, char *path);
+int				launch_exec(t_shell *shell, char *path);
+int				executable(t_shell *shell);
+/*
+** FT_EXECUTABLE **
+*/
 int				count_malloc_env(char **keys, char **items);
 char			**convert_env(t_shell *shell, char *path);
 char			*ft_lowercase(char *str);
 int				ft_strncmp_case(char *s1, char *s2, size_t n);
+/*
+** FT_PATH **
+*/
 char			*try_path(char *filename, char *path_dir);
 char			*getpath(t_shell *shell);
-int				change_exec(t_shell *shell, char *path);
-int				launch_exec(t_shell *shell, char *path);
-int				executable(t_shell *shell);
 /*
 ** FT_IS_VAR **
 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chucky <chucky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 12:48:35 by chucky            #+#    #+#             */
-/*   Updated: 2020/04/14 12:50:00 by chucky           ###   ########.fr       */
+/*   Updated: 2020/04/20 18:44:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,32 +83,4 @@ int		ft_strncmp_case(char *s1, char *s2, size_t n)
 	ft_freez((void **)&lower_s1);
 	ft_freez((void **)&lower_s2);
 	return (cmp);
-}
-
-char	*try_path(char *filename, char *path_dir)
-{
-	DIR				*dir;
-	struct dirent	*entry;
-	char			*find;
-	int				len;
-
-	len = ft_strlen(filename) + 1;
-	if ((dir = opendir(path_dir)) != NULL)
-	{
-		while ((entry = readdir(dir)) != NULL)
-		{
-			if (ft_strncmp_case(entry->d_name, filename, len) == 0
-				&& (entry->d_type == DT_REG || entry->d_type == DT_LNK))
-			{
-				closedir(dir);
-				if (!(find = path_dir[ft_strlen(path_dir) - 1] == '/' ?
-				ft_sprintf("%s%s", path_dir, filename)
-				: ft_sprintf("%s/%s", path_dir, filename)))
-					return (NULL);
-				return (find);
-			}
-		}
-		closedir(dir);
-	}
-	return (NULL);
 }

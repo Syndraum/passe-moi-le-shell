@@ -6,40 +6,11 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/14 15:06:32 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/20 19:07:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*getpath(t_shell *shell)
-{
-	char			**tab;
-	int				i;
-	char			*path;
-	struct stat		sb;
-
-	i = -1;
-	if (!(tab = ft_split(get_item("PATH", shell->env_keys, shell->env_items), ':')))
-		return (NULL);
-	while (tab[++i])
-	{
-		if ((path = try_path(shell->tab[0], tab[i])))
-		{
-			ft_free_strs(&tab);
-			return (path);
-		}
-	}
-	ft_free_strs(&tab);
-	if (!(path = ft_strdup(shell->tab[0])))
-		return (NULL);
-	if (-1 == stat(path, &sb) || (!S_ISREG(sb.st_mode) && !S_ISLNK(sb.st_mode)))
-	{
-		free(path);
-		return (NULL);
-	}
-	return (path);
-}
 
 int		change_exec(t_shell *shell, char *path)
 {
@@ -52,6 +23,24 @@ int		change_exec(t_shell *shell, char *path)
 	return (0);
 }
 
+void	lauch_child(t_shell *shell, char *path)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (shell->fd_output > 2)
+		dup2(shell->fd_output, 1);
+	if (shell->fd_input > 2)
+		dup2(shell->fd_input, 0);
+	if ((change_exec(shell, path)))
+		exit(127);
+}
+
+int		error_child(char *str, int ret)
+{
+	ft_putstr_fd(str, 0);
+	return (ret);
+}
+
 int		launch_exec(t_shell *shell, char *path)
 {
 	pid_t		child;
@@ -59,16 +48,7 @@ int		launch_exec(t_shell *shell, char *path)
 	if ((child = fork()) < 0)
 		return (127);
 	if (child == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		if (shell->fd_output > 2)
-			dup2(shell->fd_output, 1);
-		if (shell->fd_input > 2)
-			dup2(shell->fd_input, 0);
-		if ((change_exec(shell, path)))
-			exit(127);
-	}
+		lauch_child(shell, path);
 	else
 	{
 		signal(SIGINT, SIG_IGN);
@@ -78,15 +58,9 @@ int		launch_exec(t_shell *shell, char *path)
 		if (WIFSIGNALED(shell->stop))
 		{
 			if (shell->stop == 2)
-			{
-				ft_putchar_fd('\n', 0);
-				return (1);
-			}
+				return (error_child("\n", 1));
 			else if (shell->stop == 3)
-			{
-				ft_putstr_fd("Quit: 3\n", 0);
-				return (131);
-			}
+				return (error_child("Quit: 3\n", 131));
 		}
 		else
 			return (WEXITSTATUS(shell->stop));
