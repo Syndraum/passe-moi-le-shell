@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_interpretation_utils.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roalvare <roalvare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 17:06:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/03/09 20:55:59 by roalvare         ###   ########.fr       */
+/*   Updated: 2020/04/22 21:52:23 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
