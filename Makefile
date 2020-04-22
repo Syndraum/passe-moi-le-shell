@@ -34,40 +34,41 @@ SRCS		=	$(addprefix $(PREFIX), \
 								ft_main_loop.c \
 								ft_check_arg.c)
 
-OBJS = ${SRCS:.c=.o}
+OBJS		=	${SRCS:.c=.o}
 
-CC	= clang
+CC			=	clang
 
-CFLAGS = -Werror -Wextra -Wall -I ${INCLUDES} -I ${INCLUDES_L}
+CFLAGS		=	-Werror -Wextra -Wall -I ${INCLUDES} -I ${INCLUDES_L}
 
-NAME 	= minishell
+NAME 		=	minishell
 
-RM		= rm -f
+RM			=	rm -f
 
-DIR_LIBFT	= libft
+DIR_LIBFT	=	libft
 
-LIBFT_FLAGS	= -L./libft/ -lft
+LIBFT_FLAGS	=	-L./${DIR_LIBFT}/ -lft
 
 all:		makelib
 			${MAKE} ${NAME}
 
-${NAME}:	${OBJS} ${INCL_FILES}
+${NAME}:	${OBJS} ${INCL_FILES} ./${DIR_LIBFT}/libft.a
 			${CC} ${CFLAGS} ${OBJS} ${LIBFT_FLAGS} -o ${NAME}
 
-run:	all
-	./$(NAME)
+run:		all
+			./$(NAME)
 
 makelib:
-	make -C ${DIR_LIBFT}
+			make -C ${DIR_LIBFT}
 
 clean:
-	${RM} ${OBJS}
-	make -C ${DIR_LIBFT} clean
+			${RM} ${OBJS}
+			make -C ${DIR_LIBFT} clean
 
-fclean:	clean
-	make -C ${DIR_LIBFT} fclean
-	${RM} ${NAME}
+fclean:
+			${RM} ${OBJS}
+			${RM} ${NAME}
+			make -C ${DIR_LIBFT} fclean
 
-re:	fclean all
+re:			fclean all
 
-.PHONY: all re run makelib clean fclean
+.PHONY: 	all re run makelib clean fclean
