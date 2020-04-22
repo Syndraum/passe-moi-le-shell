@@ -1,6 +1,13 @@
-PREFIX = srcs/
+PREFIX		=	./srcs/
 
-SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
+INCLUDES	=	./includes/
+
+INCLUDES_L	=	./libft/includes/
+
+INCL_FILES	=	$(addprefix $(INCLUDES), minishell.h)
+
+SRCS		=	$(addprefix $(PREFIX), \
+								ft_minishell.c \
 								ft_init.c \
 								ft_init_env.c \
 								ft_is_var.c \
@@ -29,13 +36,9 @@ SRCS = $(addprefix $(PREFIX), 	ft_minishell.c \
 
 OBJS = ${SRCS:.c=.o}
 
-INCLUDES	=	./includes/
-
-INCLUDES_L	=	./libft/includes/
-
 CC	= clang
 
-CFLAGS = -g -Werror -Wextra -Wall -I ${INCLUDES} -I ${INCLUDES_L}
+CFLAGS = -Werror -Wextra -Wall -I ${INCLUDES} -I ${INCLUDES_L}
 
 NAME 	= minishell
 
@@ -45,13 +48,11 @@ DIR_LIBFT	= libft
 
 LIBFT_FLAGS	= -L./libft/ -lft
 
-all:	${NAME}
+all:		makelib
+			${MAKE} ${NAME}
 
-.c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
-${NAME}:	makelib ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT_FLAGS} -o ${NAME}
+${NAME}:	${OBJS} ${INCL_FILES}
+			${CC} ${CFLAGS} ${OBJS} ${LIBFT_FLAGS} -o ${NAME}
 
 run:	all
 	./$(NAME)
@@ -68,3 +69,5 @@ fclean:	clean
 	${RM} ${NAME}
 
 re:	fclean all
+
+.PHONY: all re run makelib clean fclean

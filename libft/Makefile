@@ -14,6 +14,10 @@ PREF_PUT	= ./put/
 
 PREF_STR	= ./str/
 
+PREF_INCL	= ./includes/
+
+INCL_FILES	= $(addprefix ${PREF_INCL}, ft_printf.h get_next_line.h libft_structs.h libft.h new_lib.h)
+
 SRCS_CONV	= $(addprefix ${PREF_CONV}, ft_atoi.c ft_tolower.c ft_toupper.c ft_itoa.c)
 
 SRCS_GNL	= $(addprefix ${PREF_GNL}, get_next_line.c get_next_line_utils.c)
@@ -34,19 +38,17 @@ ALL_SRCS	= $(SRCS_CONV) $(SRCS_GNL) $(SRCS_IS) $(SRCS_LST) $(SRCS_MEM) $(SRCS_PR
 
 OBJS		= ${ALL_SRCS:.c=.o}
 
-INCLUDES	= ./includes/
-
 NAME		= libft.a
 
-CC			= gcc
+CC			= clang
 
-CFLAGS		= -g -Wall -Wextra -Werror -I ${INCLUDES}
+CFLAGS		= -Wall -Wextra -Werror -I ${PREF_INCL}
 
 RM			= rm -f
 
 AR			= ar rc
 
-$(NAME):	${OBJS}
+$(NAME):	${OBJS} ${INCL_FILES}
 			${AR} ${NAME} ${OBJS}
 
 all:		${NAME}
