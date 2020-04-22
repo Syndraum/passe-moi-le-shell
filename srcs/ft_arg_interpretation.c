@@ -16,7 +16,7 @@ void	open_file(t_shell *shell, t_separator prev)
 {
 	int file_rights;
 
-	file_rights = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	file_rights = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 	if (prev == TO_FILE && (shell->fd_output = open(shell->arg.str,
 		O_CREAT | O_WRONLY | O_TRUNC, file_rights)) < 0)
 		print_error(shell, shell->arg.str, strerror(errno));

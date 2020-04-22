@@ -58,7 +58,7 @@ int			init_oldpwd(char ***keys, char ***items)
 	char	*tmp;
 
 	end = ft_strslen(*keys);
-	if (!replace_item(*keys, *items, "OLDPWD", 0) &&
+	if (get_tabidx("OLDPWD", *keys) < 0 &&
 	(!(tmp = ft_strdup("OLDPWD"))
 	|| !(*items = ft_strs_add_end(*items, 0, end))
 	|| !(*keys = ft_strs_plus_one(*keys, tmp))))
