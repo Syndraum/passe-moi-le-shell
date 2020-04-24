@@ -6,7 +6,7 @@
 /*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:54:20 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:52:08 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/24 15:35:52 by mchardin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	line_utils(t_shell *shell)
 	if (check_arg(shell))
 		while (cmd_loop(shell))
 			;
+	else
+		shell->stop = 2;
 }
 
 int		line_loop(t_shell *shell, struct stat stats)
@@ -63,7 +65,7 @@ int		line_loop(t_shell *shell, struct stat stats)
 	if (keepreading < 0)
 		exit_error(shell, 0);
 	line_utils(shell);
-	if (!keepreading)
+	if (!keepreading || (shell->stop && shell->line_nb))
 		exit_end(shell);
 	free_line(shell);
 	return (1);

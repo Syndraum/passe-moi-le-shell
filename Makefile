@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/04/23 10:00:28 by mchardin          #+#    #+#              #
+#    Updated: 2020/04/23 10:05:02 by mchardin         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 PREFIX		=	./srcs/
 
 INCLUDES	=	./includes/
@@ -58,16 +70,16 @@ run:		all
 			./$(NAME)
 
 makelib:
-			make -C ${DIR_LIBFT}
+			${MAKE} -C ${DIR_LIBFT}
 
 clean:
 			${RM} ${OBJS}
-			make -C ${DIR_LIBFT} clean
+			${MAKE} -C ${DIR_LIBFT} clean
 
 fclean:
 			${RM} ${OBJS}
 			${RM} ${NAME}
-			make -C ${DIR_LIBFT} fclean
+			${MAKE} -C ${DIR_LIBFT} fclean
 
 re:			fclean all
 
