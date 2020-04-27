@@ -1,9 +1,0 @@
-*.o
-*.a
-*.out
-minishell
-.vscode/
-*.txt
-.gitignore
-42TESTERS-MINISHELL
-minishell.dSYM
