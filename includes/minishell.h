@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 16:10:34 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define ERR_TOKEN "syntax error near unexpected token"
 # define ENV_COMMAND "_=env\n"
 
-int	STOP;
+int	g_stop;
 
 typedef enum	e_command
 {
@@ -100,7 +100,7 @@ typedef	struct	s_shell
 	char		*pwd;
 	char		*oldpwd;
 	char		*lastarg;
-	int			stop;
+	int			g_stop;
 	t_list		*pipeline;
 	t_signal	sig;
 	int			line_nb;
@@ -158,10 +158,10 @@ char			*set_arg(t_shell *shell);
 /*
 ** FT_ARG_TRANSLATION_UTILS **
 */
-int				is_stoparg(char c);
-int				is_stop_unquote(char c);
-int				is_stop_dquote(char c);
-int				strlen_to(char *str, char stop);
+int				is_g_stoparg(char c);
+int				is_g_stop_unquote(char c);
+int				is_g_stop_dquote(char c);
+int				strlen_to(char *str, char g_stop);
 int				strlen_if(char *str, int (*f)(char));
 /*
 ** FT_ARG_DQUOTE **
@@ -180,7 +180,7 @@ char			*get_unquote(char **cursor, t_shell *shell);
 */
 char			*get_dollar_dquote(char **cursor, t_shell *shell, char *dquote);
 char			*get_dollar_unquote(char **cursor, t_shell *shell, char *arg);
-char			*get_dollar(char **cursor, t_shell *shell, char stop_char);
+char			*get_dollar(char **cursor, t_shell *shell, char g_stop_char);
 /*
 ** FT_CURSOR_UTILS **
 */

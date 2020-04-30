@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 16:10:12 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:45:17 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ int		launch_exec(t_shell *shell, char *path)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGCHLD, sig_ignore);
-		waitpid(child, &STOP, 0);
+		waitpid(child, &g_stop, 0);
 		signal(SIGINT, sig_ctrl_c);
-		if (WIFSIGNALED(STOP))
+		if (WIFSIGNALED(g_stop))
 		{
-			if (STOP == 2)
+			if (g_stop == 2)
 				return (error_child("\n", 1));
-			else if (STOP == 3)
+			else if (g_stop == 3)
 				return (error_child("Quit: 3\n", 131));
 		}
 		else
-			return (WEXITSTATUS(STOP));
+			return (WEXITSTATUS(g_stop));
 	}
 	return (0);
 }
@@ -76,6 +76,8 @@ int		executable(t_shell *shell)
 
 	if ((path = getpath(shell)) == NULL)
 	{
+		if (!ft_strchr(shell->tab[0], '/'))
+			return (127);
 		if (-1 == stat(shell->tab[0], &sb))
 			return (127);
 		else if ((!S_ISREG(sb.st_mode) && !S_ISLNK(sb.st_mode)))

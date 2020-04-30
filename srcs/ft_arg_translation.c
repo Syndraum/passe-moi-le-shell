@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_translation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 11:19:52 by roalvare          #+#    #+#             */
-/*   Updated: 2020/04/22 21:50:43 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*get_tilde(char **cursor, t_shell *shell)
 	char	*arg;
 	char	*home;
 
-	if (*((*cursor) + 1) == '/' || is_stoparg(*((*cursor) + 1)))
+	if (*((*cursor) + 1) == '/' || is_g_stoparg(*((*cursor) + 1)))
 	{
 		home = get_item("HOME", shell->env_keys, shell->env_items);
 		if (home == NULL)
@@ -53,7 +53,7 @@ void	*get_argument(char **cursor, t_shell *shell)
 	char *ret;
 
 	arg = NULL;
-	while (!is_stoparg(**cursor))
+	while (!is_g_stoparg(**cursor))
 	{
 		if (**cursor == '\'')
 			ret = get_quote(cursor);

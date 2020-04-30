@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 12:57:25 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*get_var_env(char **cursor)
 	return (arg);
 }
 
-char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
+char	*get_dollar(char **cursor, t_shell *shell, char g_stop_char)
 {
 	char	*arg;
 	char	*var;
@@ -64,12 +64,12 @@ char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
 	var = NULL;
 	arg = NULL;
 	(*cursor)++;
-	if (is_stoparg(**cursor) || stop_char == **cursor || **cursor == '\\')
+	if (is_g_stoparg(**cursor) || g_stop_char == **cursor || **cursor == '\\')
 		return (ft_strdup("$"));
 	if (**cursor == '?')
 	{
 		(*cursor)++;
-		return (ft_itoa(STOP));
+		return (ft_itoa(g_stop));
 	}
 	else if (**cursor == '_')
 	{

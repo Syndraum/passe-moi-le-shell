@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 14:19:15 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		ft_first_init_struct(t_shell *shell)
 	shell->fd_input = 0;
 	shell->fd_output = 1;
 	shell->lastarg = 0;
-	STOP = 0;
+	g_stop = 0;
 	shell->line_nb = 0;
 	shell->error_line = 0;
 	shell->error_beg = 0;

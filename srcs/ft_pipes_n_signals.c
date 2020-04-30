@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:22:17 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void		sig_ignore(int i)
 void		sig_ctrl_s(int i)
 {
 	(void)i;
-	STOP = 131;
+	g_stop = 131;
 }
 
 void		sig_ctrl_c(int i)
 {
 	(void)i;
 	ft_dprintf(0, "\n%s", PROMPT);
-	STOP = 130;
+	g_stop = 130;
 }
 
 void		pipe_child(t_shell *shell, t_pipeline *pipeline)
@@ -44,9 +44,9 @@ void		pipe_child(t_shell *shell, t_pipeline *pipeline)
 	else if (pipeline->elmt->next != NULL)
 		dup2(pipeline->fd[1], 1);
 	close(pipeline->fd[0]);
-	STOP = run_command(shell);
+	g_stop = run_command(shell);
 	ft_putstr_fd(shell->output, 1);
-	exit(STOP);
+	exit(g_stop);
 }
 
 void		loop_pipe(t_shell *shell)
@@ -65,8 +65,8 @@ void		loop_pipe(t_shell *shell)
 			pipe_child(shell, &pipeline);
 		else
 		{
-			waitpid(pipeline.child, &STOP, 0);
-			STOP = WEXITSTATUS(STOP);
+			waitpid(pipeline.child, &g_stop, 0);
+			g_stop = WEXITSTATUS(g_stop);
 			close(pipeline.fd[1]);
 			pipeline.save_fd = pipeline.fd[0];
 			pipeline.elmt = pipeline.elmt->next;

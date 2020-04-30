@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_unquote.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:20:49 by roalvare          #+#    #+#             */
-/*   Updated: 2020/04/22 21:50:38 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:15:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_unquote(char **cursor, t_shell *shell)
 	len = 0;
 	i = 0;
 	arg = NULL;
-	while (!is_stop_unquote((*cursor)[i]))
+	while (!is_g_stop_unquote((*cursor)[i]))
 	{
 		if ((*cursor)[i] == '\\')
 			i++;

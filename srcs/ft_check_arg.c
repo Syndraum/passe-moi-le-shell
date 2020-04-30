@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_arg.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 20:20:05 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:51:03 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:12:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int			check_arg(t_shell *shell)
 	}
 	if (!shell->arg.str && is_redirection(shell->arg.sep))
 	{
-		print_error(shell, ERR_TOKEN, "'mewline'");
+		print_error(shell, ERR_TOKEN, "'newline'");
 		return (0);
 	}
 	return (1);
