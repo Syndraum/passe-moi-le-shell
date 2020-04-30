@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:51:51 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 12:24:59 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		exit_end(t_shell *shell)
 	ft_putstr_fd("exit\n", shell->fd_line);
 	close_all(shell);
 	free_all(shell);
-	exit(0);
+	exit(shell->stop);
 }
 
 void		print_error(t_shell *shell, char *s2, char *s1)
