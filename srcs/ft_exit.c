@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 13:49:40 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		to_exit(t_shell *shell)
 {
 	close_all(shell);
 	free_all(shell);
-	exit(shell->stop);
+	exit(STOP);
 }
 
 void		exit_end(t_shell *shell)
@@ -40,18 +40,18 @@ void		exit_end(t_shell *shell)
 	{
 		if (!(error = ft_atoi(shell->tab[1])))
 		{
-			shell->stop = 2;
+			STOP = 2;
 			print_error(shell, "exit ", "numeric argument needed");
 			to_exit(shell);
 		}
 		else if (len > 2)
 		{
 			print_error(shell, "exit", "too many argument");
-			shell->stop = 1;
+			STOP = 1;
 		}
 		else
 		{
-			shell->stop = error;
+			STOP = error;
 			to_exit(shell);
 		}
 	}

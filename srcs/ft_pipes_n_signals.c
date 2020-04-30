@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipes_n_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:52:43 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:13:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void		sig_ctrl_c(int i)
 {
 	(void)i;
 	ft_dprintf(0, "\n%s", PROMPT);
+	STOP = 130;
 }
 
 void		pipe_child(t_shell *shell, t_pipeline *pipeline)
@@ -37,9 +38,9 @@ void		pipe_child(t_shell *shell, t_pipeline *pipeline)
 	else if (pipeline->elmt->next != NULL)
 		dup2(pipeline->fd[1], 1);
 	close(pipeline->fd[0]);
-	shell->stop = run_command(shell);
+	STOP = run_command(shell);
 	ft_putstr_fd(shell->output, 1);
-	exit(shell->stop);
+	exit(STOP);
 }
 
 void		loop_pipe(t_shell *shell)
@@ -58,8 +59,8 @@ void		loop_pipe(t_shell *shell)
 			pipe_child(shell, &pipeline);
 		else
 		{
-			waitpid(pipeline.child, &shell->stop, 0);
-			shell->stop = WEXITSTATUS(shell->stop);
+			waitpid(pipeline.child, &STOP, 0);
+			STOP = WEXITSTATUS(STOP);
 			close(pipeline.fd[1]);
 			pipeline.save_fd = pipeline.fd[0];
 			pipeline.elmt = pipeline.elmt->next;

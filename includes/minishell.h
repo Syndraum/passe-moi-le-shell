@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 22:28:06 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:09:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define ERR_ID "not a valid identifer"
 # define ERR_TOKEN "syntax error near unexpected token"
 # define ENV_COMMAND "_=env\n"
+
+int	STOP;
 
 typedef enum	e_command
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executable.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:51:35 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ int		launch_exec(t_shell *shell, char *path)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGCHLD, sig_ignore);
-		waitpid(child, &shell->stop, 0);
+		waitpid(child, &STOP, 0);
 		signal(SIGINT, sig_ctrl_c);
-		if (WIFSIGNALED(shell->stop))
+		if (WIFSIGNALED(STOP))
 		{
-			if (shell->stop == 2)
+			if (STOP == 2)
 				return (error_child("\n", 1));
-			else if (shell->stop == 3)
+			else if (STOP == 3)
 				return (error_child("Quit: 3\n", 131));
 		}
 		else
-			return (WEXITSTATUS(shell->stop));
+			return (WEXITSTATUS(STOP));
 	}
 	return (0);
 }

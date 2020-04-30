@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 12:57:25 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:49:33 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_dollar(char **cursor, t_shell *shell, char stop_char)
 	if (**cursor == '?')
 	{
 		(*cursor)++;
-		return (ft_itoa(shell->stop));
+		return (ft_itoa(STOP));
 	}
 	else if (**cursor == '_')
 	{

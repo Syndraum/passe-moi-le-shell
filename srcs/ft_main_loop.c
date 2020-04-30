@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main_loop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:54:20 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/24 15:35:52 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int		cmd_loop(t_shell *shell)
 	if (analyse_args(shell))
 	{
 		if (ft_lstsize(shell->pipeline) == 1)
-			shell->stop = run_command(shell);
+			STOP = run_command(shell);
 		else if (ft_lstsize(shell->pipeline) > 1)
 			loop_pipe(shell);
-		if (!shell->stop && ft_lstsize(shell->pipeline) == 1)
+		if (!STOP && ft_lstsize(shell->pipeline) == 1)
 			ft_putstr_fd(shell->output, shell->fd_output);
 	}
 	shell->lastarg = last_arg_env(shell, shell->tab);
@@ -40,7 +40,7 @@ void	line_utils(t_shell *shell)
 		while (cmd_loop(shell))
 			;
 	else
-		shell->stop = 2;
+		STOP = 2;
 }
 
 int		line_loop(t_shell *shell, struct stat stats)
@@ -65,7 +65,7 @@ int		line_loop(t_shell *shell, struct stat stats)
 	if (keepreading < 0)
 		exit_error(shell, 0);
 	line_utils(shell);
-	if (!keepreading || (shell->stop && shell->line_nb))
+	if (!keepreading || (STOP && shell->line_nb))
 		exit_end(shell);
 	free_line(shell);
 	return (1);
