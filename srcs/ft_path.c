@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_path.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 18:43:55 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 21:52:38 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:11:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ char	*getpath(t_shell *shell)
 	char			**tab;
 	int				i;
 	char			*path;
-	struct stat		sb;
 
 	i = -1;
 	if (!(tab = ft_split(
@@ -66,9 +65,5 @@ char	*getpath(t_shell *shell)
 		}
 	}
 	ft_free_strs(&tab);
-	if (!(path = ft_strdup(shell->tab[0])))
-		return (NULL);
-	if (-1 == stat(path, &sb) || (!S_ISREG(sb.st_mode) && !S_ISLNK(sb.st_mode)))
-		return (free_retnull(path));
-	return (path);
+	return (NULL);
 }

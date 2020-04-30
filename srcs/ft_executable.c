@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 13:35:47 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 16:10:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,18 @@ int		launch_exec(t_shell *shell, char *path)
 
 int		executable(t_shell *shell)
 {
-	char		*path;
-	int			code;
+	char			*path;
+	int				code;
+	struct stat		sb;
 
 	if ((path = getpath(shell)) == NULL)
 	{
-		if (ft_strchr(shell->tab[0], '/'))
+		if (-1 == stat(shell->tab[0], &sb))
+			return (127);
+		else if ((!S_ISREG(sb.st_mode) && !S_ISLNK(sb.st_mode)))
 			return (126);
-		return (127);
+		else if (!(path = ft_strdup(shell->tab[0])))
+			return (127);
 	}
 	if (ft_lstsize(shell->pipeline) == 1)
 		code = launch_exec(shell, path);
