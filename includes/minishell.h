@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/14 13:35:22 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:09:22 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 15:31:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,7 @@ int				is_var_ret_idx(char *var);
 ** FT_PIPES_N_SIGNALS **
 */
 void			sig_ignore(int i);
+void			sig_ctrl_s(int i);
 void			sig_ctrl_c(int i);
 void			loop_pipe(t_shell *shell);
 /*
@@ -257,6 +258,7 @@ void			close_all(t_shell *shell);
 ** FT_EXIT **
 */
 void			exit_error(t_shell *shell, char *fonction);
+void			to_exit(t_shell *shell);
 void			exit_end(t_shell *shell);
 void			print_error(t_shell *shell, char *first, char *second);
 /*

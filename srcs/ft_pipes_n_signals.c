@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 16:49:23 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:13:48 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 15:22:17 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 void		sig_ignore(int i)
 {
 	(void)i;
+}
+
+void		sig_ctrl_s(int i)
+{
+	(void)i;
+	STOP = 131;
 }
 
 void		sig_ctrl_c(int i)

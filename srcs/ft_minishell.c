@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchardin <mchardin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:06:04 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/22 22:37:01 by mchardin         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:26:05 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			main(int argc, char **argv, char **envp)
 	struct stat stats;
 
 	signal(SIGINT, sig_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, sig_ctrl_s);
 	fstat(0, &stats);
 	ft_mainargs(argc, argv, envp, &shell);
 	while (line_loop(&shell, stats))

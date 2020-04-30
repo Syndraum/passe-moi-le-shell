@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:05:53 by mchardin          #+#    #+#             */
-/*   Updated: 2020/04/30 15:09:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 15:36:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		exit_end(t_shell *shell)
 	int error;
 
 	ft_putstr_fd("exit\n", shell->fd_line);
-	if ((len = ft_strslen(shell->tab)) > 1)
+	if (shell->tab && (len = ft_strslen(shell->tab)) > 1)
 	{
 		if (!(error = ft_atoi(shell->tab[1])))
 		{
